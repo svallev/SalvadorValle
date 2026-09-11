@@ -1,0 +1,26 @@
+---
+import { site } from '../data/site';
+import SignatureMark from '../assets/signature.svg';
+---
+
+{/* El nombre como logotipo, a sangre de margen a margen tal y como cierra el
+    artboard. Es decorativo: el nombre real ya está en la cabecera y en el pie,
+    así que aquí sobra repetirlo para un lector de pantalla. */}
+<div class="signature" role="img" aria-label={site.name} data-reveal>
+  <SignatureMark class="signature__mark" />
+</div>
+
+<style>
+  .signature {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    max-width: var(--grid-max);
+    margin-inline: auto;
+  }
+
+  .signature :global(.signature__mark) {
+    display: block;
+    width: 100%;
+    height: auto;
+    color: var(--ink);
+  }
+</style>

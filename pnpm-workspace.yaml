@@ -1,0 +1,6 @@
+# pnpm 11 bloquea por defecto los scripts de instalación de las dependencias.
+# esbuild y sharp los necesitan para colocar sus binarios nativos.
+# (En pnpm 11 esta clave sustituye a la antigua `onlyBuiltDependencies`.)
+allowBuilds:
+  esbuild: true
+  sharp: true

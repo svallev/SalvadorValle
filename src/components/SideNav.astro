@@ -1,0 +1,60 @@
+---
+import { nav } from '../data/site';
+---
+
+{/* El menú vive en el canal izquierdo y acompaña todo el recorrido.
+    `aria-current` lo va marcando motion.js según la sección visible. */}
+<nav class="sidenav" aria-label="Sections">
+  <ul class="sidenav__list" role="list">
+    {
+      nav.map((item) => (
+        <li>
+          <a class="sidenav__link" href={item.href} data-nav-link>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .sidenav {
+    position: fixed;
+    top: 104px;
+    /* Alineado con la columna 1 de la rejilla: el margen de 40px cuando la
+       ventana es más estrecha que el contenedor, y el borde real del
+       contenedor de 1440px cuando es más ancha. */
+    left: max(var(--grid-margin), calc((100vw - var(--grid-max)) / 2 + var(--grid-margin)));
+    width: 121px;
+    z-index: 10;
+  }
+
+  .sidenav__list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidenav__link {
+    display: inline-block;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-tight);
+    color: var(--ink);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .sidenav__link:hover,
+  .sidenav__link[aria-current='true'] {
+    color: var(--accent);
+  }
+
+  /* Hasta que llegue la fase de responsive, el menú fijo estorba en pantallas
+     estrechas: se oculta y la página se lee de corrido. */
+  @media (max-width: 1100px) {
+    .sidenav {
+      display: none;
+    }
+  }
+</style>

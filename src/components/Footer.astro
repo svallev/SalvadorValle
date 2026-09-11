@@ -1,0 +1,56 @@
+---
+import { site, footer } from '../data/site';
+---
+
+<footer class="footer">
+  <p class="footer__copy">{footer.copyright}</p>
+
+  <ul class="footer__links" role="list">
+    {
+      footer.links.map((link) => (
+        <li>
+          <a class="footer__link" href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+            <span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a class="footer__link" href={`mailto:${site.email}`}>{site.email}</a>
+    </li>
+  </ul>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    max-width: var(--grid-max);
+    margin-inline: auto;
+    padding: var(--space-md) var(--grid-margin);
+  }
+
+  .footer__copy,
+  .footer__link {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-body);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+  }
+
+  .footer__link {
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__link:hover {
+    color: var(--accent);
+  }
+</style>

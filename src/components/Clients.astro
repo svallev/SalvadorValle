@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import { sections } from '../data/site';
+
+// `getCollection` devuelve las entradas ordenadas por id, es decir alfabéticamente.
+// El artboard tiene su propio orden, así que se recupera con `order`.
+const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="clients grid">
+  <h2 class="clients__label">{sections.clients.label}</h2>
+
+  <ul class="clients__list" role="list">
+    {clients.map((client) => <li class="clients__chip" data-reveal>{client.data.name}</li>)}
+  </ul>
+</section>
+
+<style>
+  .clients {
+    padding-block: var(--space-2xl) 0;
+  }
+
+  .clients__label {
+    grid-column: 4 / -1;
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  .clients__list {
+    grid-column: 4 / span 8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding-top: var(--space-sm);
+  }
+
+  .clients__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding-inline: var(--space-sm);
+    border: 1px solid var(--rule-strong);
+    font-size: var(--fs-base);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+    white-space: nowrap;
+  }
+</style>

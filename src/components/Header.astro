@@ -1,0 +1,54 @@
+---
+import { site } from '../data/site';
+import { footer } from '../data/site';
+
+const linkedin = footer.links.find((l) => l.label === 'Linkedin')!;
+---
+
+<header class="header">
+  <a class="header__name" href="#hi">
+    {/* Libre Barcode 128 Text dibuja el nombre como código de barras y además
+        imprime el texto legible debajo, así que el nombre real sigue estando
+        ahí tanto para quien lee como para un lector de pantalla. */}
+    {site.name}
+  </a>
+
+  <a class="header__social" href={linkedin.href} target="_blank" rel="noopener noreferrer">
+    <span class="visually-hidden">{site.name} on LinkedIn (opens in a new tab)</span>
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+      <path
+        d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"
+      ></path>
+    </svg>
+  </a>
+</header>
+
+<style>
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 104px;
+    padding-inline: var(--grid-margin);
+    max-width: var(--grid-max);
+    margin-inline: auto;
+  }
+
+  .header__name {
+    font-family: var(--font-barcode);
+    font-size: var(--fs-barcode);
+    font-weight: var(--fw-regular);
+    letter-spacing: var(--ls-barcode);
+    line-height: var(--lh-tight);
+    color: var(--ink);
+  }
+
+  .header__social {
+    color: var(--ink);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .header__social:hover {
+    color: var(--accent);
+  }
+</style>

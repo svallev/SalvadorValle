@@ -1,0 +1,71 @@
+---
+import { hero } from '../data/site';
+---
+
+<section class="hero grid" id="hi">
+  <div class="hero__content">
+    <h1 class="hero__headline" data-hero-headline>
+      {
+        hero.headline.map((part) => (
+          <span
+            class:list={['hero__part', { 'hero__part--accent': part.accent }]}
+            style={`font-weight:${part.weight}`}
+          >
+            {part.text}
+          </span>
+        ))
+      }
+    </h1>
+
+    <div class="hero__body">
+      <p class="hero__intro">
+        {hero.intro.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
+      </p>
+      <p class="hero__claim">{hero.claim}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 0 var(--space-3xl);
+  }
+
+  .hero__content {
+    grid-column: 4 / -1;
+  }
+
+  .hero__headline {
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    color: var(--ink-pure);
+    /* El titular se parte en tramos; sin esto heredaría el peso del body. */
+    font-weight: var(--fw-regular);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__part--accent {
+    color: var(--accent);
+  }
+
+  .hero__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .hero__intro {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-body);
+    max-width: 62ch;
+  }
+
+  .hero__claim {
+    font-family: var(--font-display);
+    font-size: var(--fs-display-sm);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-tight);
+  }
+</style>

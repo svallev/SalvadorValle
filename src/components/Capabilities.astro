@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import { sections } from '../data/site';
+
+const capabilities = (await getCollection('capabilities')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="caps grid">
+  <h2 class="caps__label">{sections.capabilities.label}</h2>
+
+  <ul class="caps__list" role="list">
+    {
+      capabilities.map((item) => (
+        <li class="caps__item" data-reveal>
+          <h3 class="caps__title">{item.data.title}</h3>
+          <p class="caps__summary">{item.body}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="caps__quote">{sections.capabilities.quote}</p>
+</section>
+
+<style>
+  .caps {
+    padding-block: var(--space-3xl) 0;
+  }
+
+  .caps__label {
+    grid-column: 4 / -1;
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  .caps__list {
+    grid-column: 4 / span 8;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    grid-auto-rows: minmax(98px, auto);
+    padding-block: var(--space-md) var(--space-xl);
+  }
+
+  .caps__title {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight);
+  }
+
+  .caps__summary {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+
+  .caps__quote {
+    grid-column: 4 / span 8;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+</style>

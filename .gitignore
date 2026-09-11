@@ -1,0 +1,61 @@
+# --- Dependencias y artefactos de build (regenerables) ---
+node_modules/
+dist/
+.astro/
+.vercel/
+.output/
+.cache/
+
+# --- Secretos ---
+# Un secreto subido a GitHub queda en el historial aunque se borre en el commit
+# siguiente, y hay bots rastreando commits públicos continuamente. Si alguna vez
+# se cuela uno, hay que rotarlo, no basta con borrarlo.
+.env
+.env.*
+!.env.example
+
+# --- Sistema operativo ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+
+# --- Editores ---
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# --- Archivos fuente de diseño ---
+# Los originales viven en «documentos y recursos/», fuera de este repositorio.
+# Esta regla es una red de seguridad por si alguno acaba dentro de src/ o public/:
+# son archivos de decenas de MB que no aportan nada al sitio construido.
+*.fig
+*.penpot
+*.ai
+*.cdr
+*.psd
+*.sketch
+
+# --- Herramientas locales ---
+# Configuración de Claude Code: es del entorno de trabajo, no del sitio.
+# settings.local.json además es específico de esta máquina.
+.claude/
+.agents/
+skills-lock.json
+
+# --- Material local sin publicar ---
+# Carpeta de trabajo propia: nada de lo que haya dentro sube al repositorio.
+NoUpload/

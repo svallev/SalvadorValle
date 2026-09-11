@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import { sections } from '../data/site';
+
+const eras = (await getCollection('background')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="bg grid" id="background">
+  <h2 class="bg__label">{sections.background.label}</h2>
+
+  <div class="bg__timeline">
+    {
+      eras.map((era) => (
+        <article class="era" data-reveal>
+          <h3 class="era__heading">
+            <span class="era__period">{era.data.period} · </span>
+            <span class="era__title">{era.data.title}</span>
+          </h3>
+          <p class="era__summary">{era.body}</p>
+
+          <span class="era__rule" data-rule></span>
+
+          <ul class="era__roles" role="list">
+            {era.data.roles.map((role) => (
+              <li class="role">
+                <h4 class="role__company">
+                  {role.company}
+                  {role.role && <span class="role__title"> {role.role}</span>}
+                </h4>
+                <p class="role__summary">{role.description}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="bg__closing">{sections.background.closing}</p>
+  <p class="bg__contact" id="contact">{sections.background.contact}</p>
+</section>
+
+<style>
+  .bg {
+    padding-block: var(--space-3xl) 0;
+  }
+
+  .bg__label {
+    grid-column: 3 / span 10;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    margin-bottom: var(--space-xl);
+  }
+
+  .bg__timeline {
+    grid-column: 4 / span 8;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .era {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .era__heading {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  .era__summary {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+    max-width: 68ch;
+  }
+
+  /* Regla como elemento propio en vez de border-top: así GSAP puede dibujarla
+     de izquierda a derecha al entrar en pantalla. */
+  .era__rule {
+    display: block;
+    height: 1px;
+    margin-top: var(--space-xs);
+    background: var(--rule);
+    transform-origin: left center;
+  }
+
+  .era__roles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    padding-top: var(--space-md);
+  }
+
+  .role__company {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  /* El puesto va en regular dentro del mismo titular, como en el artboard. */
+  .role__title {
+    font-weight: var(--fw-regular);
+  }
+
+  .role__summary {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+
+  .bg__closing,
+  .bg__contact {
+    grid-column: 4 / span 8;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+
+  .bg__closing {
+    margin-top: var(--space-3xl);
+  }
+
+  .bg__contact {
+    margin-top: var(--space-xl);
+    /* Destino del enlace «Contact» del menú: hay que dejarle aire por arriba
+       para que no quede pegado al borde al saltar. */
+    scroll-margin-top: var(--space-3xl);
+  }
+</style>

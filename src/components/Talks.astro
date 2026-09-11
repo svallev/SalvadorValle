@@ -1,0 +1,247 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { sections } from '../data/site';
+
+const talks = (await getCollection('talks')).sort((a, b) => a.data.order - b.data.order);
+const writings = (await getCollection('writings')).sort((a, b) => a.data.order - b.data.order);
+
+const [featured, ...rest] = talks;
+---
+
+<section class="talks grid" id="talks">
+  <h2 class="talks__label">{sections.talks.label}</h2>
+
+  <div class="talks__block">
+    <h3 class="talks__sublabel">{sections.talks.talksLabel}</h3>
+    <p class="talks__intro">{sections.talks.intro}</p>
+
+    {featured && <article class="talk talk--featured" data-reveal>
+      <button
+        class="talk__trigger"
+        type="button"
+        data-talk-open
+        data-talk-id={featured.data.youtubeId}
+        data-talk-title={featured.data.title}
+        disabled={!featured.data.youtubeId}
+      >
+        <span class="talk__media talk__media--wide">
+          {featured.data.thumbnail
+            ? <Image src={featured.data.thumbnail} alt={featured.data.thumbnailAlt} widths={[640, 1012]} sizes="1012px" loading="lazy" />
+            : <span class="talk__placeholder" aria-hidden="true"></span>}
+        </span>
+        <span class="talk__title">{featured.data.title}</span>
+      </button>
+      <p class="talk__summary">{featured.body}</p>
+    </article>}
+
+    <div class="talks__row">
+      {
+        rest.map((talk) => (
+          <article class="talk" data-reveal>
+            <button
+              class="talk__trigger"
+              type="button"
+              data-talk-open
+              data-talk-id={talk.data.youtubeId}
+              data-talk-title={talk.data.title}
+              disabled={!talk.data.youtubeId}
+            >
+              <span class="talk__media">
+                {talk.data.thumbnail
+                  ? <Image src={talk.data.thumbnail} alt={talk.data.thumbnailAlt} widths={[316, 632]} sizes="316px" loading="lazy" />
+                  : <span class="talk__placeholder" aria-hidden="true"></span>}
+              </span>
+              <span class="talk__title">{talk.data.title}</span>
+            </button>
+            <p class="talk__summary">{talk.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="talks__writings">
+    <h3 class="talks__sublabel">{sections.talks.writingsLabel}</h3>
+
+    <ul class="writings" role="list">
+      {
+        writings.map((writing) => {
+          const Tag = writing.data.url ? 'a' : 'span';
+          return (
+            <li class="writings__item" data-reveal>
+              <Tag
+                class="writings__link"
+                {...(writing.data.url
+                  ? { href: writing.data.url, target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
+              >
+                <span>{writing.data.title}</span>
+                {/* Flecha decorativa del diseño. El aviso de que el enlace abre
+                    fuera va en texto, que es lo que sí se anuncia. */}
+                <span class="writings__arrow" aria-hidden="true">↖</span>
+                {writing.data.url && <span class="visually-hidden">(opens in a new tab)</span>}
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <p class="talks__quote">{sections.talks.quote}</p>
+  </div>
+</section>
+
+<style>
+  .talks {
+    padding-block: var(--space-3xl) 0;
+  }
+
+  .talks__label {
+    grid-column: 3 / span 10;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    margin-bottom: var(--space-xl);
+  }
+
+  .talks__block {
+    grid-column: 4 / span 9;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .talks__writings {
+    grid-column: 4 / span 8;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin-top: var(--space-3xl);
+  }
+
+  .talks__sublabel {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  .talks__intro,
+  .talks__quote {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+
+  .talks__row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .talk {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .talk__trigger {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  /* Sin id de YouTube todavía no hay nada que abrir: la tarjeta se lee, pero
+     no finge ser un botón que funciona. */
+  .talk__trigger:disabled {
+    cursor: default;
+  }
+
+  .talk__media {
+    display: block;
+    aspect-ratio: 316 / 160;
+    overflow: hidden;
+    background: var(--rule);
+  }
+
+  .talk__media--wide {
+    aspect-ratio: 1012 / 440;
+  }
+
+  .talk__media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .talk__trigger:not(:disabled):hover .talk__media :global(img) {
+    transform: scale(1.03);
+  }
+
+  .talk__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--rule);
+  }
+
+  .talk__title {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+  }
+
+  .talk__trigger:not(:disabled):hover .talk__title {
+    color: var(--accent);
+  }
+
+  .talk__summary {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+  }
+
+  .writings {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .writings__item {
+    border-top: 1px solid var(--rule);
+  }
+
+  .writings__item:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .writings__link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-block: var(--space-md);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-tight);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  a.writings__link:hover {
+    color: var(--accent);
+  }
+
+  .writings__arrow {
+    flex-shrink: 0;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  a.writings__link:hover .writings__arrow {
+    transform: translate(4px, -4px);
+  }
+</style>

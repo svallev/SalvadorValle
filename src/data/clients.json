@@ -1,0 +1,132 @@
+[
+  {
+    "id": "inditex",
+    "name": "Inditex",
+    "order": 1
+  },
+  {
+    "id": "bbva",
+    "name": "BBVA",
+    "order": 2
+  },
+  {
+    "id": "telefonica",
+    "name": "Telefónica",
+    "order": 3
+  },
+  {
+    "id": "ferrovial",
+    "name": "Ferrovial",
+    "order": 4
+  },
+  {
+    "id": "vodafone",
+    "name": "Vodafone",
+    "order": 5
+  },
+  {
+    "id": "iberia",
+    "name": "Iberia",
+    "order": 6
+  },
+  {
+    "id": "orange",
+    "name": "Orange",
+    "order": 7
+  },
+  {
+    "id": "repsol",
+    "name": "Repsol",
+    "order": 8
+  },
+  {
+    "id": "ibercaja",
+    "name": "Ibercaja",
+    "order": 9
+  },
+  {
+    "id": "volvo",
+    "name": "Volvo",
+    "order": 10
+  },
+  {
+    "id": "kia",
+    "name": "KIA",
+    "order": 11
+  },
+  {
+    "id": "bosch-car-service",
+    "name": "Bosch Car Service",
+    "order": 12
+  },
+  {
+    "id": "lafarge",
+    "name": "Lafarge",
+    "order": 13
+  },
+  {
+    "id": "ebay",
+    "name": "eBay",
+    "order": 14
+  },
+  {
+    "id": "tissot",
+    "name": "TISSOT",
+    "order": 15
+  },
+  {
+    "id": "hesperia-hotels",
+    "name": "Hesperia Hotels",
+    "order": 16
+  },
+  {
+    "id": "mayballine-ny",
+    "name": "Mayballine NY",
+    "order": 17
+  },
+  {
+    "id": "coca-cola",
+    "name": "Coca-Cola",
+    "order": 18
+  },
+  {
+    "id": "el-corte-ingles",
+    "name": "El Corte Inglés",
+    "order": 19
+  },
+  {
+    "id": "alcampo",
+    "name": "Alcampo",
+    "order": 20
+  },
+  {
+    "id": "abc",
+    "name": "ABC",
+    "order": 21
+  },
+  {
+    "id": "defensor-del-pueblo",
+    "name": "Defensor del Pueblo",
+    "order": 22
+  },
+  {
+    "id": "aldeas-infantiles",
+    "name": "Aldeas Infantiles",
+    "order": 23
+  },
+  {
+    "id": "rsi",
+    "name": "RSI",
+    "order": 24
+  },
+  {
+    "id": "cbre",
+    "name": "CBRE",
+    "order": 25
+  },
+  {
+    "id": "loreal",
+    "name": "L’oreal",
+    "order": 26
+  }
+]
