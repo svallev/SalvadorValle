@@ -22,10 +22,9 @@ import { nav } from '../data/site';
   .sidenav {
     position: fixed;
     top: 104px;
-    /* Alineado con la columna 1 de la rejilla: el margen de 40px cuando la
-       ventana es más estrecha que el contenedor, y el borde real del
-       contenedor de 1440px cuando es más ancha. */
-    left: max(var(--grid-margin), calc((100vw - var(--grid-max)) / 2 + var(--grid-margin)));
+    /* Columna 1 de la rejilla: como la página ocupa todo el ancho, es
+       exactamente el margen. */
+    left: var(--grid-margin);
     width: 121px;
     z-index: 10;
   }
@@ -41,7 +40,7 @@ import { nav } from '../data/site';
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     line-height: var(--lh-tight);
-    color: var(--ink);
+    color: var(--ink-muted);
     transition: color var(--duration-fast) var(--ease-out);
   }
 

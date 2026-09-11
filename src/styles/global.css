@@ -53,7 +53,7 @@ select {
 /* ---------- Base ---------- */
 
 body {
-  background: var(--paper-alt);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: var(--fs-base);
@@ -78,12 +78,12 @@ a {
 
 /* ---------- Rejilla ---------- */
 
+/* Ancho completo del navegador con 40 px de margen: las columnas se estiran,
+   que es justo lo que pide la rejilla del artboard. */
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   gap: 0 var(--grid-gutter);
-  max-width: var(--grid-max);
-  margin-inline: auto;
   padding-inline: var(--grid-margin);
 }
 

@@ -29,6 +29,11 @@ const [featured, ...rest] = talks;
           {featured.data.thumbnail
             ? <Image src={featured.data.thumbnail} alt={featured.data.thumbnailAlt} widths={[640, 1012]} sizes="1012px" loading="lazy" />
             : <span class="talk__placeholder" aria-hidden="true"></span>}
+          {featured.data.youtubeId && (
+            <span class="talk__play" aria-hidden="true">
+              <svg viewBox="0 0 25 30" fill="currentColor"><path d="M0 0 25 15 0 30Z" /></svg>
+            </span>
+          )}
         </span>
         <span class="talk__title">{featured.data.title}</span>
       </button>
@@ -51,6 +56,11 @@ const [featured, ...rest] = talks;
                 {talk.data.thumbnail
                   ? <Image src={talk.data.thumbnail} alt={talk.data.thumbnailAlt} widths={[316, 632]} sizes="316px" loading="lazy" />
                   : <span class="talk__placeholder" aria-hidden="true"></span>}
+                {talk.data.youtubeId && (
+                  <span class="talk__play" aria-hidden="true">
+                    <svg viewBox="0 0 25 30" fill="currentColor"><path d="M0 0 25 15 0 30Z" /></svg>
+                  </span>
+                )}
               </span>
               <span class="talk__title">{talk.data.title}</span>
             </button>
@@ -103,6 +113,8 @@ const [featured, ...rest] = talks;
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
     margin-bottom: var(--space-xl);
+  /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
+    opacity: 0.3;
   }
 
   .talks__block {
@@ -110,6 +122,8 @@ const [featured, ...rest] = talks;
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--rule);
   }
 
   .talks__writings {
@@ -124,6 +138,7 @@ const [featured, ...rest] = talks;
     font-size: var(--fs-base);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
+    color: var(--accent);
   }
 
   .talks__intro,
@@ -163,10 +178,11 @@ const [featured, ...rest] = talks;
   }
 
   .talk__media {
+    position: relative;
     display: block;
     aspect-ratio: 316 / 160;
     overflow: hidden;
-    background: var(--rule);
+    background: var(--placeholder);
   }
 
   .talk__media--wide {
@@ -188,7 +204,33 @@ const [featured, ...rest] = talks;
     display: block;
     width: 100%;
     height: 100%;
-    background: var(--rule);
+    background: var(--placeholder);
+  }
+
+  /* Triángulo blanco al 80 % centrado sobre la miniatura, como en el artboard.
+     Solo aparece cuando hay vídeo que abrir. */
+  .talk__play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--white);
+    opacity: 0.8;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .talk__play svg {
+    width: 25px;
+    height: 30px;
+  }
+
+  .talk__media--wide .talk__play svg {
+    width: 75px;
+    height: 90px;
+  }
+
+  .talk__trigger:not(:disabled):hover .talk__play {
+    opacity: 1;
   }
 
   .talk__title {
@@ -210,22 +252,22 @@ const [featured, ...rest] = talks;
   .writings {
     display: flex;
     flex-direction: column;
+    gap: var(--space-sm);
   }
 
+  /* Cada escrito es una fila de 104 px con su filete debajo, no una lista
+     corrida: en el artboard quedan 12 px de aire entre una y la siguiente. */
   .writings__item {
-    border-top: 1px solid var(--rule);
-  }
-
-  .writings__item:last-child {
     border-bottom: 1px solid var(--rule);
   }
 
   .writings__link {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
-    padding-block: var(--space-md);
+    min-height: 104px;
+    padding-block: var(--space-xs) var(--space-md);
     font-size: var(--fs-xl);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);

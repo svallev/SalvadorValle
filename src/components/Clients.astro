@@ -24,6 +24,7 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
     grid-column: 4 / -1;
     font-size: var(--fs-base);
     font-weight: var(--fw-bold);
+    color: var(--accent);
     line-height: var(--lh-tight);
   }
 
@@ -39,7 +40,7 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 32px;
+    height: 28px;
     padding-inline: var(--space-sm);
     border: 1px solid var(--rule-strong);
     font-size: var(--fs-base);

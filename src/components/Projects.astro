@@ -42,6 +42,8 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
+  /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
+    opacity: 0.3;
   }
 
   .work__list {

@@ -12,9 +12,10 @@ import SignatureMark from '../assets/signature.svg';
 
 <style>
   .signature {
-    padding-block: var(--space-3xl) var(--space-2xl);
-    max-width: var(--grid-max);
-    margin-inline: auto;
+    /* 80 px por arriba y por abajo, y el filete de cierre a sangre: en el
+       artboard es el único negro opaco, todos los demás van al 30 %. */
+    padding-block: 80px;
+    border-bottom: 1px solid var(--ink-pure);
   }
 
   .signature :global(.signature__mark) {

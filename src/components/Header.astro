@@ -24,14 +24,19 @@ const linkedin = footer.links.find((l) => l.label === 'Linkedin')!;
 </header>
 
 <style>
+  /* Acompaña todo el recorrido. Lleva el fondo de la página porque el
+     contenido pasa por debajo al bajar: sin relleno, el texto se mezclaría
+     con el código de barras. */
   .header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 104px;
     padding-inline: var(--grid-margin);
-    max-width: var(--grid-max);
-    margin-inline: auto;
+    background: var(--paper);
   }
 
   .header__name {
@@ -40,11 +45,11 @@ const linkedin = footer.links.find((l) => l.label === 'Linkedin')!;
     font-weight: var(--fw-regular);
     letter-spacing: var(--ls-barcode);
     line-height: var(--lh-tight);
-    color: var(--ink);
+    color: var(--ink-pure);
   }
 
   .header__social {
-    color: var(--ink);
+    color: var(--ink-faint);
     transition: color var(--duration-fast) var(--ease-out);
   }
 

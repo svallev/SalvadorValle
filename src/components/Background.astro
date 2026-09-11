@@ -18,8 +18,6 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
           </h3>
           <p class="era__summary">{era.body}</p>
 
-          <span class="era__rule" data-rule></span>
-
           <ul class="era__roles" role="list">
             {era.data.roles.map((role) => (
               <li class="role">
@@ -31,6 +29,8 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
               </li>
             ))}
           </ul>
+
+          <span class="era__rule" data-rule></span>
         </article>
       ))
     }
@@ -51,25 +51,31 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
     margin-bottom: var(--space-xl);
+  /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
+    opacity: 0.3;
   }
 
   .bg__timeline {
     grid-column: 4 / span 8;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xl);
+    gap: var(--space-xl);
   }
 
+  /* Sin separación entre titular y resumen: en el artboard van pegados. */
   .era {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
   }
 
   .era__heading {
     font-size: var(--fs-base);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
+  }
+
+  .era__period {
+    color: var(--accent);
   }
 
   .era__summary {
@@ -79,24 +85,38 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
     max-width: 68ch;
   }
 
-  /* Regla como elemento propio en vez de border-top: así GSAP puede dibujarla
-     de izquierda a derecha al entrar en pantalla. */
+  /* Regla como elemento propio en vez de border-bottom: así GSAP puede
+     dibujarla de izquierda a derecha al entrar en pantalla. */
   .era__rule {
     display: block;
     height: 1px;
-    margin-top: var(--space-xs);
+    margin-top: var(--space-xl);
     background: var(--rule);
     transform-origin: left center;
   }
 
+  /* Empleo y descripción no son dos mitades: son 2 y 6 columnas de la rejilla
+     (200 y 664 px sobre 1440). Se heredan del bloque con subgrid para que la
+     proporción siga siendo exacta a cualquier ancho. */
   .era__roles {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg);
-    padding-top: var(--space-md);
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: var(--grid-gutter);
+    /* 16 px entre empleos: no está en la escala de espaciado porque es el
+       único sitio del diseño donde aparece. */
+    row-gap: 16px;
+    padding-top: var(--space-lg);
+  }
+
+  .role {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    column-gap: var(--grid-gutter);
   }
 
   .role__company {
+    grid-column: span 2;
     font-size: var(--fs-base);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
@@ -108,6 +128,7 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
   }
 
   .role__summary {
+    grid-column: span 6;
     font-size: var(--fs-base);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);
