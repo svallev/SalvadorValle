@@ -1,5 +1,5 @@
 ---
-title: "La Product Conf 2024. Please make me think, a little"
+title: "LaProductConf 2024. Please make me think, a little"
 order: 1
 youtubeId: "https://youtu.be/-X1gULpe9Ts"
 thumbnail: "../../assets/talks/lpc-2024-please-make-me-think.webp"

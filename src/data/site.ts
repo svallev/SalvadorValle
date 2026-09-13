@@ -7,7 +7,7 @@ export const site = {
   name: 'Salvador Valle',
   role: 'Product Design Director',
   description:
-    'Product and UX Design Director. Designing global-scale products and leading high performance teams for over 30 years.',
+    'Product and UX Design Director. Designing global-scale products and leading high-performance teams for over 30 years.',
   email: 'salvador.valle@gmail.com',
 };
 
@@ -28,10 +28,10 @@ export const hero = {
   ],
   intro: [
     'As you can imagine, I’m Salva.',
-    'Product and UX Design Director at Harbiz, Frog, Hamon, Isobar, BBVA,...',
+    'Product and UX Design Director at Harbiz, frog, Hamon, Isobar, BBVA,...',
     'Based (today) in a small town close to the mountains in Spain.',
   ],
-  claim: 'Designing global-scale products and Leading High Performance Teams for +30 years.',
+  claim: 'Designing global-scale products and leading high-performance teams for over 30 years.',
 };
 
 export const sections = {
@@ -46,7 +46,7 @@ export const sections = {
     talksLabel: 'Talks',
     writingsLabel: 'Writtings',
     intro:
-      "— For 30 years now, I've been fortunate to share knowledge and, above all, learn at numerous events — in design, product, and technology — covering everything from the small details of building a digital product to design and product strategy.",
+      "— For 30 years now, I’ve been fortunate to share knowledge and, above all, learn at numerous events — in design, product, and technology — covering everything from the small details of building a digital product to design and product strategy.",
     quote: '— I talk and write mostly about prototyping the future early.',
   },
   background: {
@@ -54,7 +54,7 @@ export const sections = {
     closing:
       '— I started in graphic arts and desktop publishing, taught it for three years, and moved into digital when the web was still an experiment. Since then: agencies, product companies and technology consultancies — as designer, art director, creative director, UX consultant and, for the last decade, as director. What I care about now is integrating product design with emerging technology and the methodologies that make a team fast without making it careless.',
     contact:
-      "If you'd like to know more about any of these projects, collaborate, or just chat for a bit about design, product or innovation, don't hesitate to reach out and let's talk. —",
+      "If you’d like to know more about any of these projects, collaborate, or just chat for a bit about design, product or innovation, don’t hesitate to reach out and let’s talk. —",
   },
 };
 

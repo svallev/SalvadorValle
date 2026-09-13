@@ -6,7 +6,7 @@ roles:
   - company: "Tajamar"
     description: "Creative Director for six years: clients, pitches, teams and delivery."
   - company: "Germinus · Uniconsult"
-    description: "Technical and Creative Director of the school’s programmes."
+    description: "Technical and Creative Director of the school’s programs."
 ---
 
 Trained and then taught graphic arts and DTP before moving into digital. Craft first, screens later.

@@ -1,5 +1,5 @@
 ---
-title: "Especialidades, Salarios y pilares en UX/UI."
+title: "Especialidades, salarios y pilares en UX/UI"
 order: 3
 youtubeId: "https://youtu.be/GsrW23Cm67I"
 thumbnail: "../../assets/talks/especialidades-salarios-pilares.webp"

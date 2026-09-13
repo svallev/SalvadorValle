@@ -6,7 +6,7 @@ roles:
   - company: "Avanweb"
     description: "Creative Director for six years: clients, pitches, teams and delivery."
   - company: "Trazos School of Arts"
-    description: "Technical and Creative Director of the school’s programmes."
+    description: "Technical and Creative Director of the school’s programs."
   - company: "eBay · Euro RSCG · iSOCO · +++"
     description: "Art direction for marketplace, agency and technology products."
 ---
