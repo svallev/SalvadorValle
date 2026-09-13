@@ -1,5 +1,5 @@
 ---
-title: "Harbiz IA Pricing Estrategy"
+title: "Harbiz AI Pricing Strategy"
 order: 2
 ---
 

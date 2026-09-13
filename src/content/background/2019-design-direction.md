@@ -13,4 +13,4 @@ roles:
     description: "Director of UX Design. UX strategy, people management, product management, new business."
 ---
 
-Running design as a function: strategy, headcount, budget and the systems that make quality repeatable. ºix years, in product companies and in consultancies.
+Running design as a function: strategy, headcount, budget and the systems that make quality repeatable. Seven years, in product companies and in consultancies.

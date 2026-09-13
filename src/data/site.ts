@@ -61,8 +61,8 @@ export const sections = {
 export const footer = {
   copyright: '© 2026 Salvador Valle',
   links: [
-    { label: 'Linkedin', href: 'https://www.linkedin.com/in/salvadorvalle/' },
-    { label: 'Github', href: 'https://github.com/svallev' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/salvadorvalle/' },
+    { label: 'GitHub', href: 'https://github.com/svallev' },
     { label: 'Linktree', href: 'https://linktr.ee/salvadorvalle' },
   ],
 };
