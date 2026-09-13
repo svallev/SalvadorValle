@@ -96,7 +96,7 @@ const [featured, ...rest] = talks;
                 <span class="writings__title">{writing.data.title}</span>
                 {/* Flecha decorativa del diseño. El aviso de que el enlace abre
                     fuera va en texto, que es lo que sí se anuncia. */}
-                <span class="writings__arrow" aria-hidden="true">↖</span>
+                <span class="writings__arrow" aria-hidden="true">↗</span>
                 {writing.data.url && <span class="visually-hidden">(opens in a new tab)</span>}
               </Tag>
             </li>
@@ -313,6 +313,7 @@ const [featured, ...rest] = talks;
     overflow: hidden;
     border-radius: 8px;
     background: var(--placeholder);
+    box-shadow: 0 0 4px 0 #00000040;
   }
 
   .writings__thumb :global(img) {
