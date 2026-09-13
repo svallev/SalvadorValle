@@ -13,6 +13,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sin rebote elástico al llegar arriba o abajo: con él, la cabecera sticky se
+   desplaza junto a la página. Safari lo necesita también en body. */
+html,
+body {
+  overscroll-behavior: none;
+}
+
 body,
 h1,
 h2,
