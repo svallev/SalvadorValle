@@ -17,32 +17,56 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
    con el movimiento reducido, porque cambiar de color no marea a nadie. */
 function initScrollSpy() {
   const links = [...document.querySelectorAll('[data-nav-link]')];
+  const spies = [];
 
-  const setActive = (id) => {
+  const setActive = (active) => {
     links.forEach((link) => {
-      const isCurrent = link.getAttribute('href') === `#${id}`;
       // aria-current comunica el estado; la clase sola no lo haría.
-      if (isCurrent) link.setAttribute('aria-current', 'true');
+      if (link === active) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
     });
   };
 
-  links.forEach((link) => {
+  // Contact es un párrafo corto dentro de Background y le siguen la firma y el
+  // pie: nunca llega a cruzar la línea del 40 %. Por eso su tramo dura hasta el
+  // final de la página, y al tocar fondo se marca siempre el último enlace.
+  // Si hay varios tramos activos a la vez gana el último del menú, que es el
+  // más concreto (Contact está dentro de Background).
+  const update = () => {
+    const root = document.documentElement;
+    const atEnd = window.scrollY + window.innerHeight >= root.scrollHeight - 2;
+    const active = atEnd ? spies.at(-1) : spies.findLast((spy) => spy.trigger.isActive);
+    if (active) setActive(active.link);
+  };
+
+  links.forEach((link, index) => {
     const id = link.getAttribute('href')?.slice(1);
     const section = id && document.getElementById(id);
     if (!section) return;
 
-    ScrollTrigger.create({
+    const isLast = index === links.length - 1;
+    const trigger = ScrollTrigger.create({
       trigger: section,
       start: 'top 40%',
-      end: 'bottom 40%',
-      onToggle: (self) => self.isActive && setActive(id),
+      end: isLast ? 'max' : 'bottom 40%',
+      onToggle: update,
     });
+    spies.push({ link, trigger });
   });
+
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: update });
+  // Los onToggle del arranque llegan antes de que `spies` esté completo.
+  ScrollTrigger.addEventListener('refresh', update);
+  update();
 }
 
-/* ---------- Anclajes con desplazamiento suave ---------- */
-function initSmoothAnchors() {
+/* ---------- Anclajes ----------
+   Lo que se alinea es el rótulo de la sección, no su borde: las secciones
+   llevan relleno por arriba (120 px en Talks y Background) y el rótulo caería
+   muy abajo. Queda a 40 px del borde superior, a la altura de la cabecera.
+   «Hi» es el principio de la página y va arriba del todo. Con movimiento
+   reducido el salto es instantáneo, pero al mismo sitio. */
+function initAnchors() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       const id = link.getAttribute('href')?.slice(1);
@@ -51,9 +75,10 @@ function initSmoothAnchors() {
 
       event.preventDefault();
       gsap.to(window, {
-        duration: 0.9,
+        duration: reduced.matches ? 0 : 0.9,
         ease: 'power3.inOut',
-        scrollTo: { y: target, offsetY: 80 },
+        scrollTo:
+          id === 'hi' ? 0 : { y: target.querySelector(':scope > h2') ?? target, offsetY: 40 },
       });
     });
   });
@@ -141,13 +166,13 @@ function initTimeline() {
 
 function init() {
   initScrollSpy();
+  initAnchors();
 
   // A partir de aquí es todo movimiento: hay gente que se marea de verdad con
   // parallax y entradas animadas, así que con el ajuste del sistema activado
   // no se registra ninguna de estas animaciones.
   if (reduced.matches) return;
 
-  initSmoothAnchors();
   initHero();
   initReveals();
   initParallax();
