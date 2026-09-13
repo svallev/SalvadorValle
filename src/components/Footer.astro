@@ -46,10 +46,20 @@ import { site, footer } from '../data/site';
   }
 
   .footer__link {
-    transition: color var(--duration-fast) var(--ease-out);
+    text-decoration: underline;
   }
 
-  .footer__link:hover {
-    color: var(--accent);
+  /* 720-1024: texto a 16 px con interlineado 2 (la fila sigue midiendo 32 px)
+     y 16 px entre enlaces para que todo quepa en una línea. */
+  @media (max-width: 1023.98px) {
+    .footer__copy,
+    .footer__link {
+      font-size: var(--fs-base);
+      line-height: 2;
+    }
+
+    .footer__links {
+      gap: 16px;
+    }
   }
 </style>

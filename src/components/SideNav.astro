@@ -35,8 +35,11 @@ import { nav } from '../data/site';
     gap: 6px;
   }
 
+  /* Cada entrada ocupa 24 px (texto de 22) y hay 6 entre ellas: 30 px de paso,
+     como en el componente «Menú item». */
   .sidenav__link {
-    display: inline-block;
+    display: block;
+    min-height: 24px;
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     line-height: var(--lh-tight);
@@ -49,11 +52,13 @@ import { nav } from '../data/site';
     color: var(--accent);
   }
 
-  /* Hasta que llegue la fase de responsive, el menú fijo estorba en pantallas
-     estrechas: se oculta y la página se lee de corrido. */
-  @media (max-width: 1100px) {
-    .sidenav {
-      display: none;
+  /* Entre 720 y 1024 el menú sigue visible: el artboard «720-1024» lo mantiene
+     en el margen izquierdo (16 px, que llega solo con --grid-margin). El
+     contenido empieza en la columna 4, así que no se pisan. El texto baja a
+     16 px; cada entrada conserva sus 24 px de alto. */
+  @media (max-width: 1023.98px) {
+    .sidenav__link {
+      font-size: var(--fs-base);
     }
   }
 </style>

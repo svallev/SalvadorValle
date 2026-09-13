@@ -12,10 +12,16 @@ import SignatureMark from '../assets/signature.svg';
 
 <style>
   .signature {
-    /* 80 px por arriba y por abajo, y el filete de cierre a sangre: en el
-       artboard es el único negro opaco, todos los demás van al 30 %. */
+    /* Franja de al menos 358 px con el nombre centrado en vertical: a 1440 son
+       80 + 196 + 80, y a 1024 el artboard mantiene esa altura aunque el
+       logotipo mida menos. El filete de cierre va a sangre: es el único negro
+       opaco del artboard, todos los demás van al 30 %. */
+    display: grid;
+    align-content: center;
+    min-height: 358px;
     padding-block: 80px;
-    border-bottom: 1px solid var(--ink-pure);
+    /* Trazo interior, como en Penpot: no suma altura. */
+    box-shadow: inset 0 -1px 0 var(--ink-pure);
   }
 
   .signature :global(.signature__mark) {
@@ -23,5 +29,13 @@ import SignatureMark from '../assets/signature.svg';
     width: 100%;
     height: auto;
     color: var(--ink);
+  }
+
+  /* 720-1024: el aire se reduce a la mitad, 40 px arriba y abajo. */
+  @media (max-width: 1023.98px) {
+    .signature {
+      min-height: 0;
+      padding-block: 40px;
+    }
   }
 </style>

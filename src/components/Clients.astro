@@ -16,8 +16,9 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
 </section>
 
 <style>
+  /* Frame 20: sin relleno propio; el aire de arriba lo pone Capabilities. */
   .clients {
-    padding-block: var(--space-2xl) 0;
+    padding-block: 0;
   }
 
   .clients__label {
@@ -36,6 +37,7 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
     padding-top: var(--space-sm);
   }
 
+  /* Píldora de 28 px (radio 100 en el artboard) con el filete por dentro. */
   .clients__chip {
     display: inline-flex;
     align-items: center;
@@ -43,9 +45,18 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
     height: 28px;
     padding-inline: var(--space-sm);
     border: 1px solid var(--rule-strong);
+    border-radius: 100px;
     font-size: var(--fs-base);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);
     white-space: nowrap;
+  }
+
+  /* 720-1024: la píldora se ajusta al texto, 20 px de alto y 8 px a los lados. */
+  @media (max-width: 1023.98px) {
+    .clients__chip {
+      height: 20px;
+      padding-inline: var(--space-xs);
+    }
   }
 </style>

@@ -24,16 +24,24 @@
 </dialog>
 
 <style>
+  /* Sin caja propia: el <dialog> es transparente y el vídeo flota sobre la
+     página, que se sigue viendo detrás a través del fondo translúcido.
+     El ancho se limita también por el alto de la ventana para que el
+     reproductor 16:9 y la cabecera quepan siempre sin scroll. */
   .modal {
-    width: min(1100px, 92vw);
-    padding: var(--space-md);
+    width: min(1100px, 92vw, calc((100dvh - 160px) * 16 / 9));
+    max-width: none;
+    max-height: none;
+    padding: 0;
     border: none;
-    background: var(--ink);
+    background: transparent;
     color: var(--white);
+    overflow: visible;
   }
 
   .modal::backdrop {
-    background: rgb(17 17 17 / 0.88);
+    background: rgb(17 17 17 / 0.6);
+    backdrop-filter: blur(4px);
   }
 
   .modal__head {
@@ -48,27 +56,39 @@
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     line-height: var(--lh-tight);
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.5);
   }
 
+  /* 40 × 40 de zona de clic, más fácil de acertar que el propio aspa. */
   .modal__close {
     display: grid;
+    flex-shrink: 0;
     place-items: center;
-    padding: var(--space-2xs);
-    background: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: rgb(17 17 17 / 0.5);
     border: none;
-    color: currentColor;
+    border-radius: 100px;
+    color: var(--white);
     cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out);
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
   }
 
   .modal__close:hover {
+    background: var(--white);
     color: var(--accent);
   }
 
   .modal__player {
     position: relative;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
     background: var(--ink-pure);
+    box-shadow: 0 24px 80px rgb(0 0 0 / 0.45);
   }
 
   .modal__player :global(iframe) {

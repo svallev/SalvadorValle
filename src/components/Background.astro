@@ -41,17 +41,21 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
 </section>
 
 <style>
+  /* Frame 19: 120 px arriba y 100 entre el contacto y la firma. */
   .bg {
-    padding-block: var(--space-3xl) 0;
+    padding-block: 120px 100px;
   }
 
+  /* Rótulo de 32 px de alto; hasta la primera etapa hay 10 px de hueco de
+     fila y 24 de relleno. */
   .bg__label {
     grid-column: 3 / span 10;
+    min-height: 32px;
+    margin-bottom: 34px;
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
-    margin-bottom: var(--space-xl);
-  /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
+    /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
     opacity: 0.3;
   }
 
@@ -95,28 +99,38 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
     transform-origin: left center;
   }
 
-  /* Empleo y descripción no son dos mitades: son 2 y 6 columnas de la rejilla
-     (200 y 664 px sobre 1440). Se heredan del bloque con subgrid para que la
-     proporción siga siendo exacta a cualquier ancho. */
+  /* Empleo y descripción no son dos mitades: el artboard usa una rejilla
+     interna de 4 columnas con canal fijo de 32 px, 1 para el empleo y 3 para
+     la descripción (200/664 a 1440, 131/456 a 1024, 89/330 a 720). El canal no
+     sigue al de la página, que baja a 24 px en el tramo 720-1024. */
   .era__roles {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    column-gap: var(--grid-gutter);
+    /* minmax(0, …): una palabra larga («Technologies») no puede ensanchar la
+       columna del empleo; en el artboard desborda hacia el canal. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 32px;
+    /* Todos los empleos de una etapa miden lo que el más alto… */
+    grid-auto-rows: 1fr;
     /* 16 px entre empleos: no está en la escala de espaciado porque es el
        único sitio del diseño donde aparece. */
     row-gap: 16px;
     padding-top: var(--space-lg);
   }
 
+  /* …salvo en la primera etapa de escritorio, que el artboard deja en filas
+     automáticas. */
+  .era:first-child .era__roles {
+    grid-auto-rows: auto;
+  }
+
   .role {
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
-    column-gap: var(--grid-gutter);
   }
 
   .role__company {
-    grid-column: span 2;
+    grid-column: span 1;
     font-size: var(--fs-base);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
@@ -128,7 +142,7 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
   }
 
   .role__summary {
-    grid-column: span 6;
+    grid-column: span 3;
     font-size: var(--fs-base);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);
@@ -142,14 +156,39 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
     line-height: var(--lh-tight);
   }
 
+  /* 40 px desde el filete de la última etapa. */
   .bg__closing {
-    margin-top: var(--space-3xl);
+    margin-top: var(--space-xl);
   }
 
   .bg__contact {
     margin-top: var(--space-xl);
+    font-weight: var(--fw-medium);
+    font-style: italic;
     /* Destino del enlace «Contact» del menú: hay que dejarle aire por arriba
        para que no quede pegado al borde al saltar. */
     scroll-margin-top: var(--space-3xl);
+  }
+
+  /* 720-1024 */
+  @media (max-width: 1023.98px) {
+    /* 80 px por arriba (antes 120) y 80 px entre el contacto y la firma. */
+    .bg {
+      padding-block: 80px;
+    }
+
+    .era__summary {
+      font-size: var(--fs-base);
+    }
+
+    /* Aquí también la primera etapa va en filas iguales. */
+    .era:first-child .era__roles {
+      grid-auto-rows: 1fr;
+    }
+
+    .bg__closing,
+    .bg__contact {
+      font-size: var(--fs-md);
+    }
   }
 </style>

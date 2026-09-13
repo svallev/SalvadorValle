@@ -27,14 +27,17 @@ import { hero } from '../data/site';
 </section>
 
 <style>
+  /* Frame 8: el bloque arranca pegado a la cabecera y deja 120 px debajo. */
   .hero {
-    padding-block: 0 var(--space-3xl);
+    padding-block: 0 120px;
   }
 
   .hero__content {
     grid-column: 4 / -1;
   }
 
+  /* 16 px entre titular, entradilla y claim: fuera de la escala de espaciado,
+     pero es lo que marcan los tres artboards. */
   .hero__headline {
     font-family: var(--font-display);
     font-size: var(--fs-display);
@@ -42,7 +45,7 @@ import { hero } from '../data/site';
     color: var(--ink-pure);
     /* El titular se parte en tramos; sin esto heredaría el peso del body. */
     font-weight: var(--fw-regular);
-    margin-bottom: var(--space-md);
+    margin-bottom: 16px;
   }
 
   .hero__part--accent {
@@ -52,7 +55,7 @@ import { hero } from '../data/site';
   .hero__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 16px;
   }
 
   .hero__intro {
@@ -67,5 +70,22 @@ import { hero } from '../data/site';
     font-size: var(--fs-display-sm);
     font-weight: var(--fw-regular);
     line-height: var(--lh-tight);
+  }
+
+  /* 720-1024: el bloque se queda en 8 columnas (deja libre la última), el
+     aire inferior baja de 120 a 80 y el claim de 48 a 36. El titular mantiene
+     sus 104 px y pasa a dos líneas. */
+  @media (max-width: 1023.98px) {
+    .hero {
+      padding-block: 0 80px;
+    }
+
+    .hero__content {
+      grid-column: 4 / span 8;
+    }
+
+    .hero__claim {
+      font-size: 36px;
+    }
   }
 </style>

@@ -13,8 +13,10 @@ const [featured, ...rest] = talks;
   <h2 class="talks__label">{sections.talks.label}</h2>
 
   <div class="talks__block">
-    <h3 class="talks__sublabel">{sections.talks.talksLabel}</h3>
-    <p class="talks__intro">{sections.talks.intro}</p>
+    <div class="talks__head">
+      <h3 class="talks__sublabel">{sections.talks.talksLabel}</h3>
+      <p class="talks__intro">{sections.talks.intro}</p>
+    </div>
 
     {featured && <article class="talk talk--featured" data-reveal>
       <button
@@ -27,7 +29,7 @@ const [featured, ...rest] = talks;
       >
         <span class="talk__media talk__media--wide">
           {featured.data.thumbnail
-            ? <Image src={featured.data.thumbnail} alt={featured.data.thumbnailAlt} widths={[640, 1012]} sizes="1012px" loading="lazy" />
+            ? <Image src={featured.data.thumbnail} alt={featured.data.thumbnailAlt} format="webp" widths={[640, 1012, 1600]} sizes="71vw" loading="lazy" />
             : <span class="talk__placeholder" aria-hidden="true"></span>}
           {featured.data.youtubeId && (
             <span class="talk__play" aria-hidden="true">
@@ -54,7 +56,7 @@ const [featured, ...rest] = talks;
             >
               <span class="talk__media">
                 {talk.data.thumbnail
-                  ? <Image src={talk.data.thumbnail} alt={talk.data.thumbnailAlt} widths={[316, 632]} sizes="316px" loading="lazy" />
+                  ? <Image src={talk.data.thumbnail} alt={talk.data.thumbnailAlt} format="webp" widths={[316, 632, 1012]} sizes="(max-width: 1023.98px) 71vw, 22vw" loading="lazy" />
                   : <span class="talk__placeholder" aria-hidden="true"></span>}
                 {talk.data.youtubeId && (
                   <span class="talk__play" aria-hidden="true">
@@ -86,7 +88,12 @@ const [featured, ...rest] = talks;
                   ? { href: writing.data.url, target: '_blank', rel: 'noopener noreferrer' }
                   : {})}
               >
-                <span>{writing.data.title}</span>
+                <span class="writings__thumb" aria-hidden="true">
+                  {writing.data.thumbnail && (
+                    <Image src={writing.data.thumbnail} alt="" format="webp" widths={[80, 100]} sizes="80px" loading="lazy" />
+                  )}
+                </span>
+                <span class="writings__title">{writing.data.title}</span>
                 {/* Flecha decorativa del diseño. El aviso de que el enlace abre
                     fuera va en texto, que es lo que sí se anuncia. */}
                 <span class="writings__arrow" aria-hidden="true">↖</span>
@@ -103,35 +110,50 @@ const [featured, ...rest] = talks;
 </section>
 
 <style>
+  /* Talks & Posts: 120 px desde los clientes. */
   .talks {
-    padding-block: var(--space-3xl) 0;
+    padding-block: 120px 0;
   }
 
+  /* La fila del rótulo mide 32 px (la fija el propio texto, de alto fijo en
+     el artboard) y el bloque de charlas empieza justo debajo. */
   .talks__label {
     grid-column: 3 / span 10;
+    min-height: 32px;
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
-    margin-bottom: var(--space-xl);
-  /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
+    /* En el artboard estos titulares van al 30 %: ordenan sin pesar. */
     opacity: 0.3;
   }
 
+  /* 24 px de relleno arriba y 32 entre la cabecera y la lista de charlas.
+     Abajo el frame pide 40, pero tiene alto fijo y el filete cae más abajo:
+     entre 72 y 89 px según el artboard. Se redondea a 80. */
   .talks__block {
     grid-column: 4 / span 9;
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    padding-bottom: var(--space-xl);
+    padding-block: 24px 80px;
     border-bottom: 1px solid var(--rule);
   }
 
+  /* Rótulo y entradilla van a 12 px, más juntos que el resto del bloque. */
+  .talks__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  /* Escritos: 24 px tras el filete y 32 entre rótulo, lista y cita. Los 16 de
+     abajo son, otra vez, lo que sobra de un frame de alto fijo (13-28 px). */
   .talks__writings {
     grid-column: 4 / span 8;
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    margin-top: var(--space-3xl);
+    padding-block: 24px 16px;
   }
 
   .talks__sublabel {
@@ -154,16 +176,17 @@ const [featured, ...rest] = talks;
     gap: var(--space-lg);
   }
 
+  /* 10 px entre miniatura, título y descripción. */
   .talk {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: 10px;
   }
 
   .talk__trigger {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: 10px;
     padding: 0;
     background: none;
     border: none;
@@ -177,11 +200,15 @@ const [featured, ...rest] = talks;
     cursor: default;
   }
 
+  /* Contenedor de consulta: el icono de play mide siempre la misma fracción de
+     la miniatura (en el diseño, 120 px sobre 1012 y 60 px sobre 510). */
   .talk__media {
     position: relative;
     display: block;
+    container-type: inline-size;
     aspect-ratio: 316 / 160;
     overflow: hidden;
+    border-radius: 8px;
     background: var(--placeholder);
   }
 
@@ -219,14 +246,15 @@ const [featured, ...rest] = talks;
     transition: opacity var(--duration-fast) var(--ease-out);
   }
 
+  /* 25 × 30 sobre 316 y 75 × 90 sobre 1012 en el artboard de 1440. */
   .talk__play svg {
-    width: 25px;
-    height: 30px;
+    width: 7.9cqi;
+    height: auto;
+    aspect-ratio: 25 / 30;
   }
 
   .talk__media--wide .talk__play svg {
-    width: 75px;
-    height: 90px;
+    width: 7.41cqi;
   }
 
   .talk__trigger:not(:disabled):hover .talk__play {
@@ -255,19 +283,17 @@ const [featured, ...rest] = talks;
     gap: var(--space-sm);
   }
 
-  /* Cada escrito es una fila de 104 px con su filete debajo, no una lista
-     corrida: en el artboard quedan 12 px de aire entre una y la siguiente. */
-  .writings__item {
-    border-bottom: 1px solid var(--rule);
-  }
-
+  /* Cada escrito es una fila de 104 px, filete incluido, no una lista corrida:
+     en el artboard quedan 12 px de aire entre una y la siguiente. El filete es
+     un trazo interior en Penpot, que no ocupa sitio: por eso sombra y no borde. */
   .writings__link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-md);
+    gap: var(--space-lg);
     min-height: 104px;
-    padding-block: var(--space-xs) var(--space-md);
+    padding-block: var(--space-xs) 16px;
+    box-shadow: inset 0 -1px 0 var(--rule);
     font-size: var(--fs-xl);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);
@@ -278,6 +304,27 @@ const [featured, ...rest] = talks;
     color: var(--accent);
   }
 
+  /* Miniatura de 80 × 80 con radio 8. Sin imagen se queda el hueco gris, como
+     en las charlas, para que el título empiece donde marca el diseño. */
+  .writings__thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--placeholder);
+  }
+
+  .writings__thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .writings__title {
+    flex: 1;
+  }
+
   .writings__arrow {
     flex-shrink: 0;
     transition: transform var(--duration-base) var(--ease-out);
@@ -285,5 +332,37 @@ const [featured, ...rest] = talks;
 
   a.writings__link:hover .writings__arrow {
     transform: translate(4px, -4px);
+  }
+
+  /* 720-1024 */
+  @media (max-width: 1023.98px) {
+    /* De los clientes a «Talks & Writing» quedan 40 px en lugar de 120. */
+    .talks {
+      padding-top: 40px;
+    }
+
+    .talks__intro {
+      font-size: var(--fs-md);
+    }
+
+    /* Las tres charlas pequeñas se apilan a todo el ancho del bloque, con la
+       misma proporción de miniatura que en escritorio. */
+    .talks__row {
+      grid-template-columns: 1fr;
+    }
+
+    .talks__writings {
+      gap: 24px;
+    }
+
+    /* El título baja a 20 px pero la flecha conserva sus 32 px. */
+    .writings__link {
+      gap: 16px;
+      font-size: var(--fs-md);
+    }
+
+    .writings__arrow {
+      font-size: var(--fs-xl);
+    }
   }
 </style>

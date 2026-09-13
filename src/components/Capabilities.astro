@@ -25,8 +25,9 @@ const capabilities = (await getCollection('capabilities')).sort(
 </section>
 
 <style>
+  /* Frame 17: arranca justo tras el collage y deja 80 px debajo. */
   .caps {
-    padding-block: var(--space-3xl) 0;
+    padding-block: 0 80px;
   }
 
   .caps__label {
@@ -37,12 +38,14 @@ const capabilities = (await getCollection('capabilities')).sort(
     line-height: var(--lh-tight);
   }
 
+  /* Filas iguales, las fija la capacidad más larga (en los dos artboards de
+     escritorio). 20 px antes de la lista y 40 px antes de la cita. */
   .caps__list {
     grid-column: 4 / span 8;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
     gap: var(--space-lg);
-    grid-auto-rows: minmax(98px, auto);
     padding-block: var(--space-md) var(--space-xl);
   }
 
@@ -63,5 +66,23 @@ const capabilities = (await getCollection('capabilities')).sort(
     font-size: var(--fs-lg);
     font-weight: var(--fw-light);
     line-height: var(--lh-tight);
+  }
+
+  /* 720-1024: la lista pasa a una columna con 16 px entre elementos, la cita
+     baja a 20 px y el aire inferior a 40. */
+  @media (max-width: 1023.98px) {
+    .caps {
+      padding-bottom: 40px;
+    }
+
+    .caps__list {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+      gap: 16px;
+    }
+
+    .caps__quote {
+      font-size: var(--fs-md);
+    }
   }
 </style>
