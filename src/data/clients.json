@@ -100,33 +100,33 @@
     "order": 20
   },
   {
-    "id": "abc",
-    "name": "ABC",
-    "order": 21
-  },
-  {
     "id": "defensor-del-pueblo",
     "name": "Defensor del Pueblo",
-    "order": 22
+    "order": 21
   },
   {
     "id": "aldeas-infantiles",
     "name": "Aldeas Infantiles",
-    "order": 23
+    "order": 22
   },
   {
     "id": "rsi",
     "name": "RSI",
-    "order": 24
+    "order": 23
   },
   {
     "id": "cbre",
     "name": "CBRE",
-    "order": 25
+    "order": 24
   },
   {
     "id": "loreal",
     "name": "L’Oréal",
+    "order": 25
+  },
+  {
+    "id": "Generali",
+    "name": "Generali",
     "order": 26
   }
 ]
