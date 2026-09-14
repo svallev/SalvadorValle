@@ -52,7 +52,7 @@ const linkedin = footer.links.find((l) => l.label === 'LinkedIn')!;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 104px;
+    height: calc(104px * var(--k));
     padding-inline: var(--grid-margin);
     background: transparent;
   }
@@ -83,6 +83,13 @@ const linkedin = footer.links.find((l) => l.label === 'LinkedIn')!;
   .header__social {
     color: var(--ink-faint);
     transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  /* El SVG lleva width/height="24" como respaldo sin CSS; aquí se sobrescribe
+     para que crezca con el resto de la cabecera en pantallas grandes. */
+  .header__social svg {
+    width: calc(24px * var(--k));
+    height: calc(24px * var(--k));
   }
 
   .header__social:hover {

@@ -112,14 +112,14 @@ const [featured, ...rest] = talks;
 <style>
   /* Talks & Posts: 120 px desde los clientes. */
   .talks {
-    padding-block: 120px 0;
+    padding-block: calc(120px * var(--k)) 0;
   }
 
   /* La fila del rótulo mide 32 px (la fija el propio texto, de alto fijo en
      el artboard) y el bloque de charlas empieza justo debajo. */
   .talks__label {
     grid-column: 3 / span 10;
-    min-height: 32px;
+    min-height: calc(32px * var(--k));
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
@@ -135,7 +135,7 @@ const [featured, ...rest] = talks;
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    padding-block: 24px 80px;
+    padding-block: calc(24px * var(--k)) calc(80px * var(--k));
     border-bottom: 1px solid var(--rule);
   }
 
@@ -153,7 +153,7 @@ const [featured, ...rest] = talks;
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
-    padding-block: 24px 16px;
+    padding-block: calc(24px * var(--k)) calc(16px * var(--k));
   }
 
   .talks__sublabel {
@@ -180,13 +180,13 @@ const [featured, ...rest] = talks;
   .talk {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: calc(10px * var(--k));
   }
 
   .talk__trigger {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: calc(10px * var(--k));
     padding: 0;
     background: none;
     border: none;
@@ -208,7 +208,7 @@ const [featured, ...rest] = talks;
     container-type: inline-size;
     aspect-ratio: 316 / 160;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: calc(8px * var(--k));
     background: var(--placeholder);
   }
 
@@ -291,8 +291,8 @@ const [featured, ...rest] = talks;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-lg);
-    min-height: 104px;
-    padding-block: var(--space-xs) 16px;
+    min-height: calc(104px * var(--k));
+    padding-block: var(--space-xs) calc(16px * var(--k));
     box-shadow: inset 0 -1px 0 var(--rule);
     font-size: var(--fs-xl);
     font-weight: var(--fw-light);
@@ -308,10 +308,10 @@ const [featured, ...rest] = talks;
      en las charlas, para que el título empiece donde marca el diseño. */
   .writings__thumb {
     flex-shrink: 0;
-    width: 80px;
-    height: 80px;
+    width: calc(80px * var(--k));
+    height: calc(80px * var(--k));
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: calc(8px * var(--k));
     background: var(--placeholder);
     box-shadow: 0 0 4px 0 #00000040;
   }

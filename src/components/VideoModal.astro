@@ -29,7 +29,7 @@
      El ancho se limita también por el alto de la ventana para que el
      reproductor 16:9 y la cabecera quepan siempre sin scroll. */
   .modal {
-    width: min(1100px, 92vw, calc((100dvh - 160px) * 16 / 9));
+    width: min(calc(1100px * var(--k)), 92vw, calc((100dvh - 160px) * 16 / 9));
     max-width: none;
     max-height: none;
     padding: 0;
@@ -64,8 +64,8 @@
     display: grid;
     flex-shrink: 0;
     place-items: center;
-    width: 40px;
-    height: 40px;
+    width: calc(40px * var(--k));
+    height: calc(40px * var(--k));
     padding: 0;
     background: rgb(17 17 17 / 0.5);
     border: none;

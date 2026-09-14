@@ -43,15 +43,15 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
 <style>
   /* Frame 19: 120 px arriba y 100 entre el contacto y la firma. */
   .bg {
-    padding-block: 120px 100px;
+    padding-block: calc(120px * var(--k)) calc(100px * var(--k));
   }
 
   /* Rótulo de 32 px de alto; hasta la primera etapa hay 10 px de hueco de
      fila y 24 de relleno. */
   .bg__label {
     grid-column: 3 / span 10;
-    min-height: 32px;
-    margin-bottom: 34px;
+    min-height: calc(32px * var(--k));
+    margin-bottom: calc(34px * var(--k));
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
@@ -108,12 +108,12 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
     /* minmax(0, …): una palabra larga («Technologies») no puede ensanchar la
        columna del empleo; en el artboard desborda hacia el canal. */
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    column-gap: 32px;
+    column-gap: calc(32px * var(--k));
     /* Todos los empleos de una etapa miden lo que el más alto… */
     grid-auto-rows: 1fr;
     /* 16 px entre empleos: no está en la escala de espaciado porque es el
        único sitio del diseño donde aparece. */
-    row-gap: 16px;
+    row-gap: calc(16px * var(--k));
     padding-top: var(--space-lg);
   }
 

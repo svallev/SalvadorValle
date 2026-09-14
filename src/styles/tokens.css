@@ -46,6 +46,14 @@
 }
 
 :root {
+  /* ---------- Pantallas grandes ----------
+     Por encima de 1440 la rejilla stretch sigue creciendo, pero un factor sin
+     unidad (`--k`) escala además tipos, rellenos y márgenes, a saltos por
+     tramo de ancho — no de forma continua. Cada tramo compone como un
+     escritorio de ~1536 a ~2194 px (ancho ÷ k), un rango parecido al de
+     1440-1919 que ya funciona. Hasta 1920 vale 1: nada cambia por debajo. */
+  --k: 1;
+
   /* ---------- Color ---------- */
   --ink: #111111;
   --ink-pure: #000000;
@@ -69,22 +77,22 @@
   --font-barcode: 'Libre Barcode 128 Text', var(--font-sans);
 
   /* ---------- Escala tipográfica ----------
-     Tamaños exactos del artboard. El responsive de la Fase 5 sustituirá estos
-     valores por clamp() sin tocar ningún componente. */
-  --fs-display: 104px;   /* hero, Advent Pro 900/400, lh 0.846 */
-  --fs-display-sm: 48px; /* claim del hero, Advent Pro 400 */
-  --fs-barcode: 40px;    /* nombre en cabecera */
-  --fs-xl: 32px;         /* títulos de sección grandes */
-  --fs-lg: 24px;         /* «Recent projects», citas */
-  --fs-md: 20px;         /* entradilla del hero, pie */
-  --fs-sm: 18px;         /* rótulos de subsección */
-  --fs-base: 16px;       /* cuerpo */
+     Tamaños exactos del artboard, multiplicados por `--k` para las pantallas
+     grandes (ver arriba). Hasta 1920 no cambian. */
+  --fs-display: calc(104px * var(--k));   /* hero, Advent Pro 900/400, lh 0.846 */
+  --fs-display-sm: calc(48px * var(--k)); /* claim del hero, Advent Pro 400 */
+  --fs-barcode: calc(40px * var(--k));    /* nombre en cabecera */
+  --fs-xl: calc(32px * var(--k));         /* títulos de sección grandes */
+  --fs-lg: calc(24px * var(--k));         /* «Recent projects», citas */
+  --fs-md: calc(20px * var(--k));         /* entradilla del hero, pie */
+  --fs-sm: calc(18px * var(--k));         /* rótulos de subsección */
+  --fs-base: calc(16px * var(--k));       /* cuerpo */
 
   --lh-display: 0.846;
   --lh-tight: 1.2;
   --lh-body: 1.6;
 
-  --ls-barcode: -3.2px;
+  --ls-barcode: calc(-3.2px * var(--k));
 
   /* ---------- Pesos ---------- */
   --fw-light: 300;
@@ -97,19 +105,19 @@
      12 columnas elásticas, canales de 32 px y márgenes de 40 px. La rejilla
      del artboard es de tipo «stretch»: las columnas miden 84 px a 1440, pero
      esa cifra es el resultado, no la medida. La página ocupa todo el ancho. */
-  --grid-margin: 40px;
-  --grid-gutter: 32px;
+  --grid-margin: calc(40px * var(--k));
+  --grid-gutter: calc(32px * var(--k));
   --grid-columns: 12;
 
   /* ---------- Espaciado ---------- */
-  --space-2xs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 20px;
-  --space-lg: 32px;
-  --space-xl: 40px;
-  --space-2xl: 64px;
-  --space-3xl: 120px;
+  --space-2xs: calc(4px * var(--k));
+  --space-xs: calc(8px * var(--k));
+  --space-sm: calc(12px * var(--k));
+  --space-md: calc(20px * var(--k));
+  --space-lg: calc(32px * var(--k));
+  --space-xl: calc(40px * var(--k));
+  --space-2xl: calc(64px * var(--k));
+  --space-3xl: calc(120px * var(--k));
 
   /* ---------- Movimiento ---------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -141,5 +149,33 @@
        Las subsecciones de Work (Capabilities, Clients) quedan a 32: la
        diferencia es lo que hace que se note dónde empieza cada sección. */
     --section-space: 96px;
+  }
+}
+
+/* ---------- Pantallas grandes, por encima de 1440 ----------
+   La rejilla stretch ya crece sola; `--k` escala además tipos, márgenes y
+   rellenos, a saltos por tramo — nunca de forma continua — para que la
+   composición de cada tramo siga pareciéndose a un escritorio de verdad
+   (ancho ÷ k cae entre 1536 y 2194 px en los cuatro tramos). Sin el tramo de
+   3200, un ultrapanorámico de 3440 caería a un equivalente de 2293 px y se
+   vería tan ralo como sin escalar. */
+@media (min-width: 1920px) {
+  :root {
+    --k: 1.25; /* FHD a 100 %, 4K a 200 % */
+  }
+}
+@media (min-width: 2560px) {
+  :root {
+    --k: 1.5; /* 2K/QHD a 100 %, 4K a 150 % */
+  }
+}
+@media (min-width: 3200px) {
+  :root {
+    --k: 1.75; /* ultrapanorámicos (3440) */
+  }
+}
+@media (min-width: 3840px) {
+  :root {
+    --k: 2; /* 4K a 100 % */
   }
 }

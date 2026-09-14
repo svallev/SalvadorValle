@@ -29,7 +29,7 @@ import { hero } from '../data/site';
 <style>
   /* Frame 8: el bloque arranca pegado a la cabecera y deja 120 px debajo. */
   .hero {
-    padding-block: 0 120px;
+    padding-block: 0 calc(120px * var(--k));
   }
 
   .hero__content {
@@ -45,7 +45,7 @@ import { hero } from '../data/site';
     color: var(--ink-pure);
     /* El titular se parte en tramos; sin esto heredaría el peso del body. */
     font-weight: var(--fw-regular);
-    margin-bottom: 16px;
+    margin-bottom: calc(16px * var(--k));
   }
 
   .hero__part--accent {
@@ -55,7 +55,7 @@ import { hero } from '../data/site';
   .hero__body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: calc(16px * var(--k));
   }
 
   .hero__intro {

@@ -42,7 +42,7 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 28px;
+    height: calc(28px * var(--k));
     padding-inline: var(--space-sm);
     border: 1px solid var(--rule-strong);
     border-radius: 100px;

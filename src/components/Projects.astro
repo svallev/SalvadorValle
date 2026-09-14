@@ -42,7 +42,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
      rectángulo invisible del artboard. */
   .work__label {
     grid-column: 3 / span 4;
-    min-height: 42px;
+    min-height: calc(42px * var(--k));
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
     line-height: var(--lh-tight);
@@ -55,9 +55,10 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     /* 32 px a 1440 y 24 px a 1024: el artboard «Desktop hasta 1024» estrecha
-       el hueco. Entre ambos anchos se interpola en línea recta. */
-    gap: clamp(24px, calc(1.923vw + 4.31px), 32px);
-    padding-top: 24px;
+       el hueco. Entre ambos anchos se interpola en línea recta. Por encima de
+       1440 el canal crece con `--k`, como el resto de la rejilla. */
+    gap: max(clamp(24px, calc(1.923vw + 4.31px), 32px), calc(32px * var(--k)));
+    padding-top: calc(24px * var(--k));
   }
 
   /* A 1440 las cuatro filas miden lo mismo (la del proyecto más largo); a 1024
@@ -85,7 +86,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   .work__collage {
     grid-column: 3 / span 10;
     margin: 0;
-    padding-block: 80px;
+    padding-block: calc(80px * var(--k));
   }
 
   .work__collage :global(img) {
@@ -129,6 +130,15 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     .work__collage {
       margin-inline: calc(-1 * var(--grid-margin));
       padding-block: var(--space-lg);
+    }
+  }
+
+  /* Pantallas grandes: cada columna del resumen crece hasta unos 90
+     caracteres por línea sin el tope. Se acota como el resto de párrafos
+     largos del sitio (hero, background). */
+  @media (min-width: 1920px) {
+    .work__summary {
+      max-width: 62ch;
     }
   }
 </style>

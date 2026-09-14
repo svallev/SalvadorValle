@@ -67,13 +67,16 @@ function initScrollSpy() {
 /* ---------- Anclajes ----------
    Lo que se alinea es el rótulo de la sección, no su borde: las secciones
    llevan relleno por arriba (120 px en Talks y Background) y el rótulo caería
-   muy abajo. Queda a 40 px del borde superior, a la altura de la cabecera.
-   En móvil la cabecera es opaca (64 px más 24 de degradado) y taparía el
-   rótulo: ahí queda a 96 px. «Hi» es el principio de la página y va arriba
-   del todo. Con movimiento reducido el salto es instantáneo, pero al mismo
-   sitio. */
+   muy abajo. Queda a la altura de la cabecera, que coincide con el margen de
+   la rejilla (--grid-margin, 40 px a 1440 y mayor en pantallas grandes: se
+   lee del padding real de la cabecera en vez de asumir 40). En móvil la
+   cabecera es opaca (64 px más 24 de degradado) y taparía el rótulo: ahí
+   queda a 96 px, un valor fijo porque --k no cambia por debajo de 1920.
+   «Hi» es el principio de la página y va arriba del todo. Con movimiento
+   reducido el salto es instantáneo, pero al mismo sitio. */
 function initAnchors() {
   const mobile = window.matchMedia('(max-width: 719.98px)');
+  const header = document.querySelector('.header');
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
@@ -82,6 +85,7 @@ function initAnchors() {
       if (!target) return;
 
       event.preventDefault();
+      const desktopOffset = header ? parseFloat(getComputedStyle(header).paddingLeft) : 40;
       gsap.to(window, {
         duration: reduced.matches ? 0 : 0.9,
         ease: 'power3.inOut',
@@ -90,7 +94,7 @@ function initAnchors() {
             ? 0
             : {
                 y: target.querySelector(':scope > h2') ?? target,
-                offsetY: mobile.matches ? 96 : 40,
+                offsetY: mobile.matches ? 96 : desktopOffset,
               },
         // Al anular el salto del navegador se pierde también lo que hacía por
         // debajo: llevar el foco a la sección y poner el ancla en la URL. Sin

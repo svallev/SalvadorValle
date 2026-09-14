@@ -18,8 +18,8 @@ import SignatureMark from '../assets/signature.svg';
        únicos negros opacos del artboard, todos los demás van al 30 %. */
     display: grid;
     align-content: center;
-    min-height: 358px;
-    padding-block: 80px;
+    min-height: calc(358px * var(--k));
+    padding-block: calc(80px * var(--k));
     /* Trazo interior, como en Penpot: no suma altura. */
     box-shadow:
       inset 0 1px 0 var(--ink-pure),

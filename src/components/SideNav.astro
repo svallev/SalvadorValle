@@ -21,25 +21,25 @@ import { nav } from '../data/site';
 <style>
   .sidenav {
     position: fixed;
-    top: 104px;
+    top: calc(104px * var(--k));
     /* Columna 1 de la rejilla: como la página ocupa todo el ancho, es
        exactamente el margen. */
     left: var(--grid-margin);
-    width: 121px;
+    width: calc(121px * var(--k));
     z-index: 10;
   }
 
   .sidenav__list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: calc(6px * var(--k));
   }
 
   /* Cada entrada ocupa 24 px (texto de 22) y hay 6 entre ellas: 30 px de paso,
      como en el componente «Menú item». */
   .sidenav__link {
     display: block;
-    min-height: 24px;
+    min-height: calc(24px * var(--k));
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     line-height: var(--lh-tight);
