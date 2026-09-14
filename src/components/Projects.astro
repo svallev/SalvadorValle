@@ -26,7 +26,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       src={collage}
       alt="A collage of interfaces, products and design work by Salvador Valle"
       widths={[640, 960, 1128, 1600, 2000]}
-      sizes="80vw"
+      sizes="(max-width: 719.98px) 100vw, 80vw"
       loading="lazy"
     />
   </figure>
@@ -106,7 +106,8 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     }
   }
   /* Móvil: rótulo a 20 px sin la fila fija de 42, textos algo más abiertos y
-     32 px de aire alrededor del collage. */
+     32 px de aire alrededor del collage, que llega a los bordes de la página
+     anulando el margen de la rejilla. */
   @media (max-width: 719.98px) {
     .work__label {
       min-height: 0;
@@ -126,6 +127,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     }
 
     .work__collage {
+      margin-inline: calc(-1 * var(--grid-margin));
       padding-block: var(--space-lg);
     }
   }
