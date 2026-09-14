@@ -59,7 +59,8 @@ export const sections = {
 };
 
 export const footer = {
-  copyright: '© 2026 Salvador Valle',
+  // El año sale del build: se actualiza solo al volver a desplegar.
+  copyright: `© ${new Date().getFullYear()} Salvador Valle`,
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/salvadorvalle/' },
     { label: 'GitHub', href: 'https://github.com/svallev' },

@@ -37,7 +37,7 @@ const [featured, ...rest] = talks;
             </span>
           )}
         </span>
-        <span class="talk__title">{featured.data.title}</span>
+        <span class="talk__title" lang={featured.data.lang}>{featured.data.title}</span>
       </button>
       <p class="talk__summary">{featured.body}</p>
     </article>}
@@ -64,7 +64,7 @@ const [featured, ...rest] = talks;
                   </span>
                 )}
               </span>
-              <span class="talk__title">{talk.data.title}</span>
+              <span class="talk__title" lang={talk.data.lang}>{talk.data.title}</span>
             </button>
             <p class="talk__summary">{talk.body}</p>
           </article>
@@ -93,7 +93,7 @@ const [featured, ...rest] = talks;
                     <Image src={writing.data.thumbnail} alt="" format="webp" widths={[80, 100]} sizes="80px" loading="lazy" />
                   )}
                 </span>
-                <span class="writings__title">{writing.data.title}</span>
+                <span class="writings__title" lang={writing.data.lang}>{writing.data.title}</span>
                 {/* Flecha decorativa del diseño. El aviso de que el enlace abre
                     fuera va en texto, que es lo que sí se anuncia. */}
                 <span class="writings__arrow" aria-hidden="true">↗</span>

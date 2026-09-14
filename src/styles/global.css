@@ -84,6 +84,12 @@ a {
   outline-offset: 3px;
 }
 
+/* Las secciones reciben el foco por código al llegar desde el menú (motion.js),
+   pero no son controles: marcarlas con un recuadro sería ruido. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
 /* ---------- Rejilla ---------- */
 
 /* Ancho completo del navegador con 40 px de margen: las columnas se estiran,
@@ -138,4 +144,24 @@ html:has(#mobile-menu[open]) {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---------- Saltar al contenido ----------
+   Primer elemento enfocable de la página: sin él, quien usa teclado atraviesa
+   la cabecera y todo el menú antes de llegar al contenido. Invisible hasta que
+   recibe el foco. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  padding: 8px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: var(--fw-medium);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
 }

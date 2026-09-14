@@ -22,7 +22,9 @@ y un archivo de texto en el repositorio es más rápido de editar que un panel.
 
 ## Arrancar en local
 
-Requiere **Node 20+** y **pnpm**.
+Requiere **Node 24** (Astro 7 pide 22.12 o superior) y **pnpm 11**. La versión de
+pnpm está fijada en `packageManager` de `package.json`; con Corepack activado
+(`corepack enable`) se usa sola.
 
 ```bash
 pnpm install
@@ -34,7 +36,11 @@ Otros comandos:
 ```bash
 pnpm build      # genera dist/
 pnpm preview    # sirve dist/ como en producción
+pnpm check      # comprobación de tipos (astro check)
 ```
+
+La primera vez, `dev` y `build` descargan la tipografía Satoshi (ver
+[Tipografías](#tipografías)), así que hace falta conexión.
 
 ---
 
@@ -59,9 +65,9 @@ La descripción que se lee bajo el título.
 
 ### Añadir una charla
 
-Crea `src/content/talks/mi-charla.md`. El `youtubeId` es **solo el identificador**
-del vídeo, no la URL entera: en `https://www.youtube.com/watch?v=AbCdEf12345`
-el id es `AbCdEf12345`.
+Crea `src/content/talks/mi-charla.md`. En `youtubeId` vale tanto el enlace copiado
+de YouTube (`watch?v=`, `youtu.be/`, `shorts/`…) como el identificador suelto
+(`AbCdEf12345`): al construir se queda solo con el identificador.
 
 ```markdown
 ---
@@ -72,6 +78,9 @@ youtubeId: "AbCdEf12345"
 
 De qué iba la charla.
 ```
+
+Si el título no está en inglés, añade `lang: "es"` (o el idioma que sea) para que
+los lectores de pantalla lo pronuncien bien. Vale también para los escritos.
 
 Sin `youtubeId` la charla se muestra pero no abre reproductor. Al pulsarla, el
 vídeo se abre en una ventana sobre la propia página.
@@ -110,12 +119,40 @@ cual harían la página inusable.
 Las tres se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
 
 - **Satoshi** — Indian Type Foundry vía [Fontshare](https://www.fontshare.com/fonts/satoshi).
-  Gratuita para uso comercial, pero **no se pueden redistribuir los archivos sueltos**.
-- **Advent Pro** y **Libre Barcode 128 Text** — Google Fonts, licencia OFL.
+  Su licencia (ITF Free Font License) permite servirla desde la web propia, pero
+  **no distribuir los archivos a través de un repositorio público**. Por eso no está
+  en git: `scripts/fetch-fonts.mjs` la descarga de Fontshare antes de `dev` y
+  `build` y la deja en `public/fonts/`, que la ignora. Si ya está en disco, no hace
+  nada.
+- **Advent Pro** y **Libre Barcode 128 Text** — Google Fonts, licencia OFL. Sus
+  licencias están en `licenses/`.
 
 ## Despliegue
 
 Push a `main` y Vercel publica. Cada rama genera su propia previsualización.
+
+Configuración del proyecto en Vercel:
+
+- Variable de entorno `ENABLE_EXPERIMENTAL_COREPACK=1` en todos los entornos. Sin
+  ella Vercel usa pnpm 10, que ignora `allowBuilds` de `pnpm-workspace.yaml`.
+- Node sale de `engines` en `package.json`.
+- Las cabeceras de seguridad (CSP incluida) y la caché de las tipografías están en
+  `vercel.json`. Si se añade algo que cargue de otro dominio, hay que abrirlo ahí.
+
+### Dominio
+
+`site` sale de la variable de sistema `VERCEL_PROJECT_PRODUCTION_URL`: el dominio
+propio si lo hay y, si no, el `*.vercel.app`. Mientras la web viva en `*.vercel.app`
+se publica con `noindex`, para que Google no indexe una URL temporal.
+
+Cuando haya dominio:
+
+1. Vercel → Settings → Domains: añadir el dominio raíz y `www`, con `www`
+   redirigiendo al raíz.
+2. **Redeploy** de producción. Sin él, canonical, Open Graph, `robots.txt` y el
+   sitemap siguen apuntando al `vercel.app` y se mantiene el `noindex`.
+3. Comprobar que el `noindex` ya no aparece en el HTML.
+4. Google Search Console: verificar el dominio y enviar `/sitemap.xml`.
 
 ## Estructura
 
@@ -125,10 +162,13 @@ src/
   content/        el contenido editable (Markdown)
   data/           textos sueltos y lista de clientes
   layouts/        <head>, metadatos, tipografías
-  pages/          index.astro compone las secciones
-  scripts/        motion.js (GSAP) y video-modal.js
+  pages/          index.astro compone las secciones; también 404, robots.txt y sitemap.xml
+  scripts/        motion.js (GSAP), video-modal.js y mobile-menu.js
   styles/         tokens.css (el design system) y global.css
-public/fonts/     las tres tipografías en woff2
+public/fonts/     las tipografías en woff2 (Satoshi se descarga, no está en git)
+scripts/          fetch-fonts.mjs
+licenses/         licencias OFL de las tipografías incluidas
+vercel.json       cabeceras de seguridad y caché
 ```
 
 Los valores del diseño —color, tipografía, rejilla de 12 columnas— están en

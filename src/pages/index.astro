@@ -15,11 +15,12 @@ import VideoModal from '../components/VideoModal.astro';
 ---
 
 <Base>
+  <a class="skip-link" href="#main">Skip to content</a>
   <Header />
   <SideNav />
   <MobileMenu />
 
-  <main>
+  <main id="main">
     <Hero />
     <Projects />
     <Capabilities />

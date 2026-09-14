@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
 
 /* Los `order` fijan el orden del artboard. Sin ellos el orden sería alfabético
@@ -54,6 +55,9 @@ const talks = defineCollection({
         .transform((v) => (v === undefined ? undefined : toYoutubeId(v))),
       thumbnail: image().optional(),
       thumbnailAlt: z.string().default(''),
+      // Idioma del título si no es inglés (p. ej. "es"), para que un lector de
+      // pantalla no lo pronuncie con voz inglesa.
+      lang: z.string().optional(),
     }),
 });
 
@@ -63,9 +67,11 @@ const writings = defineCollection({
     z.object({
       title: z.string(),
       order: z.number(),
-      url: z.string().url().optional(),
+      url: z.url().optional(),
       // Miniatura de 80 × 80. Decorativa: el título ya dice de qué va.
       thumbnail: image().optional(),
+      // Idioma del título si no es inglés (p. ej. "es").
+      lang: z.string().optional(),
     }),
 });
 

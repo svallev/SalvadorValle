@@ -92,6 +92,14 @@ function initAnchors() {
                 y: target.querySelector(':scope > h2') ?? target,
                 offsetY: mobile.matches ? 96 : 40,
               },
+        // Al anular el salto del navegador se pierde también lo que hacía por
+        // debajo: llevar el foco a la sección y poner el ancla en la URL. Sin
+        // lo primero, quien navega con teclado sigue en el menú tras pulsarlo.
+        onComplete: () => {
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+          history.replaceState(null, '', `#${id}`);
+        },
       });
     });
   });

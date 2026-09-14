@@ -1,4 +1,5 @@
 ---
+lang: "es"
 title: "Especialidades, salarios y pilares en UX/UI"
 order: 3
 youtubeId: "https://youtu.be/GsrW23Cm67I"

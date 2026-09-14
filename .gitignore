@@ -59,3 +59,13 @@ skills-lock.json
 # --- Material local sin publicar ---
 # Carpeta de trabajo propia: nada de lo que haya dentro sube al repositorio.
 NoUpload/
+
+# --- Tipografías con licencia que no permite redistribuirlas ---
+# Satoshi (ITF Free Font License) se puede servir desde la web propia, pero no
+# distribuir a través de un repositorio público. scripts/fetch-fonts.mjs la
+# descarga de Fontshare antes de `dev` y `build`.
+public/fonts/Satoshi-*
+
+# --- Notas de trabajo internas ---
+# Instrucciones para Claude Code: se leen desde el disco, no hace falta publicarlas.
+CLAUDE.md
