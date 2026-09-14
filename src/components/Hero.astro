@@ -88,4 +88,26 @@ import { hero } from '../data/site';
       font-size: 36px;
     }
   }
+  /* Móvil: titular a 64 px en dos líneas equilibradas, entradilla a 16 y claim
+     a 28. El hueco hasta los proyectos es el de sección (tokens.css). */
+  @media (max-width: 719.98px) {
+    .hero {
+      padding-block: 0 var(--section-space);
+    }
+
+    .hero__headline {
+      font-size: 64px;
+      line-height: 0.9;
+      text-wrap: balance;
+    }
+
+    .hero__intro {
+      font-size: var(--fs-base);
+    }
+
+    .hero__claim {
+      font-size: 28px;
+      line-height: 1.15;
+    }
+  }
 </style>

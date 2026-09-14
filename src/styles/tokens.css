@@ -121,11 +121,25 @@
    Artboard «720-1024»: la misma rejilla de 12 columnas, pero con márgenes de
    16 px y canales de 24 px. Por debajo de 1024 se aplica el diseño de 720; lo
    que cambia en cada sección está en su componente, bajo el mismo
-   `@media (max-width: 1023.98px)` (las variables no sirven dentro de una media query).
-   Hasta que llegue la fase móvil, esto también cubre lo que queda bajo 720. */
+   `@media (max-width: 1023.98px)` (las variables no sirven dentro de una media query). */
 @media (max-width: 1023.98px) {
   :root {
     --grid-margin: 16px;
     --grid-gutter: 24px;
+  }
+}
+
+/* ---------- Móvil, por debajo de 720 ----------
+   Diseño «Movil 719» (Claude Design, artboard de 375). Una sola columna a todo
+   el ancho, márgenes de 16 px y sin canal. La rejilla deja de ser rejilla: ver
+   `.grid` en global.css. Cada componente lleva sus diferencias al final de su
+   `<style>`, bajo `@media (max-width: 719.98px)`. */
+@media (max-width: 719.98px) {
+  :root {
+    --grid-gutter: 0px;
+    /* Hueco entre secciones del menú (Hi, Work, Talks & Writing, Background).
+       Las subsecciones de Work (Capabilities, Clients) quedan a 32: la
+       diferencia es lo que hace que se note dónde empieza cada sección. */
+    --section-space: 96px;
   }
 }

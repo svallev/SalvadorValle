@@ -24,11 +24,27 @@ const linkedin = footer.links.find((l) => l.label === 'LinkedIn')!;
       ></path>
     </svg>
   </a>
+
+  {/* Móvil: el icono de LinkedIn deja su sitio al menú, y LinkedIn pasa al
+      propio menú y al pie. El <dialog> está en MobileMenu.astro. */}
+  <button
+    class="header__menu"
+    type="button"
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    data-menu-open
+  >
+    <span class="visually-hidden">Open menu</span>
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+      <path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.5" fill="none"></path>
+    </svg>
+  </button>
 </header>
 
 <style>
   /* Acompaña todo el recorrido. Fondo transparente a propósito: el contenido
-     pasa por debajo al bajar y se ve a través, como pide el diseño. */
+     pasa por debajo al bajar y se ve a través, como pide el diseño. En móvil
+     sí lleva fondo (ver el bloque de 720). */
   .header {
     position: sticky;
     top: 0;
@@ -71,5 +87,70 @@ const linkedin = footer.links.find((l) => l.label === 'LinkedIn')!;
 
   .header__social:hover {
     color: var(--ink);
+  }
+
+  .header__menu {
+    display: none;
+  }
+
+  /* Móvil: cabecera de 64 px, iniciales a 32 y el botón de menú en lugar de
+     LinkedIn. 44 × 44 de zona táctil; el margen negativo alinea el icono con
+     el borde de la rejilla. */
+  @media (max-width: 719.98px) {
+    /* En móvil el contenido pasa pegado al nombre y se pisaba con él: fondo
+       del color de la página y, debajo, un degradado a transparente para que
+       el contenido se funda al entrar en vez de cortarse en seco. */
+    .header {
+      height: 64px;
+      background: var(--paper);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      inset: 100% 0 auto;
+      height: 24px;
+      background: linear-gradient(var(--paper), transparent);
+      pointer-events: none;
+    }
+
+    /* Arriba del todo el titular empieza pegado a la cabecera y el degradado
+       lo velaría: aparece con los primeros 24 px de desplazamiento. Donde no
+       hay animaciones ligadas al scroll, el degradado simplemente no está. */
+    @supports (animation-timeline: scroll()) {
+      .header::after {
+        opacity: 0;
+        animation: header-fade linear both;
+        animation-timeline: scroll();
+        animation-range: 0 24px;
+      }
+    }
+
+    @keyframes header-fade {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .header__name {
+      font-size: 32px;
+    }
+
+    .header__social {
+      display: none;
+    }
+
+    .header__menu {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+      padding: 0;
+      background: none;
+      border: 0;
+      color: var(--ink);
+      cursor: pointer;
+    }
   }
 </style>

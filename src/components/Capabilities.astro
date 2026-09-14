@@ -85,4 +85,27 @@ const capabilities = (await getCollection('capabilities')).sort(
       font-size: var(--fs-md);
     }
   }
+  /* Móvil: 32 px antes de la cita y después de ella; la cita baja a 18. */
+  @media (max-width: 719.98px) {
+    .caps {
+      padding-bottom: var(--space-lg);
+    }
+
+    .caps__list {
+      padding-block: var(--space-md) var(--space-lg);
+    }
+
+    .caps__title {
+      line-height: 1.25;
+    }
+
+    .caps__summary {
+      line-height: 1.35;
+    }
+
+    .caps__quote {
+      font-size: var(--fs-sm);
+      line-height: 1.3;
+    }
+  }
 </style>

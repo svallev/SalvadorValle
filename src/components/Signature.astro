@@ -40,4 +40,11 @@ import SignatureMark from '../assets/signature.svg';
       padding-block: 40px;
     }
   }
+  /* Móvil: 32 px arriba y abajo. Sin relleno lateral: la firma llega a los
+     bordes de la pantalla, como en el resto de anchos. */
+  @media (max-width: 719.98px) {
+    .signature {
+      padding-block: var(--space-lg);
+    }
+  }
 </style>

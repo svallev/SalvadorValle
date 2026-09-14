@@ -62,4 +62,24 @@ import { site, footer } from '../data/site';
       gap: 16px;
     }
   }
+  /* Móvil: todo apilado a 15 px. Los tres enlaces comparten línea y el correo,
+     que no cabe con ellos, baja a la siguiente. */
+  @media (max-width: 719.98px) {
+    .footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-xs);
+      padding: 16px var(--grid-margin);
+    }
+
+    .footer__copy,
+    .footer__link {
+      font-size: 15px;
+      line-height: var(--lh-body);
+    }
+
+    .footer__links {
+      gap: var(--space-xs) 16px;
+    }
+  }
 </style>

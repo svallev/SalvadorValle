@@ -19,10 +19,14 @@ function initScrollSpy() {
   const links = [...document.querySelectorAll('[data-nav-link]')];
   const spies = [];
 
+  // Cada sección tiene dos enlaces, el del menú lateral y el del móvil: se
+  // marcan por destino, no por elemento, para que ninguno le quite el estado
+  // al otro.
   const setActive = (active) => {
+    const href = active.getAttribute('href');
     links.forEach((link) => {
       // aria-current comunica el estado; la clase sola no lo haría.
-      if (link === active) link.setAttribute('aria-current', 'true');
+      if (link.getAttribute('href') === href) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
     });
   };
@@ -64,9 +68,13 @@ function initScrollSpy() {
    Lo que se alinea es el rótulo de la sección, no su borde: las secciones
    llevan relleno por arriba (120 px en Talks y Background) y el rótulo caería
    muy abajo. Queda a 40 px del borde superior, a la altura de la cabecera.
-   «Hi» es el principio de la página y va arriba del todo. Con movimiento
-   reducido el salto es instantáneo, pero al mismo sitio. */
+   En móvil la cabecera es opaca (64 px más 24 de degradado) y taparía el
+   rótulo: ahí queda a 96 px. «Hi» es el principio de la página y va arriba
+   del todo. Con movimiento reducido el salto es instantáneo, pero al mismo
+   sitio. */
 function initAnchors() {
+  const mobile = window.matchMedia('(max-width: 719.98px)');
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       const id = link.getAttribute('href')?.slice(1);
@@ -78,7 +86,12 @@ function initAnchors() {
         duration: reduced.matches ? 0 : 0.9,
         ease: 'power3.inOut',
         scrollTo:
-          id === 'hi' ? 0 : { y: target.querySelector(':scope > h2') ?? target, offsetY: 40 },
+          id === 'hi'
+            ? 0
+            : {
+                y: target.querySelector(':scope > h2') ?? target,
+                offsetY: mobile.matches ? 96 : 40,
+              },
       });
     });
   });

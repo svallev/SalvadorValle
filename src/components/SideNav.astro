@@ -61,4 +61,10 @@ import { nav } from '../data/site';
       font-size: var(--fs-base);
     }
   }
+  /* Móvil: el menú lateral desaparece; se abre desde la cabecera (MobileMenu). */
+  @media (max-width: 719.98px) {
+    .sidenav {
+      display: none;
+    }
+  }
 </style>

@@ -95,6 +95,21 @@ a {
   padding-inline: var(--grid-margin);
 }
 
+/* Móvil: una sola columna. En vez de reescribir el `grid-column` de cada
+   bloque, la sección pasa a flex en columna, que ignora esos valores y apila
+   los hijos en el orden del HTML (que ya es el del diseño). */
+@media (max-width: 719.98px) {
+  .grid {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Con el menú móvil abierto, la página de detrás no se desplaza. */
+html:has(#mobile-menu[open]) {
+  overflow: hidden;
+}
+
 /* ---------- Utilidades ---------- */
 
 /* Texto disponible para lectores de pantalla pero no visible. */

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import SideNav from '../components/SideNav.astro';
+import MobileMenu from '../components/MobileMenu.astro';
 import Hero from '../components/Hero.astro';
 import Projects from '../components/Projects.astro';
 import Capabilities from '../components/Capabilities.astro';
@@ -16,6 +17,7 @@ import VideoModal from '../components/VideoModal.astro';
 <Base>
   <Header />
   <SideNav />
+  <MobileMenu />
 
   <main>
     <Hero />
@@ -32,6 +34,7 @@ import VideoModal from '../components/VideoModal.astro';
 
   <script>
     import '../scripts/video-modal.js';
+    import '../scripts/mobile-menu.js';
     import '../scripts/motion.js';
   </script>
 </Base>

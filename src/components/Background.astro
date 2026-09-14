@@ -188,4 +188,56 @@ const eras = (await getCollection('background')).sort((a, b) => a.data.order - b
       font-size: var(--fs-md);
     }
   }
+  /* Móvil: hueco de sección por arriba; abajo, 48 px hasta la firma. */
+  @media (max-width: 719.98px) {
+    .bg {
+      padding-block: var(--section-space) 48px;
+    }
+
+    .bg__label {
+      min-height: 0;
+      margin-bottom: 24px;
+      font-size: var(--fs-md);
+    }
+
+    .bg__timeline {
+      gap: var(--space-lg);
+    }
+
+    .era__summary {
+      line-height: 1.4;
+    }
+
+    /* Empleo y descripción ya no van en paralelo: se apilan, uno debajo de
+       otro, con 16 px entre empleos. */
+    .era__roles {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: var(--space-md);
+    }
+
+    .role {
+      display: block;
+    }
+
+    .role__company {
+      line-height: 1.25;
+    }
+
+    .role__summary {
+      line-height: 1.35;
+    }
+
+    .era__rule {
+      margin-top: var(--space-lg);
+    }
+
+    .bg__closing,
+    .bg__contact {
+      margin-top: var(--space-lg);
+      font-size: var(--fs-sm);
+      line-height: 1.35;
+    }
+  }
 </style>

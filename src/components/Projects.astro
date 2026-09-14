@@ -105,4 +105,28 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       padding-block: 40px;
     }
   }
+  /* Móvil: rótulo a 20 px sin la fila fija de 42, textos algo más abiertos y
+     32 px de aire alrededor del collage. */
+  @media (max-width: 719.98px) {
+    .work__label {
+      min-height: 0;
+      font-size: var(--fs-md);
+    }
+
+    .work__list {
+      padding-top: var(--space-md);
+    }
+
+    .work__title {
+      line-height: 1.25;
+    }
+
+    .work__summary {
+      line-height: 1.35;
+    }
+
+    .work__collage {
+      padding-block: var(--space-lg);
+    }
+  }
 </style>

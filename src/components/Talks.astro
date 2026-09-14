@@ -353,7 +353,7 @@ const [featured, ...rest] = talks;
     }
 
     .talks__writings {
-      gap: 24px;
+      gap: var(--space-sm);
     }
 
     /* El título baja a 20 px pero la flecha conserva sus 32 px. */
@@ -364,6 +364,70 @@ const [featured, ...rest] = talks;
 
     .writings__arrow {
       font-size: var(--fs-xl);
+    }
+  }
+  /* Móvil: hueco de sección por arriba. Abajo los escritos no dejan relleno:
+     el hueco hasta Background lo pone Background. */
+  @media (max-width: 719.98px) {
+    .talks {
+      padding-top: var(--section-space);
+    }
+
+    .talks__label {
+      min-height: 0;
+      font-size: var(--fs-md);
+    }
+
+    .talks__block {
+      padding-block: var(--space-md) var(--space-xl);
+    }
+
+    .talks__writings {
+      padding-bottom: 0;
+    }
+
+    .talks__intro,
+    .talks__quote {
+      font-size: var(--fs-sm);
+      line-height: 1.3;
+    }
+
+    /* Todas las charlas iguales, la destacada incluida: 16:9 y un play de
+       28 px, que a este tamaño ya no necesita escalar con la miniatura. */
+    .talk__media,
+    .talk__media--wide {
+      aspect-ratio: 16 / 9;
+    }
+
+    .talk__play svg,
+    .talk__media--wide .talk__play svg {
+      width: 28px;
+    }
+
+    .talk__title {
+      line-height: 1.25;
+    }
+
+    .talk__summary {
+      line-height: 1.35;
+    }
+
+    /* Escritos: filas de 72 px con miniatura de 56, título y flecha a 18/20. */
+    .writings__link {
+      gap: var(--space-sm);
+      min-height: 72px;
+      padding-block: var(--space-xs) var(--space-sm);
+      font-size: var(--fs-sm);
+      line-height: 1.25;
+    }
+
+    .writings__thumb {
+      width: 56px;
+      height: 56px;
+    }
+
+    .writings__arrow {
+      font-size: var(--fs-md);
     }
   }
 </style>

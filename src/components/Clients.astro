@@ -59,4 +59,15 @@ const clients = (await getCollection('clients')).sort((a, b) => a.data.order - b
       padding-inline: var(--space-xs);
     }
   }
+  /* Móvil: píldoras de 24 px con texto a 14 y 8 px entre ellas. */
+  @media (max-width: 719.98px) {
+    .clients__list {
+      gap: var(--space-xs);
+    }
+
+    .clients__chip {
+      height: 24px;
+      font-size: 14px;
+    }
+  }
 </style>
