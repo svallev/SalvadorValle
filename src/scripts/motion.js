@@ -150,16 +150,29 @@ function initReveals() {
   });
 }
 
-/* ---------- Collage de Work: parallax ---------- */
+/* ---------- Collage de Work: parallax ----------
+   El recorrido sale del relleno de la figura, no de su altura. El collage es
+   más alto que ancho y crece con la pantalla: un porcentaje de su altura pasa
+   de los 80 px de aire a partir de 1440 y a 2560 ya se montaba sobre los
+   textos de arriba y de abajo. Quedándose dentro del relleno, nunca los toca. */
 function initParallax() {
   document.querySelectorAll('[data-parallax]').forEach((element) => {
+    const travel = () => parseFloat(getComputedStyle(element).paddingTop) * 0.75;
+
     gsap.fromTo(
       element,
-      { yPercent: -4 },
+      { y: () => -travel() },
       {
-        yPercent: 4,
+        y: travel,
         ease: 'none',
-        scrollTrigger: { trigger: element, start: 'top bottom', end: 'bottom top', scrub: true },
+        scrollTrigger: {
+          trigger: element,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+          // El relleno cambia en los cortes de 1024 y 720.
+          invalidateOnRefresh: true,
+        },
       }
     );
   });
