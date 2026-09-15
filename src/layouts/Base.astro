@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site, footer } from '../data/site';
 import ogImage from '../assets/og.png';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -103,5 +104,6 @@ const structuredData = {
   </head>
   <body>
     <slot />
+    <Analytics />
   </body>
 </html>
