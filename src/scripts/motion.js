@@ -202,6 +202,24 @@ function initTimeline() {
   });
 }
 
+/* ---------- Pie: se revela detrás del contenido ----------
+   `.reveal` (firma + pie) va fijo bajo `main`, que lo tapa con fondo opaco
+   hasta que el scroll llega a su última franja (ver el <style> de
+   index.astro). Esa franja tiene que medir justo la altura de `.reveal`, que
+   cambia con el ancho y el contenido, así que se mide en vez de fijarla en
+   CSS — igual que `initAnchors` lee el relleno real de la cabecera en vez de
+   asumirlo. */
+function initFooterReveal() {
+  const reveal = document.querySelector('.reveal');
+  if (!reveal) return;
+
+  const root = document.documentElement;
+  const setHeight = () => root.style.setProperty('--reveal-h', `${reveal.offsetHeight}px`);
+
+  setHeight();
+  new ResizeObserver(setHeight).observe(reveal);
+}
+
 function init() {
   initScrollSpy();
   initAnchors();
@@ -215,6 +233,7 @@ function init() {
   initReveals();
   initParallax();
   initTimeline();
+  initFooterReveal();
 }
 
 // Esperar a las fuentes: SplitText mide el texto, y medir con la tipografía de

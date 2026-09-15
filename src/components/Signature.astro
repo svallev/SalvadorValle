@@ -20,10 +20,10 @@ import SignatureMark from '../assets/signature.svg';
     align-content: center;
     min-height: calc(358px * var(--k));
     padding-block: calc(80px * var(--k));
-    /* Trazo interior, como en Penpot: no suma altura. */
-    box-shadow:
-      inset 0 1px 0 var(--ink-pure),
-      inset 0 -1px 0 var(--ink-pure);
+    /* Trazo interior, como en Penpot: no suma altura. El de arriba lo lleva
+       ahora `main` (ver index.astro): así viaja con el contenido que sube y
+       marca mejor el borde que descubre el pie al llegar al final. */
+    box-shadow: inset 0 -1px 0 var(--ink-pure);
   }
 
   .signature :global(.signature__mark) {

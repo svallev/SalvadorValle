@@ -27,10 +27,17 @@ import VideoModal from '../components/VideoModal.astro';
     <Clients />
     <Talks />
     <Background />
-    <Signature />
   </main>
 
-  <Footer />
+  {/* Firma y pie se revelan juntos por detrás del contenido al llegar al
+      final del scroll, como en paper.design: van fijos bajo `main`, que los
+      tapa con fondo opaco hasta la última franja de la página (ver estilo
+      abajo y `initFooterReveal` en motion.js, que mide su altura real). */}
+  <div class="reveal">
+    <Signature />
+    <Footer />
+  </div>
+
   <VideoModal />
 
   <script>
@@ -39,3 +46,31 @@ import VideoModal from '../components/VideoModal.astro';
     import '../scripts/motion.js';
   </script>
 </Base>
+
+<style>
+  main {
+    position: relative;
+    z-index: 1;
+    background: var(--paper);
+    /* El trazo que antes llevaba `.signature` por arriba: al vivir aquí viaja
+       con el contenido que sube y hace más notorio que hay algo detrás. */
+    box-shadow: inset 0 -1px 0 var(--ink-pure);
+  }
+
+  /* El truco es puro layout ligado al scroll, pero el efecto en sí —contenido
+     que tapa y descubre algo "detrás"— es el mismo tipo de ilusión de
+     profundidad que el parallax, y puede marear igual. Con movimiento
+     reducido el pie vuelve al flujo normal, sin fijarlo ni reservarle hueco. */
+  @media (prefers-reduced-motion: no-preference) {
+    main {
+      margin-bottom: var(--reveal-h, 0px);
+    }
+
+    .reveal {
+      position: fixed;
+      inset-block-end: 0;
+      inset-inline: 0;
+      z-index: 0;
+    }
+  }
+</style>
