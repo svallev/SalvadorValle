@@ -44,7 +44,7 @@ export const sections = {
   talks: {
     label: 'Talks & Writing',
     talksLabel: 'Talks',
-    writingsLabel: 'Writtings',
+    writingsLabel: 'Writings',
     intro:
       "— For 30 years now, I’ve been fortunate to share knowledge and, above all, learn at numerous events — in design, product, and technology — covering everything from the small details of building a digital product to design and product strategy.",
     quote: '— I talk and write mostly about prototyping the future early.',

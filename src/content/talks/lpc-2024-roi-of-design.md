@@ -6,4 +6,4 @@ thumbnail: "../../assets/talks/lpc-2024-roi-of-design.webp"
 thumbnailAlt: "Panel of four speakers on stage at LaProductConf 2024 in Madrid"
 ---
 
-Product Design Director. “Zeus” design system with engineering, 5 hires, LatAm research, full product redesign.
+Roundtable discussion on design ROI, how to measure the value of design, and how to communicate and demonstrate the value of design within an organization.

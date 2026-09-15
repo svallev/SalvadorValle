@@ -7,4 +7,4 @@ thumbnail: "../../assets/talks/especialidades-salarios-pilares.webp"
 thumbnailAlt: "Two people talking at a round table with podcast microphones in a Neoland studio"
 ---
 
-Product Design Director. “Zeus” design system with engineering, 5 hires, LatAm research, full product redesign.
+Podcast about the UX market and product design in Spain, and what recruitment processes in the industry are typically like.
