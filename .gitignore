@@ -69,3 +69,5 @@ public/fonts/Satoshi-*
 # --- Notas de trabajo internas ---
 # Instrucciones para Claude Code: se leen desde el disco, no hace falta publicarlas.
 CLAUDE.md
+.vercel
+.env*
