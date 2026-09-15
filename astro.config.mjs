@@ -19,4 +19,14 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'auto',
   },
+
+  // Sin esto, Vite inlina en el HTML los scripts compilados de menos de 4 KB
+  // (como el de @vercel/analytics) en vez de servirlos como archivo aparte.
+  // La CSP de vercel.json solo permite `script-src 'self'`, sin 'unsafe-inline',
+  // así que el navegador bloquea ese script inline y Analytics no carga nunca.
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    },
+  },
 });
