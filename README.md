@@ -1,7 +1,8 @@
 # Salvador Valle — Portfolio
 
 Personal portfolio of Salvador Valle, Product Design Director.
-A single static page, built from the Penpot/Figma design (`Desktop - 5`).
+A single static page, built from a Penpot design with three responsive
+breakpoints (desktop, 1024 and 720) plus a separate mobile design.
 
 **Live:** https://salvadorvalle.vercel.app/
 
@@ -173,4 +174,5 @@ vercel.json       cabeceras de seguridad y caché
 ```
 
 Los valores del diseño —color, tipografía, rejilla de 12 columnas— están en
-`src/styles/tokens.css`. Si algo no cuadra con el Penpot, manda el Penpot.
+`src/styles/tokens.css`. El diseño no se sube al repositorio; ante cualquier
+discrepancia, manda el diseño, no el código.
