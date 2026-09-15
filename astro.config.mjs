@@ -1,9 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Vercel expone el dominio de producción en el build: el propio cuando lo haya y,
-// mientras tanto, el *.vercel.app. Base.astro marca este último como noindex.
-// Al añadir un dominio en Vercel hay que volver a desplegar para que se aplique.
+// Vercel expone el dominio de producción en el build: hoy salvadorvalle.vercel.app,
+// que es la URL definitiva e indexable. Si se añade un dominio propio, pasa a ser
+// ese, pero hay que volver a desplegar para que se aplique.
 const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 
 // https://astro.build/config

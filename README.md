@@ -3,7 +3,7 @@
 Personal portfolio of Salvador Valle, Product Design Director.
 A single static page, built from the Penpot/Figma design (`Desktop - 5`).
 
-**Live:** _pendiente de dominio_
+**Live:** https://salvadorvalle.vercel.app/
 
 ---
 
@@ -142,16 +142,17 @@ Configuración del proyecto en Vercel:
 ### Dominio
 
 `site` sale de la variable de sistema `VERCEL_PROJECT_PRODUCTION_URL`: el dominio
-propio si lo hay y, si no, el `*.vercel.app`. Mientras la web viva en `*.vercel.app`
-se publica con `noindex`, para que Google no indexe una URL temporal.
+propio si lo hay y, si no, el `*.vercel.app`. Hoy es `salvadorvalle.vercel.app`, y es
+la URL definitiva: se indexa. Solo las previsualizaciones llevan `noindex`.
 
-Cuando haya dominio:
+Si más adelante hay dominio propio:
 
 1. Vercel → Settings → Domains: añadir el dominio raíz y `www`, con `www`
    redirigiendo al raíz.
 2. **Redeploy** de producción. Sin él, canonical, Open Graph, `robots.txt` y el
-   sitemap siguen apuntando al `vercel.app` y se mantiene el `noindex`.
-3. Comprobar que el `noindex` ya no aparece en el HTML.
+   sitemap siguen apuntando al `vercel.app`.
+3. Redirigir `salvadorvalle.vercel.app` al dominio nuevo (también en Domains), para
+   no dejar la misma página indexada en dos URL.
 4. Google Search Console: verificar el dominio y enviar `/sitemap.xml`.
 
 ## Estructura

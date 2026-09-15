@@ -18,20 +18,42 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = new URL(ogImage.src, Astro.site);
 
-// Mientras no haya dominio propio la web vive en *.vercel.app: se publica, pero
-// sin indexar, para que Google no se quede con una URL temporal.
-const hostname = Astro.site?.hostname ?? '';
-const temporaryHost = hostname === 'localhost' || hostname.endsWith('.vercel.app');
+// Las previsualizaciones de Vercel no se indexan: su canonical ya apunta a
+// producción, pero así no depende de que Google lo respete.
+const preview = process.env.VERCEL_ENV === 'preview';
 
-const person = {
+// ProfilePage es el tipo que Google recomienda para la página de una persona.
+const home = new URL('/', Astro.site).href;
+const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: site.name,
-  jobTitle: site.role,
-  description: site.description,
-  url: new URL('/', Astro.site).href,
-  image: ogImageUrl.href,
-  sameAs: footer.links.map((link) => link.href),
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      url: home,
+      name: site.name,
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${home}#profile`,
+      url: home,
+      name: `${site.name} — ${site.role}`,
+      isPartOf: { '@id': `${home}#website` },
+      dateModified: new Date().toISOString(),
+      mainEntity: {
+        '@type': 'Person',
+        '@id': `${home}#person`,
+        name: site.name,
+        jobTitle: site.role,
+        description: site.description,
+        url: home,
+        image: ogImageUrl.href,
+        email: `mailto:${site.email}`,
+        sameAs: footer.links.map((link) => link.href),
+      },
+    },
+  ],
 };
 ---
 
@@ -42,7 +64,7 @@ const person = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {(noindex || temporaryHost) && <meta name="robots" content="noindex" />}
+    {(noindex || preview) && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -67,6 +89,7 @@ const person = {
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -76,7 +99,7 @@ const person = {
     <meta property="og:image:alt" content={`${site.name} — ${site.role}`} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(person)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <slot />
