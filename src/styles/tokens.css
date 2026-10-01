@@ -64,6 +64,8 @@
   --ink-faint: rgba(17, 17, 17, 0.5);
   --accent: #ff4f00;
   --paper: #fbfaf9;
+  /* Fondo de la firma. No sale del diseño: es el color pedido para esa franja. */
+  --paper-signature: ghostwhite;
   /* Todos los filetes del artboard son negro al 30 %, no un gris claro. */
   --rule: rgba(0, 0, 0, 0.3);
   --rule-strong: #999999;
