@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 195.94" overflow="visible" aria-hidden="true">
   <defs>
     <!-- Franja blanco-negro-blanco que se desliza: es el relleno de las letras -->
-    <linearGradient id="sig-stripe" gradientUnits="userSpaceOnUse" x2="730" spreadMethod="repeat" gradientTransform="rotate(-35)">
-      <stop stop-color="#8a8a8a"/><stop offset=".5" stop-color="#000"/><stop offset="1" stop-color="#8a8a8a"/>
-      <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="730 0" dur="4.4s" repeatCount="indefinite" additive="sum"/>
+    <linearGradient id="sig-stripe" gradientUnits="userSpaceOnUse" x2="1000" spreadMethod="repeat" gradientTransform="rotate(-35)">
+      <stop stop-color="#ddd"/><stop offset=".5" stop-color="#000"/><stop offset="1" stop-color="#ddd"/>
+      <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="1000 0" dur="8s" repeatCount="indefinite" additive="sum"/>
     </linearGradient>
 
     <!-- Borde interior oscuro con la franja fundida encima -->
