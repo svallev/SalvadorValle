@@ -2,7 +2,7 @@
   <defs>
     <!-- Franja blanco-negro-blanco que se desliza: es el relleno de las letras -->
     <linearGradient id="sig-stripe" gradientUnits="userSpaceOnUse" x2="750" spreadMethod="repeat" gradientTransform="rotate(-15)">
-      <stop offset=".2" stop-color="#fff"/><stop offset=".5" stop-color="#000"/><stop offset=".8" stop-color="#f0f0f0"/>
+      <stop offset=".1" stop-color="#f0f0f0"/><stop offset=".5" stop-color="#000"/><stop offset=".9" stop-color="#f0f0f0"/>
       <animateTransform attributeName="gradientTransform" type="translate" from="0 0" to="750 0" dur="8s" repeatCount="indefinite" additive="sum"/>
     </linearGradient>
 
