@@ -50,7 +50,7 @@ pnpm-debug.log*
 *.sketch
 
 # --- Herramientas locales ---
-# Configuración de Claude Code: es del entorno de trabajo, no del sitio.
+# Configuración de los agentes: es del entorno de trabajo, no del sitio.
 # settings.local.json además es específico de esta máquina.
 .claude/
 .agents/
@@ -67,7 +67,9 @@ NoUpload/
 public/fonts/Satoshi-*
 
 # --- Notas de trabajo internas ---
-# Instrucciones para Claude Code: se leen desde el disco, no hace falta publicarlas.
+# Instrucciones para el agente: se leen desde el disco, no hace falta publicarlas.
+AGENTS.md
 CLAUDE.md
+.opencode/
 .vercel
 .env*
