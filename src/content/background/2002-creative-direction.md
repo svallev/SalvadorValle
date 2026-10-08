@@ -1,6 +1,6 @@
 ---
 period: "2002 — 2013"
-title: "Creative direction"
+title: "Creative direction and UX design & development"
 order: 3
 roles:
   - company: "Avanweb"
