@@ -40,6 +40,7 @@ import { hero } from '../data/site';
     font-family: var(--font-headline);
     font-size: calc(104px * var(--k));
     line-height: var(--lh-display);
+    letter-spacing: calc(-5px * var(--k));
     color: var(--ink);
     /* Prata solo existe en 400; sin esto heredaría el peso del body y el
        navegador sintetizaría uno. */
@@ -92,7 +93,7 @@ import { hero } from '../data/site';
       font-size: 36px;
     }
   }
-  /* Móvil: titular a 64 px en dos líneas equilibradas, entradilla a 16 y claim
+  /* Móvil: titular a 52 px en dos líneas equilibradas, entradilla a 16 y claim
      a 28. El hueco hasta los proyectos es el de sección (tokens.css). */
   @media (max-width: 719.98px) {
     .hero {
@@ -100,8 +101,8 @@ import { hero } from '../data/site';
     }
 
     .hero__headline {
-      font-size: 64px;
-      line-height: 0.9;
+      font-size: 52px;
+      line-height: 1;
       text-wrap: balance;
     }
 
