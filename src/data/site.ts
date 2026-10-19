@@ -33,6 +33,40 @@ export const hero = {
     'Based (today) in a small town close to the mountains in Spain.',
   ],
   claim: 'Designing global-scale products and leading high-performance teams for over 30 years.',
+  // Cifras clave bajo el claim. `value` es el valor final y lo que cuenta el
+  // contador (con `decimals` decimales); `prefix` va en tinta y `unit` en
+  // acento. La unidad lleva su espacio delante cuando hace falta.
+  stats: [
+    {
+      value: 60,
+      decimals: 0,
+      prefix: '',
+      unit: '',
+      label: 'people in 2 countries — the largest design team I’ve managed.',
+    },
+    {
+      value: 85,
+      decimals: 0,
+      prefix: '',
+      unit: '%',
+      label: 'of BBVA employees actively used The Ninja Project. The target was 5%.',
+    },
+    {
+      value: 3.5,
+      decimals: 1,
+      prefix: '€',
+      unit: 'M',
+      label: 'the largest project budget I’ve had an impact on.',
+    },
+    {
+      value: 10,
+      decimals: 0,
+      prefix: '',
+      unit: ' yrs',
+      label:
+        'a feature I proposed and designed has gone unchanged; the only one in a catalog of 500+.',
+    },
+  ],
 };
 
 export const sections = {

@@ -135,6 +135,29 @@ function initHero() {
   });
 }
 
+/* ---------- Cifras clave: el contador sube de 0 al valor ----------
+   El HTML ya trae el valor final, así que sin JS (o con movimiento reducido,
+   donde esta función ni se llama) las cifras son correctas. Aquí se bajan a 0
+   y se cuentan una sola vez al entrar en pantalla. */
+function initStats() {
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const target = Number(el.dataset.count);
+    const decimals = Number(el.dataset.decimals);
+    const counter = { value: 0 };
+    el.textContent = counter.value.toFixed(decimals);
+
+    gsap.to(counter, {
+      value: target,
+      duration: 1.4,
+      ease: 'power3.out',
+      onUpdate: () => {
+        el.textContent = counter.value.toFixed(decimals);
+      },
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    });
+  });
+}
+
 /* ---------- Entradas escalonadas ----------
    Los elementos que comparten fila entran juntos, no uno detrás de otro:
    agrupar por posición vertical evita la cascada en diagonal, que en una
@@ -230,6 +253,7 @@ function init() {
   if (reduced.matches) return;
 
   initHero();
+  initStats();
   initReveals();
   initParallax();
   initTimeline();
