@@ -117,7 +117,7 @@ cual harían la página inusable.
 
 ## Tipografías
 
-Las tres se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
+Las cuatro se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
 
 - **Satoshi** — Indian Type Foundry vía [Fontshare](https://www.fontshare.com/fonts/satoshi).
   Su licencia (ITF Free Font License) permite servirla desde la web propia, pero
@@ -125,7 +125,7 @@ Las tres se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
   en git: `scripts/fetch-fonts.mjs` la descarga de Fontshare antes de `dev` y
   `build` y la deja en `public/fonts/`, que la ignora. Si ya está en disco, no hace
   nada.
-- **Advent Pro** y **Libre Barcode 128 Text** — Google Fonts, licencia OFL. Sus
+- **Advent Pro**, **Libre Barcode 128 Text** y **Prata** (el H1 del hero) — Google Fonts, licencia OFL. Sus
   licencias están en `licenses/`.
 
 ## Despliegue

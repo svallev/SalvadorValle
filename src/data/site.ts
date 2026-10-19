@@ -20,14 +20,15 @@ export const nav = [
 ];
 
 export const hero = {
-  // El artboard reparte el titular en tres tramos con peso y color distintos.
+  // El titular se parte en tramos para colorear el punto final.
   headline: [
-    { text: 'Hi!', weight: 900, accent: true },
-    { text: ',', weight: 400, accent: true },
-    { text: ' nice to meet you', weight: 400, accent: false },
+    { text: 'Salvador Valle', accent: false },
+    { text: '.', accent: true },
   ],
+  // El saludo abre la primera línea de la entradilla con peso y color propios.
+  greeting: 'Hi!,',
   intro: [
-    'As you can imagine, I’m Salva.',
+    'nice to meet you I’m Salva,',
     'Product and UX Design Director at Harbiz, frog, Hamon, Isobar, BBVA,...',
     'Based (today) in a small town close to the mountains in Spain.',
   ],

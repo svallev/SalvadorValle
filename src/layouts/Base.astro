@@ -71,7 +71,7 @@ const structuredData = {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#fbfaf9" />
 
-    {/* Las tres tipografías se sirven desde este mismo dominio: ninguna
+    {/* Las cuatro tipografías se sirven desde este mismo dominio: ninguna
         petición a terceros, ningún dato del visitante saliendo fuera. */}
     <link
       rel="preload"
@@ -83,6 +83,13 @@ const structuredData = {
     <link
       rel="preload"
       href="/fonts/AdventPro-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Prata-Regular.woff2"
       as="font"
       type="font/woff2"
       crossorigin

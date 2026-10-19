@@ -7,10 +7,7 @@ import { hero } from '../data/site';
     <h1 class="hero__headline" data-hero-headline>
       {
         hero.headline.map((part) => (
-          <span
-            class:list={['hero__part', { 'hero__part--accent': part.accent }]}
-            style={`font-weight:${part.weight}`}
-          >
+          <span class:list={['hero__part', { 'hero__part--accent': part.accent }]}>
             {part.text}
           </span>
         ))
@@ -19,6 +16,7 @@ import { hero } from '../data/site';
 
     <div class="hero__body">
       <p class="hero__intro">
+        <span class="hero__greeting">{hero.greeting}</span>{' '}
         {hero.intro.map((line, i) => (<>{i > 0 && <br />}{line}</>))}
       </p>
       <p class="hero__claim">{hero.claim}</p>
@@ -39,11 +37,12 @@ import { hero } from '../data/site';
   /* 16 px entre titular, entradilla y claim: fuera de la escala de espaciado,
      pero es lo que marcan los tres artboards. */
   .hero__headline {
-    font-family: var(--font-display);
-    font-size: var(--fs-display);
+    font-family: var(--font-headline);
+    font-size: calc(104px * var(--k));
     line-height: var(--lh-display);
-    color: var(--ink-pure);
-    /* El titular se parte en tramos; sin esto heredaría el peso del body. */
+    color: var(--ink);
+    /* Prata solo existe en 400; sin esto heredaría el peso del body y el
+       navegador sintetizaría uno. */
     font-weight: var(--fw-regular);
     margin-bottom: calc(16px * var(--k));
   }
@@ -63,6 +62,11 @@ import { hero } from '../data/site';
     font-weight: var(--fw-regular);
     line-height: var(--lh-body);
     max-width: 62ch;
+  }
+
+  .hero__greeting {
+    font-weight: var(--fw-black);
+    color: var(--accent);
   }
 
   .hero__claim {
