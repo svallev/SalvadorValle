@@ -110,12 +110,15 @@ function initAnchors() {
 }
 
 /* ---------- Hero: el titular entra palabra a palabra ---------- */
+let heroSplit;
+
 function initHero() {
   const headline = document.querySelector('[data-hero-headline]');
   if (!headline) return;
 
   // SplitText necesita las fuentes ya cargadas: si mide antes, parte mal.
   const split = new SplitText(headline, { type: 'words', wordsClass: 'hero__word' });
+  heroSplit = split;
 
   gsap.from(split.words, {
     yPercent: 120,
@@ -243,9 +246,28 @@ function initFooterReveal() {
   new ResizeObserver(setHeight).observe(reveal);
 }
 
+/* ---------- Cambio de tema ----------
+   Un tema puede cambiar tipografías y medidas: las posiciones que guardaba
+   ScrollTrigger dejan de valer. El titular partido en palabras se devuelve a
+   su HTML original (la entrada ya ocurrió), porque las palabras se midieron
+   con la fuente de antes. Se espera a que cargue la fuente del tema nuevo. */
+function initThemeChange() {
+  window.addEventListener('themechange', () => {
+    document.fonts.ready.then(() => {
+      if (heroSplit) {
+        gsap.set(heroSplit.words, { clearProps: 'all' });
+        heroSplit.revert();
+        heroSplit = undefined;
+      }
+      ScrollTrigger.refresh();
+    });
+  });
+}
+
 function init() {
   initScrollSpy();
   initAnchors();
+  initThemeChange();
 
   // A partir de aquí es todo movimiento: hay gente que se marea de verdad con
   // parallax y entradas animadas, así que con el ajuste del sistema activado

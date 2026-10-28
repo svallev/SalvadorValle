@@ -1,0 +1,290 @@
+---
+import { themes } from '../data/themes';
+
+interface Props {
+  /* Tema marcado al construir. En la home lo corrige theme.js con el
+     guardado; en /agents/ es siempre «agents». */
+  current?: string;
+}
+
+const { current = 'original' } = Astro.props;
+---
+
+{/* Botón y menú de tema (Figma, nodos 1287:30 y 1093:305). Un <dialog> nativo
+    como el resto de menús del sitio: atrapa el foco, cierra con Esc y devuelve
+    el foco al botón. En escritorio es un panel bajo el botón; en móvil, una
+    hoja inferior que se alcanza con el pulgar. La lógica está en
+    scripts/theme.js. */}
+<button
+  class="theme-btn"
+  type="button"
+  aria-controls="theme-menu"
+  aria-expanded="false"
+  data-theme-open
+>
+  <span class="visually-hidden">Change theme</span>
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+    <path
+      d="M12 2L12.07 2.003C12.422 2.01169 12.7678 2.0974 13.0831 2.2541C13.3984 2.4108 13.6755 2.63468 13.895 2.91L14.003 3.058L18.923 10.364C20.875 13.631 20.114 17.784 17.127 20.2C14.159 22.602 9.842 22.602 6.873 20.2C3.956 17.84 3.162 13.824 4.972 10.55L5.106 10.318L9.999 3.058C10.184 2.783 10.425 2.549 10.708 2.372C11.0302 2.17012 11.3954 2.0468 11.774 2.012L12 2ZM11 5.149L6.794 11.389C5.354 13.799 5.914 16.852 8.131 18.646C8.95963 19.3144 9.94872 19.7543 11 19.922V5.149Z"
+    ></path>
+  </svg>
+</button>
+
+<dialog class="theme-menu" id="theme-menu" aria-labelledby="theme-menu-title">
+  <div class="theme-menu__panel">
+    <div class="theme-menu__head">
+      <p class="theme-menu__title" id="theme-menu-title">Theme</p>
+      <button class="theme-menu__close" type="button" data-theme-close>
+        <span class="visually-hidden">Close theme menu</span>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M6.707 5.293L12 10.585l5.293-5.292a1 1 0 0 1 1.414 1.414L13.415 12l5.292 5.293a1 1 0 0 1-1.414 1.414L12 13.415l-5.293 5.292a1 1 0 0 1-1.414-1.414L10.585 12 5.293 6.707a1 1 0 0 1 1.414-1.414Z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="theme-menu__list" role="list">
+      {
+        themes.map((theme) => (
+          <li>
+            <button
+              class="theme-menu__option"
+              type="button"
+              data-theme-option={theme.id}
+              data-theme-color={theme.themeColor}
+              data-theme-href={theme.href}
+              aria-pressed={theme.id === current ? 'true' : 'false'}
+            >
+              {/* Fondo, franja y esquina del tema dentro de un círculo con
+                  filete, como los iconos del Figma. */}
+              <svg class="theme-menu__swatch" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <defs>
+                  <clipPath id={`swatch-${theme.id}`}>
+                    <circle cx="12" cy="12" r="12" />
+                  </clipPath>
+                </defs>
+                <g clip-path={`url(#swatch-${theme.id})`}>
+                  <path d="M24 0H0V24H24V0Z" fill={theme.swatch[0]} />
+                  <path d="M22.08 0H24V11.52L11.52 24H0V22.08L22.08 0Z" fill={theme.swatch[1]} />
+                  <path d="M24 11.52V24H11.52L24 11.52Z" fill={theme.swatch[2]} />
+                </g>
+                <circle cx="12" cy="12" r="11.08" fill="none" stroke="#111111" stroke-opacity="0.28" stroke-width="1.84" />
+              </svg>
+              <span>{theme.label}</span>
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</dialog>
+
+<style>
+  .theme-btn {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--ink-faint);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  /* El SVG lleva width/height="24" como respaldo sin CSS; aquí crece con el
+     resto de la cabecera en pantallas grandes. */
+  .theme-btn svg {
+    width: calc(24px * var(--k));
+    height: calc(24px * var(--k));
+  }
+
+  .theme-btn:hover,
+  .theme-btn[aria-expanded='true'] {
+    color: var(--ink);
+  }
+
+  /* Escritorio: panel de 296 px que cuelga 24 px por debajo del borde de la
+     cabecera y sobresale 16 px a la derecha del icono, como en el Figma.
+     El <dialog> modal ocupa la pantalla entera y es transparente: así un clic
+     fuera del panel cae en él y cierra el menú (ver theme.js). */
+  .theme-menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    opacity: 0;
+    transition:
+      opacity var(--menu-fade) var(--ease-out),
+      display var(--menu-fade) allow-discrete,
+      overlay var(--menu-fade) allow-discrete;
+    --menu-fade: 160ms;
+  }
+
+  .theme-menu::backdrop {
+    background: transparent;
+  }
+
+  .theme-menu[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .theme-menu[open] {
+      opacity: 0;
+    }
+  }
+
+  .theme-menu__panel {
+    position: absolute;
+    top: calc(24px * var(--k));
+    right: calc(var(--grid-margin) - 16px * var(--k));
+    display: flex;
+    flex-direction: column;
+    gap: calc(32px * var(--k));
+    width: calc(296px * var(--k));
+    padding: calc(16px * var(--k));
+    background: var(--menu-bg, var(--paper));
+    border-block: 1px solid var(--ink-faint);
+    box-shadow: var(--menu-shadow, none);
+    border-radius: var(--menu-radius, 0);
+    -webkit-backdrop-filter: var(--menu-blur, none);
+    backdrop-filter: var(--menu-blur, none);
+  }
+
+  .theme-menu__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .theme-menu__title {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-tight);
+    color: var(--ink-faint);
+  }
+
+  .theme-menu__close {
+    display: grid;
+    place-items: center;
+    width: calc(24px * var(--k));
+    height: calc(24px * var(--k));
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--ink-faint);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .theme-menu__close svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .theme-menu__close:hover {
+    color: var(--ink);
+  }
+
+  .theme-menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(24px * var(--k));
+  }
+
+  .theme-menu__option {
+    display: flex;
+    align-items: center;
+    gap: calc(11px * var(--k));
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-tight);
+    text-align: left;
+    color: var(--ink-muted);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .theme-menu__swatch {
+    flex-shrink: 0;
+    width: calc(24px * var(--k));
+    height: calc(24px * var(--k));
+  }
+
+  .theme-menu__option:hover {
+    color: var(--ink);
+  }
+
+  .theme-menu__option[aria-pressed='true'] {
+    font-weight: var(--fw-medium);
+    color: var(--accent);
+  }
+
+  /* Móvil: hoja inferior a todo el ancho. Filas de 48 px para el pulgar, el
+     fondo de la página se oscurece un poco para que se entienda que es una
+     capa, y el borde inferior respeta la barra de inicio del iPhone. */
+  @media (max-width: 719.98px) {
+    .theme-btn {
+      width: 44px;
+      height: 44px;
+      color: var(--ink);
+    }
+
+    .theme-menu::backdrop {
+      background: rgb(0 0 0 / 0.25);
+    }
+
+    .theme-menu__panel {
+      inset: auto 0 0;
+      width: 100%;
+      gap: 8px;
+      padding: 8px var(--grid-margin) calc(16px + env(safe-area-inset-bottom));
+      border-block-end: 0;
+      transition: translate 260ms var(--ease-out);
+    }
+
+    @starting-style {
+      .theme-menu[open] .theme-menu__panel {
+        translate: 0 100%;
+      }
+    }
+
+    .theme-menu__head {
+      min-height: 48px;
+    }
+
+    .theme-menu__close {
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+    }
+
+    .theme-menu__close svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .theme-menu__list {
+      gap: 0;
+    }
+
+    .theme-menu__option {
+      min-height: 48px;
+    }
+  }
+</style>

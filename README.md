@@ -107,6 +107,34 @@ url: "https://medium.com/..."
 
 ---
 
+## Temas
+
+El botón de la gota, en la cabecera, cambia el aspecto de toda la página sin tocar
+el contenido, el orden ni la estructura: de momento, Original, Neobrutalist y Night. La elección se guarda en el
+navegador del visitante, y `?theme=<id>` en la URL fuerza uno (sirve para
+compartirlo).
+
+El último, **Just for Agents**, no es un estilo: lleva a `/agents/`, la misma
+información ordenada y marcada para que la lea un agente de IA, con datos
+estructurados completos. También están `/index.md` (todo el contenido en Markdown)
+y `/llms.txt`. Las tres salen de las mismas colecciones que la home, así que no hay
+que mantener nada aparte.
+
+### Añadir un tema
+
+1. Una entrada en `src/data/themes.ts`: `id`, nombre, los tres colores del icono y
+   el color de la barra del navegador (el fondo del tema).
+2. Un archivo `src/styles/themes/<id>.css`, importado desde `src/styles/global.css`.
+   Todo cuelga de `:root[data-theme='<id>']`: primero los tokens (`--paper`, `--ink`,
+   `--accent`, las familias…) y, si hace falta, reglas sobre las clases de los
+   componentes. Esa especificidad gana a los estilos de los componentes sin
+   `!important`.
+3. Las tipografías nuevas van en `public/fonts/` y se declaran con `@font-face`
+   dentro del propio archivo del tema: solo se descargan cuando ese tema está activo.
+4. Si el tema necesita decoración o animación que el CSS no puede hacer, va en
+   `src/scripts/themes/<id>.js` (con un `mount()` que devuelve cómo deshacerlo) y
+   se registra en `extras` de `src/scripts/theme.js`.
+
 ## Imágenes
 
 Van en **`src/assets/`**, no en `public/`. Ahí Astro las convierte a WebP/AVIF y
@@ -117,7 +145,7 @@ cual harían la página inusable.
 
 ## Tipografías
 
-Las cuatro se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
+Todas se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
 
 - **Satoshi** — Indian Type Foundry vía [Fontshare](https://www.fontshare.com/fonts/satoshi).
   Su licencia (ITF Free Font License) permite servirla desde la web propia, pero
@@ -127,6 +155,7 @@ Las cuatro se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
   nada.
 - **Advent Pro**, **Libre Barcode 128 Text** y **Prata** (el H1 del hero) — Google Fonts, licencia OFL. Sus
   licencias están en `licenses/`.
+- **Anton** — también OFL, solo para el tema Neobrutalist.
 
 ## Despliegue
 
@@ -164,9 +193,11 @@ src/
   content/        el contenido editable (Markdown)
   data/           textos sueltos y lista de clientes
   layouts/        <head>, metadatos, tipografías
-  pages/          index.astro compone las secciones; también 404, robots.txt y sitemap.xml
-  scripts/        motion.js (GSAP), video-modal.js y mobile-menu.js
-  styles/         tokens.css (el design system) y global.css
+  pages/          index.astro compone las secciones; agents.astro, index.md y llms.txt
+                  son la versión para agentes; también 404, robots.txt y sitemap.xml
+  scripts/        motion.js (GSAP), video-modal.js, mobile-menu.js y theme.js
+  styles/         tokens.css (el design system), global.css y themes/ (un archivo por tema)
+public/theme-init.js  aplica el tema guardado antes de pintar
 public/fonts/     las tipografías en woff2 (Satoshi se descarga, no está en git)
 scripts/          fetch-fonts.mjs
 licenses/         licencias OFL de las tipografías incluidas

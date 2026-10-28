@@ -1,5 +1,10 @@
 @import './tokens.css';
 
+/* Temas del selector de la cabecera (src/data/themes.ts). Cada archivo cuelga
+   de `:root[data-theme='<id>']`, así que sin atributo manda el Original. */
+@import './themes/neobrutalist.css';
+@import './themes/night.css';
+
 /* ---------- Reset ---------- */
 
 *,
@@ -165,3 +170,4 @@ html:has(#mobile-menu[open]) {
 .skip-link:focus-visible {
   transform: none;
 }
+

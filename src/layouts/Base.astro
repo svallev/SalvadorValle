@@ -3,18 +3,31 @@ import '../styles/global.css';
 import { site, footer } from '../data/site';
 import ogImage from '../assets/og.png';
 import Analytics from '@vercel/analytics/astro';
+import { themes, defaultTheme } from '../data/themes';
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /* Tema fijo de la página. Sin él, theme-init.js aplica el guardado. */
+  theme?: string;
+  /* Datos estructurados propios de la página; por defecto, los de la home. */
+  jsonLd?: object;
+  /* Precargar las tipografías del diseño. /agents/ no las necesita. */
+  preloadFonts?: boolean;
 }
 
 const {
   title = `${site.name} — ${site.role}`,
   description = site.description,
   noindex = false,
+  theme,
+  jsonLd,
+  preloadFonts = true,
 } = Astro.props;
+
+const fixedTheme = themes.find((t) => t.id === theme);
+const themeColors = JSON.stringify(Object.fromEntries(themes.map((t) => [t.id, t.themeColor])));
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = new URL(ogImage.src, Astro.site);
@@ -59,7 +72,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={fixedTheme?.id}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,10 +82,16 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#fbfaf9" />
+    <meta name="theme-color" content={(fixedTheme ?? defaultTheme).themeColor} />
+    {/* Antes de cualquier hoja de estilos que pinte: pone el tema guardado
+        sin que se vea el Original un instante. Archivo aparte porque la CSP
+        no admite scripts en línea. */}
+    {!fixedTheme && <script is:inline src="/theme-init.js" data-colors={themeColors}></script>}
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Salvador Valle, in Markdown" />
 
     {/* Las cuatro tipografías se sirven desde este mismo dominio: ninguna
         petición a terceros, ningún dato del visitante saliendo fuera. */}
+    {preloadFonts && <>
     <link
       rel="preload"
       href="/fonts/Satoshi-Variable.woff2"
@@ -94,6 +113,7 @@ const structuredData = {
       type="font/woff2"
       crossorigin
     />
+    </>}
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
@@ -107,7 +127,7 @@ const structuredData = {
     <meta property="og:image:alt" content={`${site.name} — ${site.role}`} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd ?? structuredData)} />
   </head>
   <body>
     <slot />
