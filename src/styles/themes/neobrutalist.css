@@ -1,0 +1,667 @@
+/*
+ * Neobrutalist — «Parque». Síntesis de Budapest Park y Gumroad: cada sección
+ * es un campo de color plano a sangre, unidas por cortes ondulados; el nombre
+ * y los rótulos en una condensada muy negra (Anton); las cifras son pegatinas
+ * inclinadas; las cajas tienen borde negro y saltan con sombra dura al
+ * pasar por encima. Las monedas «SV» y el bitono del collage los pone
+ * src/scripts/themes/neobrutalist.js.
+ *
+ * Campos: hero azul · proyectos hueso · capacidades y clientes naranja (el
+ * acento del Original) · charlas y escritos rosa · trayectoria hueso · firma
+ * y pie azul. El texto va siempre en negro sobre naranja, rosa y hueso, y en
+ * hueso sobre azul: el negro sobre ese azul no llega a 3:1.
+ */
+
+@font-face {
+  font-family: 'Anton';
+  src: url('/fonts/Anton-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root[data-theme='neobrutalist'] {
+  --nb-cream: #f7efe4;
+  --nb-blue: #1f3dff;
+  --nb-orange: #ff4f00;
+  --nb-pink: #f28fc4;
+  --nb-yellow: #ffc900;
+  --nb-ink: #111111;
+
+  --ink: var(--nb-ink);
+  --ink-pure: var(--nb-ink);
+  --ink-muted: rgba(17, 17, 17, 0.72);
+  --ink-faint: rgba(17, 17, 17, 0.6);
+  --accent: var(--nb-orange);
+  --paper: var(--nb-cream);
+  --paper-signature: var(--nb-blue);
+  --rule: var(--nb-ink);
+  --rule-strong: var(--nb-ink);
+  --placeholder: var(--nb-yellow);
+
+  --font-poster: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: var(--font-sans);
+  --font-headline: var(--font-poster);
+
+  --nb-line: 2px solid var(--nb-ink);
+  --nb-pop: 5px 5px 0 var(--nb-ink);
+  --nb-radius: 14px;
+
+  /* Cortes ondulados entre campos, como en Budapest Park: una onda con su
+     filete negro, en SVG, que cada campo cuelga por encima de su borde
+     superior. Los colores van escritos en el SVG porque una imagen de fondo
+     no puede leer variables CSS. */
+  --nb-wave-h: 16px;
+  --nb-wave-cream: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 9Q16 1 32 9T64 9V16H0Z' fill='%23f7efe4'/%3E%3Cpath d='M0 9Q16 1 32 9T64 9' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
+  --nb-wave-orange: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 9Q16 1 32 9T64 9V16H0Z' fill='%23ff4f00'/%3E%3Cpath d='M0 9Q16 1 32 9T64 9' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
+  --nb-wave-pink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 9Q16 1 32 9T64 9V16H0Z' fill='%23f28fc4'/%3E%3Cpath d='M0 9Q16 1 32 9T64 9' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
+  --nb-wave-cream-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 7Q16 15 32 7T64 7V0H0Z' fill='%23f7efe4'/%3E%3Cpath d='M0 7Q16 15 32 7T64 7' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
+
+  --menu-bg: var(--nb-cream);
+  --menu-shadow: var(--nb-pop);
+  --menu-radius: var(--nb-radius);
+}
+
+/* ---------- Campos de color ---------- */
+
+:root[data-theme='neobrutalist'] :is(.hero, .work, .caps, .talks, .bg) {
+  position: relative;
+}
+
+:root[data-theme='neobrutalist'] :is(.work, .caps, .talks, .bg)::before,
+:root[data-theme='neobrutalist'] .header::after,
+:root[data-theme='neobrutalist'] main::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--nb-wave-h);
+  background-repeat: repeat-x;
+  background-size: 64px var(--nb-wave-h);
+  pointer-events: none;
+}
+
+:root[data-theme='neobrutalist'] :is(.work, .caps, .talks, .bg)::before {
+  bottom: calc(100% - 1px);
+}
+
+:root[data-theme='neobrutalist'] :is(.work, .bg)::before {
+  background-image: var(--nb-wave-cream);
+}
+
+:root[data-theme='neobrutalist'] .caps::before {
+  background-image: var(--nb-wave-orange);
+}
+
+:root[data-theme='neobrutalist'] .talks::before {
+  background-image: var(--nb-wave-pink);
+}
+
+/* La cabecera hueso cuelga sobre el hero con el borde ondulado, y el final
+   de la página hace lo mismo sobre la firma azul. */
+:root[data-theme='neobrutalist'] .header::after,
+:root[data-theme='neobrutalist'] main::after {
+  top: calc(100% - 1px);
+  background-image: var(--nb-wave-cream-down);
+}
+
+:root[data-theme='neobrutalist'] .hero {
+  /* Las monedas asoman por el borde derecho: se recortan aquí, sin abrir
+     scroll horizontal. */
+  overflow: clip;
+  background: var(--nb-blue);
+  color: var(--nb-cream);
+  padding-top: calc(40px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .work {
+  background: var(--nb-cream);
+  padding-top: calc(72px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] :is(.caps, .clients) {
+  background: var(--nb-orange);
+}
+
+:root[data-theme='neobrutalist'] .caps {
+  padding-top: calc(72px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .clients {
+  padding-bottom: calc(96px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .talks {
+  background: var(--nb-pink);
+  padding-top: calc(80px * var(--k));
+  padding-bottom: calc(80px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .bg {
+  background: var(--nb-cream);
+  padding-top: calc(96px * var(--k));
+}
+
+/* Firma y pie, detrás del contenido, en azul. */
+:root[data-theme='neobrutalist'] .reveal {
+  background: var(--nb-blue);
+  color: var(--nb-cream);
+}
+
+:root[data-theme='neobrutalist'] .signature {
+  opacity: 1;
+  background: var(--nb-blue);
+  box-shadow: none;
+}
+
+:root[data-theme='neobrutalist'] .signature .signature__mark--anim {
+  display: none;
+}
+
+:root[data-theme='neobrutalist'] .signature .signature__mark--static {
+  display: block;
+  color: var(--nb-cream);
+}
+
+:root[data-theme='neobrutalist'] .footer {
+  color: var(--nb-cream);
+  border-top: 2px solid var(--nb-cream);
+}
+
+:root[data-theme='neobrutalist'] main {
+  box-shadow: none;
+}
+
+/* ---------- Cabecera y menú lateral ---------- */
+
+:root[data-theme='neobrutalist'] .header {
+  background: var(--nb-cream);
+}
+
+:root[data-theme='neobrutalist'] .theme-btn {
+  color: var(--nb-ink);
+}
+
+/* El menú lateral cruza todos los campos: va en su propia pegatina hueso. */
+:root[data-theme='neobrutalist'] .sidenav {
+  width: max-content;
+  padding: 10px 14px;
+  background: var(--nb-cream);
+  border: var(--nb-line);
+  border-radius: var(--nb-radius);
+  box-shadow: 3px 3px 0 var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .sidenav__link {
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .sidenav__link:hover,
+:root[data-theme='neobrutalist'] .sidenav__link[aria-current='true'] {
+  color: var(--nb-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Hero ---------- */
+
+/* Por encima de las monedas, que el script mete en el propio hero. */
+:root[data-theme='neobrutalist'] .hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+:root[data-theme='neobrutalist'] .hero__headline {
+  font-size: min(calc(150px * var(--k)), 10.4vw);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--nb-cream);
+  margin-bottom: calc(24px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .hero__part--accent,
+:root[data-theme='neobrutalist'] .hero__greeting {
+  color: var(--nb-yellow);
+}
+
+:root[data-theme='neobrutalist'] .hero__claim {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+/* Las cifras, pegatinas: cada una de un color e inclinada a su manera. */
+:root[data-theme='neobrutalist'] .hero__stats {
+  gap: calc(24px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .hero__stat {
+  padding: calc(20px * var(--k));
+  border: var(--nb-line);
+  border-radius: var(--nb-radius);
+  background: var(--nb-cream);
+  color: var(--nb-ink);
+  box-shadow: var(--nb-pop);
+  rotate: -2deg;
+}
+
+:root[data-theme='neobrutalist'] .hero__stat:nth-child(2) {
+  background: var(--nb-pink);
+  rotate: 1.5deg;
+}
+
+:root[data-theme='neobrutalist'] .hero__stat:nth-child(3) {
+  background: var(--nb-yellow);
+  rotate: -1deg;
+}
+
+:root[data-theme='neobrutalist'] .hero__stat:nth-child(4) {
+  background: var(--nb-orange);
+  rotate: 2.5deg;
+}
+
+:root[data-theme='neobrutalist'] .hero__stat-value {
+  font-family: var(--font-poster);
+  font-size: min(calc(72px * var(--k)), 5vw);
+  letter-spacing: 0;
+  color: var(--nb-ink);
+  white-space: nowrap;
+}
+
+:root[data-theme='neobrutalist'] .hero__stat-unit {
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .hero__stat-label {
+  font-weight: 500;
+}
+
+/* ---------- Rótulos de sección ----------
+   En condensada, en mayúsculas y a tamaño de cartel, con el sol de pegatina
+   de Budapest Park delante. Ya no van al 30 %. */
+:root[data-theme='neobrutalist'] :is(.work__label, .talks__label, .bg__label, .caps__label, .clients__label) {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  min-height: 0;
+  font-family: var(--font-poster);
+  font-size: calc(44px * var(--k));
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--nb-ink);
+  opacity: 1;
+}
+
+:root[data-theme='neobrutalist'] :is(.work__label, .talks__label, .bg__label, .caps__label, .clients__label)::before {
+  content: '';
+  flex-shrink: 0;
+  width: 0.7em;
+  aspect-ratio: 1;
+  background: var(--nb-orange);
+  clip-path: polygon(
+    50% 0, 59% 25%, 85% 15%, 75% 41%, 100% 50%, 75% 59%, 85% 85%, 59% 75%,
+    50% 100%, 41% 75%, 15% 85%, 25% 59%, 0 50%, 25% 41%, 15% 15%, 41% 25%
+  );
+}
+
+:root[data-theme='neobrutalist'] :is(.caps__label, .clients__label)::before {
+  background: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .talks__label::before {
+  background: var(--nb-blue);
+}
+
+:root[data-theme='neobrutalist'] .clients__label {
+  margin-top: calc(24px * var(--k));
+  font-size: calc(32px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .talks__sublabel {
+  font-family: var(--font-poster);
+  font-size: calc(28px * var(--k));
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--nb-ink);
+}
+
+/* ---------- Cajas que saltan ---------- */
+
+:root[data-theme='neobrutalist'] :is(.work__item, .talk, .writings__item) {
+  background: #fff;
+  border: var(--nb-line);
+  border-radius: var(--nb-radius);
+  transition:
+    translate var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+:root[data-theme='neobrutalist'] .work__item {
+  padding: calc(24px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .work__title {
+  font-size: var(--fs-md);
+}
+
+:root[data-theme='neobrutalist'] .talk {
+  padding: calc(14px * var(--k)) calc(14px * var(--k)) calc(20px * var(--k));
+}
+
+/* `translate` y no `transform`: GSAP deja un transform en línea tras la
+   entrada, que ganaría a esta regla. */
+@media (hover: hover) {
+  :root[data-theme='neobrutalist'] :is(.work__item, .talk:has(.talk__trigger:not(:disabled)), .writings__item:has(a)):hover {
+    translate: -4px -4px;
+    box-shadow: var(--nb-pop);
+  }
+}
+
+:root[data-theme='neobrutalist'] :is(.talk:has(.talk__trigger:not(:disabled):active), .writings__item:has(a:active)) {
+  translate: 2px 2px;
+  box-shadow: none;
+}
+
+:root[data-theme='neobrutalist'] .talks__block {
+  border-bottom: var(--nb-line);
+}
+
+:root[data-theme='neobrutalist'] :is(.talk__media, .writings__thumb) {
+  border: var(--nb-line);
+  border-radius: calc(var(--nb-radius) - 6px);
+  box-shadow: none;
+}
+
+:root[data-theme='neobrutalist'] .talk__trigger:not(:disabled):hover .talk__title,
+:root[data-theme='neobrutalist'] a.writings__link:hover {
+  color: var(--nb-blue);
+}
+
+/* El play, botón redondo hueso con borde, como las flechas de Budapest Park. */
+:root[data-theme='neobrutalist'] .talk__play {
+  opacity: 1;
+}
+
+:root[data-theme='neobrutalist'] .talk__play svg {
+  box-sizing: content-box;
+  padding: 3cqi 2.6cqi 3cqi 3.4cqi;
+  border: var(--nb-line);
+  border-radius: 50%;
+  background: var(--nb-cream);
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .writings__link {
+  min-height: 0;
+  padding: calc(12px * var(--k)) calc(20px * var(--k)) calc(12px * var(--k)) calc(12px * var(--k));
+  box-shadow: none;
+}
+
+:root[data-theme='neobrutalist'] .writings__arrow {
+  display: grid;
+  place-items: center;
+  width: 1.4em;
+  height: 1.4em;
+  border: var(--nb-line);
+  border-radius: 50%;
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+/* ---------- Capacidades y clientes ---------- */
+
+:root[data-theme='neobrutalist'] .caps__item {
+  padding-top: calc(14px * var(--k));
+  border-top: var(--nb-line);
+}
+
+:root[data-theme='neobrutalist'] .caps__quote {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+:root[data-theme='neobrutalist'] .clients__chip {
+  height: auto;
+  padding: calc(6px * var(--k)) calc(16px * var(--k));
+  border: var(--nb-line);
+  border-radius: 100px;
+  background: var(--nb-cream);
+  font-weight: 700;
+  box-shadow: 3px 3px 0 var(--nb-ink);
+  transition: translate var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  :root[data-theme='neobrutalist'] .clients__chip:hover {
+    translate: -2px -2px;
+    box-shadow: 5px 5px 0 var(--nb-ink);
+  }
+}
+
+/* ---------- Collage ----------
+   Bitono azul: la imagen en grises y, encima, el azul multiplicando. El
+   script del tema lo va apagando al llegar con el scroll. */
+:root[data-theme='neobrutalist'] .work__collage {
+  position: relative;
+}
+
+:root[data-theme='neobrutalist'] .work__collage img {
+  border: var(--nb-line);
+  border-radius: var(--nb-radius);
+  filter: grayscale(var(--nb-gray, 1)) contrast(1.15);
+}
+
+:root[data-theme='neobrutalist'] .work__collage::after {
+  content: '';
+  position: absolute;
+  inset: calc(80px * var(--k)) 0;
+  border-radius: var(--nb-radius);
+  background: var(--nb-blue);
+  mix-blend-mode: screen;
+  opacity: var(--nb-tint, 1);
+  pointer-events: none;
+}
+
+/* ---------- Trayectoria ---------- */
+
+:root[data-theme='neobrutalist'] .era__period {
+  display: inline-block;
+  margin-right: 0.4em;
+  padding: 2px 10px;
+  border-radius: 100px;
+  background: var(--nb-blue);
+  color: var(--nb-cream);
+}
+
+:root[data-theme='neobrutalist'] .era__title {
+  font-family: var(--font-poster);
+  font-size: calc(28px * var(--k));
+  font-weight: 400;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+:root[data-theme='neobrutalist'] .era__summary {
+  margin-top: calc(8px * var(--k));
+}
+
+:root[data-theme='neobrutalist'] .era__rule {
+  height: 2px;
+  background: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .bg__contact {
+  padding: calc(20px * var(--k)) calc(24px * var(--k));
+  border: var(--nb-line);
+  border-radius: var(--nb-radius);
+  background: var(--nb-yellow);
+  box-shadow: var(--nb-pop);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* ---------- Monedas «SV» (las crea el script del tema) ---------- */
+
+.nb-coin {
+  position: absolute;
+  z-index: 0;
+  width: var(--size);
+  aspect-ratio: 1;
+  pointer-events: none;
+  perspective: 600px;
+}
+
+.nb-coin__body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  rotate: var(--tilt, 0deg);
+}
+
+/* El canto: discos apilados en profundidad, un rosa más oscuro que la cara. */
+.nb-coin__face,
+.nb-coin__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  backface-visibility: hidden;
+}
+
+.nb-coin__edge {
+  background: #c9649c;
+  border: 2px solid var(--nb-ink);
+  backface-visibility: visible;
+}
+
+.nb-coin__face {
+  display: grid;
+  place-items: center;
+  background: var(--nb-pink);
+  border: 2.5px solid var(--nb-ink);
+  font-family: var(--font-poster);
+  font-size: calc(var(--size) * 0.42);
+  line-height: 1;
+  color: var(--nb-ink);
+  box-shadow: inset 0 0 0 calc(var(--size) * 0.06) var(--nb-pink), inset 0 0 0 calc(var(--size) * 0.06 + 2px) var(--nb-ink);
+}
+
+.nb-coin__face--back {
+  transform: rotateY(180deg) translateZ(calc(var(--depth) / 2));
+}
+
+.nb-coin__face--front {
+  transform: translateZ(calc(var(--depth) / 2));
+}
+
+/* ---------- Tramo 720-1024 ---------- */
+
+@media (max-width: 1023.98px) {
+  :root[data-theme='neobrutalist'] .hero__headline {
+    font-size: 13vw;
+  }
+
+  :root[data-theme='neobrutalist'] .hero__stat-value {
+    font-size: 56px;
+  }
+
+  :root[data-theme='neobrutalist'] :is(.work__label, .talks__label, .bg__label, .caps__label) {
+    font-size: 36px;
+  }
+
+  :root[data-theme='neobrutalist'] .work__collage::after {
+    inset: 40px 0;
+  }
+}
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 719.98px) {
+  /* La cabecera de móvil ya tiene un ::after (el degradado): aquí lo ocupa
+     la onda, siempre visible. */
+  :root[data-theme='neobrutalist'] .header::after {
+    inset: calc(100% - 1px) 0 auto;
+    height: var(--nb-wave-h);
+    background: var(--nb-wave-cream-down) repeat-x 0 0 / 64px var(--nb-wave-h);
+    opacity: 1;
+    animation: none;
+  }
+
+  :root[data-theme='neobrutalist'] .hero {
+    padding-top: 32px;
+  }
+
+  :root[data-theme='neobrutalist'] .hero__headline {
+    font-size: 21vw;
+    line-height: 0.88;
+  }
+
+  :root[data-theme='neobrutalist'] .hero__stats {
+    gap: 20px;
+  }
+
+  :root[data-theme='neobrutalist'] .hero__stat {
+    padding: 18px;
+  }
+
+  :root[data-theme='neobrutalist'] .hero__stat-value {
+    font-size: clamp(44px, 14vw, 60px);
+  }
+
+  :root[data-theme='neobrutalist'] :is(.work, .caps, .talks, .bg) {
+    padding-top: 56px;
+  }
+
+  :root[data-theme='neobrutalist'] .work {
+    padding-top: 56px;
+  }
+
+  :root[data-theme='neobrutalist'] .clients,
+  :root[data-theme='neobrutalist'] .talks {
+    padding-bottom: 64px;
+  }
+
+  :root[data-theme='neobrutalist'] :is(.work__label, .talks__label, .bg__label, .caps__label) {
+    font-size: 34px;
+  }
+
+  :root[data-theme='neobrutalist'] .clients__label {
+    font-size: 26px;
+  }
+
+  :root[data-theme='neobrutalist'] .work__item {
+    padding: 18px;
+  }
+
+  :root[data-theme='neobrutalist'] .work__collage {
+    margin-inline: 0;
+  }
+
+  :root[data-theme='neobrutalist'] .work__collage::after {
+    inset: var(--space-lg) 0;
+  }
+
+  :root[data-theme='neobrutalist'] .era__title {
+    font-size: 22px;
+  }
+
+  :root[data-theme='neobrutalist'] .menu {
+    background: var(--nb-cream);
+  }
+
+  :root[data-theme='neobrutalist'] .menu__link {
+    font-family: var(--font-poster);
+    font-size: 48px;
+    text-transform: uppercase;
+  }
+
+  :root[data-theme='neobrutalist'] .theme-menu__panel {
+    border: var(--nb-line);
+    border-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: none;
+  }
+}

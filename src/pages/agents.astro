@@ -1,0 +1,224 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { getProfile } from '../data/profile';
+
+/* «Just for agents»: la versión de la home pensada para que un agente la lea
+   de una vez y la entienda a la primera. Aquí sí cambian el orden y la forma:
+   lo primero es quién es y qué cifras lo avalan, después lo demás. HTML
+   semántico, sin JS de animación, sin tipografías web y con datos
+   estructurados completos. Solo comparte con la home la cabecera, para que una
+   persona pueda volver a un tema normal desde el mismo botón. */
+
+const p = await getProfile();
+const home = new URL('/', Astro.site).href;
+const self = new URL('/agents/', Astro.site).href;
+const linkedin = p.links.find((l) => l.label === 'LinkedIn');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfilePage',
+      '@id': `${self}#page`,
+      url: self,
+      name: `${p.name} — ${p.role} (profile for agents)`,
+      isPartOf: { '@id': `${home}#website` },
+      mainEntity: { '@id': `${home}#person` },
+      dateModified: new Date().toISOString(),
+    },
+    {
+      '@type': 'Person',
+      '@id': `${home}#person`,
+      name: p.name,
+      jobTitle: p.role,
+      description: p.summary,
+      url: home,
+      email: `mailto:${p.email}`,
+      sameAs: p.links.map((l) => l.href),
+      knowsAbout: p.capabilities.map((c) => c.title),
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: p.role,
+        description: p.capabilities.map((c) => c.summary).join(' '),
+      },
+    },
+    ...p.talks.map((t) => ({
+      '@type': 'CreativeWork',
+      name: t.title,
+      description: t.summary,
+      ...(t.url && { url: t.url }),
+      ...(t.lang && { inLanguage: t.lang }),
+      contributor: { '@id': `${home}#person` },
+    })),
+    ...p.writings.map((w) => ({
+      '@type': 'Article',
+      headline: w.title,
+      ...(w.url && { url: w.url }),
+      ...(w.lang && { inLanguage: w.lang }),
+      author: { '@id': `${home}#person` },
+    })),
+  ],
+};
+---
+
+<Base
+  title={`${p.name} — ${p.role} · Profile for agents`}
+  description={p.summary}
+  theme="agents"
+  jsonLd={jsonLd}
+  preloadFonts={false}
+>
+  <Header theme="agents" sections={false} />
+
+  <main class="agents" id="main">
+    <article>
+      <header id="hi">
+        <h1>{p.name} — {p.role}</h1>
+        <p><strong>{p.summary}</strong></p>
+        <p>{p.intro}</p>
+        <p>
+          Email: <a href={`mailto:${p.email}`}>{p.email}</a>
+          {p.links.map((l) => <> · <a href={l.href}>{l.label}</a></>)}
+        </p>
+        <p>
+          Also available as <a href="/index.md">Markdown</a> and <a href="/llms.txt">llms.txt</a>.
+          The designed version is at <a href="/">{home}</a>.
+        </p>
+      </header>
+
+      <section aria-labelledby="facts">
+        <h2 id="facts">Key facts</h2>
+        <dl>
+          {p.facts.map((f) => <><dt>{f.value}</dt><dd>{f.label}</dd></>)}
+        </dl>
+      </section>
+
+      <section aria-labelledby="capabilities">
+        <h2 id="capabilities">Capabilities</h2>
+        <dl>
+          {p.capabilities.map((c) => <><dt>{c.title}</dt><dd>{c.summary}</dd></>)}
+        </dl>
+      </section>
+
+      <section aria-labelledby="projects">
+        <h2 id="projects">Recent projects</h2>
+        <dl>
+          {p.projects.map((pr) => <><dt>{pr.title}</dt><dd>{pr.summary}</dd></>)}
+        </dl>
+      </section>
+
+      <section aria-labelledby="clients">
+        <h2 id="clients">Clients</h2>
+        <p>{p.clients.join(', ')}.</p>
+      </section>
+
+      <section aria-labelledby="talks">
+        <h2 id="talks">Talks</h2>
+        <ul>
+          {p.talks.map((t) => (
+            <li>
+              {t.url ? <a href={t.url} lang={t.lang}>{t.title}</a> : <span lang={t.lang}>{t.title}</span>}. {t.summary}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="writing">
+        <h2 id="writing">Writing</h2>
+        <ul>
+          {p.writings.map((w) => (
+            <li>{w.url ? <a href={w.url} lang={w.lang}>{w.title}</a> : <span lang={w.lang}>{w.title}</span>}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="career">
+        <h2 id="career">Career</h2>
+        {p.career.map((era) => (
+          <section>
+            <h3>{era.period}: {era.title}</h3>
+            <p>{era.summary}</p>
+            <dl>
+              {era.roles.map((r) => (
+                <><dt>{r.company}{r.role && ` (${r.role})`}</dt><dd>{r.description}</dd></>
+              ))}
+            </dl>
+          </section>
+        ))}
+        <p>{p.closing}</p>
+      </section>
+
+      <section aria-labelledby="contact">
+        <h2 id="contact">Contact</h2>
+        <p>
+          Email <a href={`mailto:${p.email}`}>{p.email}</a>
+          {linkedin && <>, or <a href={linkedin.href}>LinkedIn</a></>}.
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    import '../scripts/theme.js';
+  </script>
+</Base>
+
+<style is:global>
+  /* Tema «agents»: tinta negra sobre blanco y la tipografía del sistema. La
+     cabecera conserva su forma para que el botón de tema siga donde siempre. */
+  :root[data-theme='agents'] {
+    --paper: #ffffff;
+    --ink: #111111;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  :root[data-theme='agents'] body {
+    font-weight: 400;
+    line-height: 1.5;
+  }
+</style>
+
+<style>
+  .agents {
+    max-width: 72ch;
+    padding: 0 var(--grid-margin) 64px;
+    margin-inline: auto;
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin: 32px 0 8px;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin: 20px 0 4px;
+  }
+
+  p,
+  ul,
+  dl {
+    margin-bottom: 8px;
+  }
+
+  dt {
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  a {
+    color: #0b57d0;
+    text-decoration: underline;
+  }
+</style>

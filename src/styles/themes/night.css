@@ -1,0 +1,33 @@
+/*
+ * Night — el Original en oscuro. Mismas tipografías, misma composición y el
+ * naranja de siempre, un punto más claro para que aguante sobre negro.
+ */
+
+:root[data-theme='night'] {
+  color-scheme: dark;
+
+  --ink: #f2f0ec;
+  --ink-pure: #ffffff;
+  --ink-muted: rgba(242, 240, 236, 0.66);
+  --ink-faint: rgba(242, 240, 236, 0.5);
+  --accent: #ff6a2b;
+  --paper: #0e0e10;
+  --paper-signature: #141417;
+  --rule: rgba(255, 255, 255, 0.22);
+  --rule-strong: #5c5955;
+  --placeholder: #1f1f23;
+}
+
+/* La firma animada pinta su propio fondo blanco con el filtro SVG: sobre
+   negro se vería como una franja de papel. Aquí va la estática, en tinta. */
+:root[data-theme='night'] .signature .signature__mark--anim {
+  display: none;
+}
+
+:root[data-theme='night'] .signature .signature__mark--static {
+  display: block;
+}
+
+:root[data-theme='night'] .writings__thumb {
+  box-shadow: none;
+}
