@@ -56,10 +56,6 @@
   --nb-wave-orange: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 9Q16 1 32 9T64 9V16H0Z' fill='%23ff4f00'/%3E%3Cpath d='M0 9Q16 1 32 9T64 9' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
   --nb-wave-pink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 9Q16 1 32 9T64 9V16H0Z' fill='%23f28fc4'/%3E%3Cpath d='M0 9Q16 1 32 9T64 9' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
   --nb-wave-cream-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Cpath d='M0 7Q16 15 32 7T64 7V0H0Z' fill='%23f7efe4'/%3E%3Cpath d='M0 7Q16 15 32 7T64 7' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E");
-
-  --menu-bg: var(--nb-cream);
-  --menu-shadow: var(--nb-pop);
-  --menu-radius: var(--nb-radius);
 }
 
 /* ---------- Campos de color ---------- */
@@ -178,8 +174,120 @@
   background: var(--nb-cream);
 }
 
+/* ---------- Botón y menú de tema ---------- */
+
+/* Botón del Figma (nodo 1290:595): caja de 44 con filete de 3 px y sombra
+   dura de 3. Al pasar por encima se levanta y al pulsar se hunde en su sombra,
+   como una tecla. */
 :root[data-theme='neobrutalist'] .theme-btn {
+  width: calc(44px * var(--k));
+  height: calc(44px * var(--k));
   color: var(--nb-ink);
+  background: var(--nb-cream);
+  border: 3px solid var(--nb-ink);
+  box-shadow: 3px 3px 0 var(--nb-ink);
+  transition:
+    translate var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  :root[data-theme='neobrutalist'] .theme-btn:hover {
+    translate: -2px -2px;
+    box-shadow: 5px 5px 0 var(--nb-ink);
+  }
+}
+
+:root[data-theme='neobrutalist'] .theme-btn[aria-expanded='true'] {
+  background: var(--nb-yellow);
+}
+
+:root[data-theme='neobrutalist'] .theme-btn:active {
+  translate: 3px 3px;
+  box-shadow: 0 0 0 var(--nb-ink);
+}
+
+/* El panel cuelga bajo el botón, alineado con su borde derecho: una caja con
+   el mismo filete, una franja amarilla con el título en Anton y las opciones
+   como filas de una lista impresa. */
+:root[data-theme='neobrutalist'] .theme-menu__panel {
+  top: calc(84px * var(--k));
+  right: var(--grid-margin);
+  gap: 0;
+  padding: 0;
+  background: var(--nb-cream);
+  border: 3px solid var(--nb-ink);
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__head {
+  padding: calc(10px * var(--k)) calc(10px * var(--k)) calc(10px * var(--k)) calc(16px * var(--k));
+  background: var(--nb-yellow);
+  border-bottom: 3px solid var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__title {
+  font-family: var(--font-poster);
+  font-size: calc(28px * var(--k));
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__close {
+  width: calc(32px * var(--k));
+  height: calc(32px * var(--k));
+  background: var(--nb-cream);
+  border: 2px solid var(--nb-ink);
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__close svg {
+  width: 75%;
+  height: 75%;
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__list {
+  gap: 0;
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__list li + li {
+  border-top: 2px solid var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__option {
+  gap: calc(12px * var(--k));
+  min-height: calc(52px * var(--k));
+  padding-inline: calc(16px * var(--k));
+  font-weight: var(--fw-medium);
+  color: var(--nb-ink);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__option:hover {
+  background: var(--nb-pink);
+  color: var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__option[aria-pressed='true'] {
+  background: var(--nb-blue);
+  color: var(--nb-cream);
+}
+
+/* Las muestras, con filete negro entero en vez del aro translúcido. */
+:root[data-theme='neobrutalist'] .theme-menu__swatch > circle {
+  stroke: var(--nb-ink);
+  stroke-opacity: 1;
+  stroke-width: 2.4;
+}
+
+:root[data-theme='neobrutalist'] .theme-menu__option[aria-pressed='true'] .theme-menu__swatch > circle {
+  stroke: var(--nb-cream);
 }
 
 /* El menú lateral cruza todos los campos: va en su propia pegatina hueso. */
@@ -658,10 +766,38 @@
     text-transform: uppercase;
   }
 
+  /* Botón de tema: separado de la hamburguesa para que no se toquen la
+     sombra y la zona táctil. */
+  :root[data-theme='neobrutalist'] .theme-btn {
+    margin-right: 6px;
+  }
+
+  /* Hoja inferior: sin sombra (no hay nada debajo), filete solo arriba y el
+     relleno de la barra de inicio en la lista. */
   :root[data-theme='neobrutalist'] .theme-menu__panel {
-    border: var(--nb-line);
-    border-bottom: 0;
-    border-radius: 20px 20px 0 0;
+    inset: auto 0 0;
+    padding: 0 0 env(safe-area-inset-bottom);
+    border-width: 3px 0 0;
     box-shadow: none;
+  }
+
+  :root[data-theme='neobrutalist'] .theme-menu__head {
+    padding: 8px var(--grid-margin);
+  }
+
+  :root[data-theme='neobrutalist'] .theme-menu__close {
+    width: 40px;
+    height: 40px;
+    margin-right: 0;
+  }
+
+  :root[data-theme='neobrutalist'] .theme-menu__close svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  :root[data-theme='neobrutalist'] .theme-menu__option {
+    min-height: 56px;
+    padding-inline: var(--grid-margin);
   }
 }
