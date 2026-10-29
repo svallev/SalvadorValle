@@ -4,6 +4,7 @@
    de `:root[data-theme='<id>']`, así que sin atributo manda el Original. */
 @import './themes/neobrutalist.css';
 @import './themes/night.css';
+@import './themes/synthwave.css';
 
 /* ---------- Reset ---------- */
 

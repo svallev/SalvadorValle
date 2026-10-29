@@ -1,0 +1,850 @@
+/*
+ * Synthwave — «Neon Arcade». Noche de recreativa de los 80: cielo violeta con
+ * estrellas, sol a franjas sobre una cordillera con filo rosa y un suelo de
+ * rejilla que avanza; el nombre en cromado, los rótulos en una pixelada
+ * (Press Start 2P) que se enciende como un tubo de neón, y cajas con marco de
+ * neón que se encienden en rosa. Sin degradación VHS ni glitch: eso es
+ * vaporwave. La escena del hero (shader), los invasores, el encendido de los
+ * rótulos y el bitono del collage los pone src/scripts/themes/synthwave.js;
+ * aquí está su respaldo sin WebGL.
+ *
+ * Fondo: noche → violeta → crepúsculo → noche, en un solo degradado que
+ * recorre `main`, sin cortes entre secciones. Texto lila claro; el rosa
+ * (5,9:1 sobre la noche) sirve también para texto pequeño.
+ */
+
+@font-face {
+  font-family: 'Orbitron';
+  src: url('/fonts/Orbitron-Variable.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('/fonts/PressStart2P-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root[data-theme='synthwave'] {
+  color-scheme: dark;
+
+  --sw-night: #0d0221;
+  --sw-deep: #150030;
+  --sw-twilight: #1a0940;
+  --sw-pink: #ff2e97;
+  --sw-magenta: #ff006e;
+  --sw-cyan: #00e5ff;
+  --sw-violet: #8b00ff;
+  --sw-gold: #ffd319;
+  --sw-orange: #ff6b35;
+  --sw-star: #e0d0ff;
+
+  --ink: var(--sw-star);
+  --ink-pure: #ffffff;
+  --ink-muted: rgba(224, 208, 255, 0.72);
+  --ink-faint: rgba(224, 208, 255, 0.55);
+  --accent: var(--sw-pink);
+  --paper: var(--sw-night);
+  --paper-signature: var(--sw-night);
+  --rule: rgba(0, 229, 255, 0.28);
+  --rule-strong: var(--sw-cyan);
+  --placeholder: var(--sw-twilight);
+
+  --font-chrome: 'Orbitron', var(--font-sans);
+  --font-pixel: 'Press Start 2P', ui-monospace, monospace;
+  --font-headline: var(--font-chrome);
+
+  /* Marco de neón: filete fino y halo. Dos capas, no más: hay muchas cajas
+     en pantalla y cada sombra difusa cuesta al hacer scroll. */
+  --sw-frame: 0 0 0 1px rgba(0, 229, 255, 0.5), 0 0 18px rgba(0, 229, 255, 0.16);
+  --sw-frame-on: 0 0 0 1px var(--sw-pink), 0 0 26px rgba(255, 46, 151, 0.45);
+  --sw-radius: calc(6px * var(--k));
+  --sw-glow-text: 0 0 6px rgba(255, 211, 25, 0.55), 0 0 18px rgba(255, 107, 53, 0.5);
+
+  /* Cromo: cielo claro arriba, reflejo duro a media altura y horizonte rosa
+     abajo, como las letras de las carátulas. */
+  --sw-chrome: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #b9ecff 22%,
+    #5ec8ff 46%,
+    #2a0a4a 50%,
+    #7a1a8c 58%,
+    #ff2e97 78%,
+    #ffd0ec 100%
+  );
+  --sw-gold-chrome: linear-gradient(180deg, #fffbe0 0%, #ffd319 40%, #ff9a1f 52%, #ff6b35 100%);
+}
+
+/* ---------- Página ---------- */
+
+:root[data-theme='synthwave'] body {
+  background: var(--sw-night);
+}
+
+:root[data-theme='synthwave'] main {
+  background: linear-gradient(
+    180deg,
+    var(--sw-night) 0%,
+    var(--sw-night) 22%,
+    var(--sw-deep) 40%,
+    var(--sw-twilight) 62%,
+    var(--sw-deep) 82%,
+    var(--sw-night) 100%
+  );
+  box-shadow:
+    inset 0 -1px 0 var(--sw-pink),
+    0 14px 22px -10px rgba(255, 46, 151, 0.45);
+}
+
+:root[data-theme='synthwave'] :is(.caps, .talks, .bg) {
+  position: relative;
+  overflow-x: clip;
+}
+
+:root[data-theme='synthwave'] ::selection {
+  background: var(--sw-pink);
+  color: var(--sw-night);
+}
+
+/* ---------- Cabecera y menú lateral ---------- */
+
+:root[data-theme='synthwave'] .header__name {
+  color: var(--sw-cyan);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.55);
+}
+
+:root[data-theme='synthwave'] .sidenav__link {
+  color: var(--ink-muted);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    text-shadow var(--duration-fast) var(--ease-out);
+}
+
+:root[data-theme='synthwave'] .sidenav__link:hover,
+:root[data-theme='synthwave'] .sidenav__link[aria-current='true'] {
+  color: var(--sw-cyan);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+}
+
+/* ---------- Botón y menú de tema ---------- */
+
+/* Botón de tema y, en móvil, el de menú: solo el icono, en cian; rosa al
+   pasar por encima o con su menú abierto. */
+:root[data-theme='synthwave'] :is(.theme-btn, .header__menu) {
+  color: var(--sw-cyan);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+:root[data-theme='synthwave'] :is(.theme-btn, .header__menu):hover,
+:root[data-theme='synthwave'] :is(.theme-btn, .header__menu)[aria-expanded='true'] {
+  color: var(--sw-pink);
+}
+
+:root[data-theme='synthwave'] .theme-menu__panel {
+  top: calc(84px * var(--k));
+  right: var(--grid-margin);
+  gap: calc(8px * var(--k));
+  padding: calc(16px * var(--k)) calc(12px * var(--k)) calc(12px * var(--k));
+  background: rgba(21, 0, 48, 0.94);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  border-radius: var(--sw-radius);
+  box-shadow:
+    0 0 28px rgba(0, 229, 255, 0.25),
+    inset 0 0 24px rgba(139, 0, 255, 0.25);
+}
+
+:root[data-theme='synthwave'] .theme-menu__head {
+  padding-inline: calc(4px * var(--k));
+}
+
+:root[data-theme='synthwave'] .theme-menu__title {
+  font-family: var(--font-pixel);
+  font-size: calc(14px * var(--k));
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sw-gold);
+  text-shadow: var(--sw-glow-text);
+}
+
+:root[data-theme='synthwave'] .theme-menu__close {
+  color: var(--sw-cyan);
+}
+
+/* Filas de 44 como en móvil, para que el marco de la opción activa respire. */
+:root[data-theme='synthwave'] .theme-menu__list {
+  gap: calc(4px * var(--k));
+}
+
+:root[data-theme='synthwave'] .theme-menu__option {
+  min-height: calc(44px * var(--k));
+  padding-inline: calc(10px * var(--k));
+  border-radius: calc(4px * var(--k));
+  color: var(--ink);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+:root[data-theme='synthwave'] .theme-menu__option:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--sw-cyan);
+}
+
+:root[data-theme='synthwave'] .theme-menu__option[aria-pressed='true'] {
+  background: rgba(255, 46, 151, 0.14);
+  color: var(--sw-pink);
+  box-shadow: inset 0 0 0 1px rgba(255, 46, 151, 0.7);
+}
+
+:root[data-theme='synthwave'] .theme-menu__swatch > circle {
+  stroke: var(--sw-cyan);
+  stroke-opacity: 0.6;
+}
+
+/* ---------- Hero ----------
+   La escena va en el <canvas> que pone el script (`.sw-scene`). Hasta que
+   monta, o sin WebGL, el hero lleva un respaldo en CSS: cielo, sol a franjas y
+   rejilla quieta. `.sw-gl` lo apaga cuando el canvas ya pinta. */
+
+:root[data-theme='synthwave'] .hero {
+  position: relative;
+  /* Solo en horizontal: sin relleno arriba, el resplandor del nombre asoma
+     por encima del hero y no debe cortarse en seco. */
+  overflow-x: clip;
+  background: linear-gradient(
+    180deg,
+    var(--sw-night) 0%,
+    #2a0454 46%,
+    #730856 66%,
+    var(--sw-night) 67%,
+    #12002a 80%,
+    var(--sw-night) 100%
+  );
+}
+
+:root[data-theme='synthwave'] .hero::before,
+:root[data-theme='synthwave'] .hero::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+:root[data-theme='synthwave'] .hero::before {
+  left: calc(var(--grid-margin) + 1%);
+  top: 44%;
+  width: min(22vw, calc(300px * var(--k)));
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--sw-gold) 10%, var(--sw-orange) 50%, var(--sw-pink) 90%);
+  -webkit-mask: linear-gradient(#000 52%, transparent 52% 56%, #000 56% 64%, transparent 64% 70%, #000 70% 77%, transparent 77% 85%, #000 85%);
+  mask: linear-gradient(#000 52%, transparent 52% 56%, #000 56% 64%, transparent 64% 70%, #000 70% 77%, transparent 77% 85%, #000 85%);
+  filter: drop-shadow(0 0 40px rgba(255, 46, 151, 0.6));
+}
+
+:root[data-theme='synthwave'] .hero::after {
+  inset: 67% -50% 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 229, 255, 0.55) 0 2px, transparent 2px 80px),
+    repeating-linear-gradient(0deg, rgba(255, 46, 151, 0.5) 0 2px, transparent 2px 60px);
+  transform: perspective(240px) rotateX(58deg);
+  transform-origin: 50% 0;
+  -webkit-mask: linear-gradient(transparent, #000 15%, #000 50%, transparent);
+  mask: linear-gradient(transparent, #000 15%, #000 50%, transparent);
+}
+
+:root[data-theme='synthwave'] .hero.sw-gl {
+  background: var(--sw-night);
+}
+
+:root[data-theme='synthwave'] .hero.sw-gl::before,
+:root[data-theme='synthwave'] .hero.sw-gl::after {
+  display: none;
+}
+
+.sw-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+:root[data-theme='synthwave'] .hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* El nombre en cromo. SplitText parte el titular en `.hero__word` y cada
+   palabra se anima por separado: el degradado va en cada palabra (si fuera
+   solo en la parte, se cortaría al moverlas). La sombra va como `filter`
+   porque `text-shadow` taparía el degradado recortado al texto. */
+:root[data-theme='synthwave'] .hero__headline {
+  font-size: min(calc(118px * var(--k)), 8.2vw);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: calc(28px * var(--k));
+  filter: drop-shadow(0 2px 0 #3b0a6b) drop-shadow(0 5px 0 #1a0033) drop-shadow(0 0 22px rgba(255, 46, 151, 0.45));
+}
+
+:root[data-theme='synthwave'] :is(.hero__part, .hero__word) {
+  background: var(--sw-chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+}
+
+:root[data-theme='synthwave'] .hero__part--accent,
+:root[data-theme='synthwave'] .hero__part--accent .hero__word {
+  background-image: var(--sw-gold-chrome);
+}
+
+:root[data-theme='synthwave'] .hero__part:has(.hero__word) {
+  background: none;
+  -webkit-text-stroke: 0;
+}
+
+:root[data-theme='synthwave'] .hero__intro {
+  color: var(--ink);
+  text-shadow: 0 1px 12px var(--sw-night);
+}
+
+:root[data-theme='synthwave'] .hero__greeting {
+  color: var(--sw-gold);
+  text-shadow: var(--sw-glow-text);
+}
+
+:root[data-theme='synthwave'] .hero__claim {
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(139, 0, 255, 0.7);
+}
+
+/* Las cifras, marcador de recreativa sobre la rejilla: panel oscuro para que
+   se lean encima de las líneas, filete superior de neón y valor que brilla. */
+:root[data-theme='synthwave'] .hero__stats {
+  gap: calc(20px * var(--k));
+  margin-top: calc(104px * var(--k));
+}
+
+:root[data-theme='synthwave'] .hero__stat {
+  padding: calc(16px * var(--k)) calc(18px * var(--k)) calc(18px * var(--k));
+  border-top: 0;
+  border-radius: var(--sw-radius);
+  background: linear-gradient(180deg, rgba(13, 2, 33, 0.88), rgba(13, 2, 33, 0.7));
+  box-shadow: inset 0 2px 0 var(--sw-cyan), var(--sw-frame);
+}
+
+:root[data-theme='synthwave'] .hero__stat-value {
+  font-size: min(calc(60px * var(--k)), 4.2vw);
+  font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.85), 0 0 22px rgba(0, 229, 255, 0.45);
+}
+
+:root[data-theme='synthwave'] .hero__stat-unit {
+  color: var(--sw-pink);
+  text-shadow: 0 0 10px rgba(255, 46, 151, 0.7);
+}
+
+:root[data-theme='synthwave'] .hero__stat-label {
+  color: var(--ink);
+}
+
+/* ---------- Rótulos de sección ----------
+   Pixelados, en oro y con el resplandor de los rótulos de la recreativa.
+   El script los deja apagados (`data-sw-neon="off"`) hasta que entran y
+   entonces parpadean una vez, como un tubo que arranca. */
+:root[data-theme='synthwave'] :is(.work__label, .talks__label, .bg__label, .caps__label, .clients__label) {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  min-height: 0;
+  font-family: var(--font-pixel);
+  font-size: calc(18px * var(--k));
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sw-gold);
+  text-shadow: var(--sw-glow-text);
+  opacity: 1;
+}
+
+:root[data-theme='synthwave'] :is(.work__label, .talks__label, .bg__label, .caps__label, .clients__label)::before {
+  content: '▶';
+  flex-shrink: 0;
+  font-size: 0.7em;
+  color: var(--sw-pink);
+  text-shadow: 0 0 10px rgba(255, 46, 151, 0.8);
+}
+
+:root[data-theme='synthwave'] .clients__label {
+  margin-top: calc(24px * var(--k));
+}
+
+:root[data-theme='synthwave'] [data-sw-neon='off'] {
+  opacity: 0.18;
+  text-shadow: none;
+}
+
+:root[data-theme='synthwave'] [data-sw-neon='on'] {
+  animation: sw-neon-on 900ms linear both;
+}
+
+@keyframes sw-neon-on {
+  0% { opacity: 0.18; text-shadow: none; }
+  8% { opacity: 1; }
+  12% { opacity: 0.25; text-shadow: none; }
+  22% { opacity: 1; }
+  26% { opacity: 0.4; text-shadow: none; }
+  40%, 100% { opacity: 1; }
+}
+
+:root[data-theme='synthwave'] .talks__sublabel {
+  font-family: var(--font-chrome);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sw-cyan);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+/* ---------- Cajas con marco de neón ---------- */
+
+:root[data-theme='synthwave'] :is(.work__item, .talk, .writings__item) {
+  background: rgba(21, 0, 48, 0.55);
+  border-radius: var(--sw-radius);
+  box-shadow: var(--sw-frame);
+  transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+:root[data-theme='synthwave'] .work__item {
+  padding: calc(24px * var(--k));
+}
+
+:root[data-theme='synthwave'] .talk {
+  padding: calc(14px * var(--k)) calc(14px * var(--k)) calc(20px * var(--k));
+}
+
+:root[data-theme='synthwave'] :is(.work__title, .caps__title, .talk__title, .writings__title, .role__company) {
+  color: #ffffff;
+}
+
+:root[data-theme='synthwave'] .work__title {
+  font-family: var(--font-chrome);
+  font-size: calc(17px * var(--k));
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@media (hover: hover) {
+  :root[data-theme='synthwave'] :is(.work__item, .talk:has(.talk__trigger:not(:disabled)), .writings__item:has(a)):hover {
+    box-shadow: var(--sw-frame-on);
+  }
+}
+
+:root[data-theme='synthwave'] .talk__trigger:not(:disabled):hover .talk__title,
+:root[data-theme='synthwave'] a.writings__link:hover {
+  color: var(--sw-pink);
+}
+
+:root[data-theme='synthwave'] .talks__block {
+  border-bottom-color: var(--rule);
+}
+
+:root[data-theme='synthwave'] :is(.talk__media, .writings__thumb) {
+  border-radius: calc(4px * var(--k));
+  box-shadow: 0 0 0 1px rgba(255, 46, 151, 0.35);
+}
+
+/* El play, triángulo hueco con filo de neón, como el de la recreativa. */
+:root[data-theme='synthwave'] .talk__play {
+  opacity: 1;
+  color: var(--sw-pink);
+  background: linear-gradient(180deg, transparent 40%, rgba(13, 2, 33, 0.55));
+}
+
+:root[data-theme='synthwave'] .talk__play svg {
+  overflow: visible;
+  filter: drop-shadow(0 0 6px var(--sw-pink)) drop-shadow(0 0 14px rgba(255, 46, 151, 0.6));
+}
+
+:root[data-theme='synthwave'] .talk__play path {
+  fill: rgba(13, 2, 33, 0.35);
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+:root[data-theme='synthwave'] .talk__trigger:not(:disabled):hover .talk__play {
+  color: var(--sw-cyan);
+}
+
+/* Relleno en los cuatro lados: la miniatura y la flecha no tocan el marco. */
+:root[data-theme='synthwave'] .writings__link {
+  min-height: 0;
+  padding: calc(12px * var(--k)) calc(20px * var(--k)) calc(12px * var(--k)) calc(12px * var(--k));
+  box-shadow: none;
+}
+
+:root[data-theme='synthwave'] .writings__arrow {
+  color: var(--sw-cyan);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+}
+
+/* ---------- Capacidades y clientes ---------- */
+
+:root[data-theme='synthwave'] .caps__item {
+  padding-top: calc(14px * var(--k));
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, var(--sw-pink), var(--sw-cyan) 60%, transparent) 1;
+}
+
+:root[data-theme='synthwave'] :is(.caps__quote, .talks__quote) {
+  background: linear-gradient(90deg, var(--sw-pink), #ff7ad1 45%, var(--sw-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:root[data-theme='synthwave'] .caps__quote {
+  font-family: var(--font-chrome);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Clientes: botones de recreativa, píldoras con filo de neón. */
+:root[data-theme='synthwave'] .clients__chip {
+  height: auto;
+  padding: calc(6px * var(--k)) calc(16px * var(--k));
+  border-radius: 100px;
+  background: rgba(21, 0, 48, 0.7);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px rgba(255, 46, 151, 0.55), 0 0 12px rgba(255, 46, 151, 0.18);
+  transition:
+    box-shadow var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  :root[data-theme='synthwave'] .clients__chip:hover {
+    color: #ffffff;
+    box-shadow: 0 0 0 1px var(--sw-cyan), 0 0 20px rgba(0, 229, 255, 0.5);
+  }
+}
+
+/* ---------- Collage ----------
+   Bitono: la imagen en grises y, encima, un degradado magenta → cian que
+   la tiñe con `color`; el script lo apaga al llegar al centro. Las scanlines
+   se quedan, muy suaves. */
+:root[data-theme='synthwave'] .work__collage {
+  position: relative;
+}
+
+:root[data-theme='synthwave'] .work__collage img {
+  border-radius: var(--sw-radius);
+  box-shadow: var(--sw-frame);
+  filter: grayscale(var(--sw-gray, 1)) contrast(1.1);
+}
+
+:root[data-theme='synthwave'] .work__collage::before,
+:root[data-theme='synthwave'] .work__collage::after {
+  content: '';
+  position: absolute;
+  inset: calc(80px * var(--k)) 0;
+  border-radius: var(--sw-radius);
+  pointer-events: none;
+}
+
+:root[data-theme='synthwave'] .work__collage::before {
+  z-index: 1;
+  background: linear-gradient(135deg, var(--sw-magenta), var(--sw-violet) 50%, var(--sw-cyan));
+  mix-blend-mode: color;
+  opacity: var(--sw-tint, 1);
+}
+
+:root[data-theme='synthwave'] .work__collage::after {
+  z-index: 2;
+  background: repeating-linear-gradient(0deg, rgba(13, 2, 33, 0.18) 0 1px, transparent 1px 3px);
+}
+
+/* ---------- Trayectoria ---------- */
+
+:root[data-theme='synthwave'] .era__period {
+  font-family: var(--font-pixel);
+  font-size: 0.6em;
+  letter-spacing: 0.06em;
+  color: var(--sw-pink);
+  text-shadow: 0 0 8px rgba(255, 46, 151, 0.6);
+  vertical-align: 0.25em;
+}
+
+:root[data-theme='synthwave'] .era__title {
+  font-family: var(--font-chrome);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+:root[data-theme='synthwave'] .era__rule {
+  background: linear-gradient(90deg, var(--sw-cyan), var(--sw-pink) 70%, transparent);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+:root[data-theme='synthwave'] .role__title {
+  color: var(--ink-muted);
+}
+
+:root[data-theme='synthwave'] .bg__contact {
+  color: #ffffff;
+}
+
+:root[data-theme='synthwave'] .bg__contact a {
+  color: var(--sw-cyan);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+/* ---------- Firma y pie ----------
+   La firma animada pinta su propio fondo blanco con el filtro SVG: aquí va la
+   estática, en lila con resplandor, sobre una reprise del horizonte del hero
+   (sol que se pone y rejilla quieta), en CSS. */
+:root[data-theme='synthwave'] .reveal {
+  background: var(--sw-night);
+}
+
+:root[data-theme='synthwave'] .signature {
+  position: relative;
+  overflow: clip;
+  opacity: 1;
+  isolation: isolate;
+  box-shadow: none;
+  background:
+    radial-gradient(ellipse 40% 70% at 50% 100%, rgba(255, 46, 151, 0.4), transparent 70%),
+    linear-gradient(180deg, var(--sw-night), #2a0454);
+}
+
+:root[data-theme='synthwave'] .signature::after {
+  content: '';
+  position: absolute;
+  inset: 72% -50% -10%;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 229, 255, 0.45) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, rgba(255, 46, 151, 0.45) 0 1px, transparent 1px 32px),
+    var(--sw-night);
+  transform: perspective(200px) rotateX(55deg);
+  transform-origin: 50% 0;
+  box-shadow: 0 -2px 18px var(--sw-pink);
+}
+
+:root[data-theme='synthwave'] .signature .signature__mark--anim {
+  display: none;
+}
+
+:root[data-theme='synthwave'] .signature .signature__mark--static {
+  display: block;
+  color: var(--sw-star);
+  filter: drop-shadow(0 0 10px rgba(255, 46, 151, 0.55));
+}
+
+:root[data-theme='synthwave'] .footer a:hover {
+  color: var(--sw-cyan);
+}
+
+:root[data-theme='synthwave'] .footer {
+  color: var(--ink);
+  border-top: 1px solid var(--sw-pink);
+  box-shadow: 0 -1px 14px rgba(255, 46, 151, 0.4);
+}
+
+/* ---------- Invasores (los crea el script del tema) ---------- */
+
+.sw-invader {
+  position: absolute;
+  z-index: 0;
+  width: var(--size);
+  pointer-events: none;
+  color: var(--sw-cyan);
+  opacity: 0.4;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.6));
+}
+
+.sw-invader svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sw-invader path {
+  fill: currentColor;
+}
+
+.sw-invader__b {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sw-invader {
+    animation: sw-drift 9s ease-in-out infinite alternate;
+  }
+
+  .sw-invader__a {
+    animation: sw-step 1.2s steps(1) infinite;
+  }
+
+  .sw-invader__b {
+    animation: sw-step 1.2s steps(1) infinite reverse;
+  }
+}
+
+@keyframes sw-step {
+  0% { visibility: visible; }
+  50% { visibility: hidden; }
+}
+
+@keyframes sw-drift {
+  to { translate: calc(var(--size) * 0.8) calc(var(--size) * 0.3); }
+}
+
+/* ---------- Tramo 720-1024 ---------- */
+
+@media (max-width: 1023.98px) {
+  :root[data-theme='synthwave'] .hero__headline {
+    font-size: 8.6vw;
+  }
+
+  :root[data-theme='synthwave'] .hero__stat-value {
+    font-size: 48px;
+  }
+
+  :root[data-theme='synthwave'] .work__collage::before,
+  :root[data-theme='synthwave'] .work__collage::after {
+    inset: 40px 0;
+  }
+}
+
+/* ---------- Móvil ----------
+   Encima del nombre se abre una franja de cielo para el sol y la cordillera:
+   así ningún texto cae sobre el sol. Glow con menos capas. */
+
+@media (max-width: 719.98px) {
+  :root[data-theme='synthwave'] .header {
+    background: var(--sw-night);
+  }
+
+  :root[data-theme='synthwave'] .hero {
+    padding-top: min(56vw, 280px);
+    background: linear-gradient(
+      180deg,
+      var(--sw-night) 0%,
+      #2a0454 24%,
+      #730856 38%,
+      #12002a 39%,
+      var(--sw-night) 70%,
+      #12002a 86%,
+      var(--sw-night) 100%
+    );
+  }
+
+  :root[data-theme='synthwave'] .hero::before {
+    left: 50%;
+    top: min(28vw, 140px);
+    width: 46vw;
+    translate: -50% -50%;
+  }
+
+  :root[data-theme='synthwave'] .hero::after {
+    inset: 86% -50% 0;
+  }
+
+  :root[data-theme='synthwave'] .hero__headline {
+    font-size: 10.6vw;
+    line-height: 1.08;
+    filter: drop-shadow(0 2px 0 #3b0a6b) drop-shadow(0 0 14px rgba(255, 46, 151, 0.4));
+  }
+
+  :root[data-theme='synthwave'] .hero__claim {
+    font-size: 26px;
+  }
+
+  :root[data-theme='synthwave'] .hero__stat-value {
+    font-size: clamp(36px, 11vw, 48px);
+  }
+
+  :root[data-theme='synthwave'] :is(.work__label, .talks__label, .bg__label, .caps__label, .clients__label) {
+    font-size: 14px;
+  }
+
+  :root[data-theme='synthwave'] .work__item {
+    padding: 18px;
+  }
+
+  :root[data-theme='synthwave'] .writings__link {
+    padding: 10px 14px 10px 10px;
+  }
+
+  :root[data-theme='synthwave'] .work__collage::before,
+  :root[data-theme='synthwave'] .work__collage::after {
+    inset: var(--space-lg) 0;
+    border-radius: 0;
+  }
+
+  :root[data-theme='synthwave'] .work__collage img {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  :root[data-theme='synthwave'] .menu {
+    background: var(--sw-night);
+    overflow: clip;
+  }
+
+  :root[data-theme='synthwave'] .menu::after {
+    content: '';
+    position: absolute;
+    inset: auto -50% 0;
+    height: 30%;
+    z-index: -1;
+    background:
+      repeating-linear-gradient(90deg, rgba(0, 229, 255, 0.4) 0 1px, transparent 1px 56px),
+      repeating-linear-gradient(0deg, rgba(255, 46, 151, 0.4) 0 1px, transparent 1px 28px);
+    transform: perspective(160px) rotateX(55deg);
+    transform-origin: 50% 0;
+    -webkit-mask: linear-gradient(transparent, #000 30%);
+    mask: linear-gradient(transparent, #000 30%);
+    pointer-events: none;
+  }
+
+  :root[data-theme='synthwave'] .menu__link {
+    font-family: var(--font-chrome);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  :root[data-theme='synthwave'] .menu__link[aria-current='true'] {
+    color: var(--sw-cyan);
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+  }
+
+  :root[data-theme='synthwave'] .theme-menu__panel {
+    inset: auto 0 0;
+    padding: 16px var(--grid-margin) calc(16px + env(safe-area-inset-bottom));
+    background: var(--sw-deep);
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+}

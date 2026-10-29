@@ -23,6 +23,7 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
    cargan solo cuando hacen falta. */
 const extras = {
   neobrutalist: () => import('./themes/neobrutalist.js'),
+  synthwave: () => import('./themes/synthwave.js'),
 };
 let unmount;
 
