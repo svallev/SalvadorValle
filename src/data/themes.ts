@@ -25,6 +25,7 @@ export interface Theme {
 export const themes: Theme[] = [
   { id: 'original', label: 'Original', swatch: ['#FBFAF9', '#FF4F00', '#111111'], themeColor: '#fbfaf9' },
   { id: 'neobrutalist', label: 'Neobrutalist', swatch: ['#1F3DFF', '#FF4F00', '#F28FC4'], themeColor: '#f7efe4' },
+  { id: 'synthwave', label: 'Synthwave', swatch: ['#0D0221', '#FF2E97', '#00E5FF'], themeColor: '#0d0221' },
   { id: 'night', label: 'Night', swatch: ['#0E0E10', '#FF6A2B', '#F2F0EC'], themeColor: '#0e0e10' },
   {
     id: 'agents',

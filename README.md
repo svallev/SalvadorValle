@@ -110,7 +110,7 @@ url: "https://medium.com/..."
 ## Temas
 
 El botón de la gota, en la cabecera, cambia el aspecto de toda la página sin tocar
-el contenido, el orden ni la estructura: de momento, Original, Neobrutalist y Night. La elección se guarda en el
+el contenido, el orden ni la estructura: de momento, Original, Neobrutalist, Synthwave y Night. La elección se guarda en el
 navegador del visitante, y `?theme=<id>` en la URL fuerza uno (sirve para
 compartirlo).
 
@@ -156,6 +156,7 @@ Todas se sirven desde el propio dominio, sin llamadas a Google ni a nadie.
 - **Advent Pro**, **Libre Barcode 128 Text** y **Prata** (el H1 del hero) — Google Fonts, licencia OFL. Sus
   licencias están en `licenses/`.
 - **Anton** — también OFL, solo para el tema Neobrutalist.
+- **Orbitron** y **Press Start 2P** — OFL, solo para el tema Synthwave.
 
 ## Despliegue
 
