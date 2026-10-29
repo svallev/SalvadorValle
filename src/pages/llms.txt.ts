@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getProfile } from '../data/profile';
 
-// Formato de llmstxt.org: título, resumen y dónde leer lo demás.
+// Formato de llmstxt.org: título, resumen, las cifras clave y dónde leer lo demás.
 export const GET: APIRoute = async ({ site }) => {
   const p = await getProfile();
   const url = (path: string) => new URL(path, site).href;
@@ -9,7 +9,11 @@ export const GET: APIRoute = async ({ site }) => {
 
 > ${p.summary}
 
-${p.intro}
+${p.about}
+
+## Key facts
+
+${p.facts.map((f) => `- ${f.sentence}`).join('\n')}
 
 ## Read this site
 

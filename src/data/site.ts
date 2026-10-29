@@ -9,6 +9,8 @@ export const site = {
   description:
     'Product and UX Design Director. Designing global-scale products and leading high-performance teams for over 30 years.',
   email: 'salvador.valle@gmail.com',
+  // País de residencia, para /agents/ y los datos estructurados.
+  location: 'Spain',
 };
 
 export const nav = [
@@ -35,7 +37,9 @@ export const hero = {
   claim: 'Designing global-scale products and leading high-performance teams for over 30 years.',
   // Cifras clave bajo el claim. `value` es el valor final y lo que cuenta el
   // contador (con `decimals` decimales); `prefix` va en tinta y `unit` en
-  // acento. La unidad lleva su espacio delante cuando hace falta.
+  // acento. La unidad lleva su espacio delante cuando hace falta. `fact` es la
+  // misma cifra en tercera persona y con su contexto, para /agents/: un agente
+  // cita frases sueltas y «60 people in 2 countries» no dice de quién habla.
   stats: [
     {
       value: 60,
@@ -43,6 +47,7 @@ export const hero = {
       prefix: '',
       unit: '',
       label: 'people in 2 countries — the largest design team I’ve managed.',
+      fact: 'Has managed design teams of up to 60 people across 2 countries.',
     },
     {
       value: 85,
@@ -50,6 +55,7 @@ export const hero = {
       prefix: '',
       unit: '%',
       label: 'of BBVA employees actively used The Ninja Project. The target was 5%.',
+      fact: 'Worked on The Ninja Project at BBVA, which 85% of BBVA employees actively used against a target of 5%.',
     },
     {
       value: 3.5,
@@ -57,6 +63,7 @@ export const hero = {
       prefix: '€',
       unit: 'M',
       label: 'the largest project budget I’ve had an impact on.',
+      fact: 'Has had an impact on project budgets of up to €3.5M.',
     },
     {
       value: 10,
@@ -65,6 +72,7 @@ export const hero = {
       unit: ' yrs',
       label:
         'a feature I proposed and designed has gone unchanged; the only one in a catalog of 500+.',
+      fact: 'Proposed and designed a feature that has stayed unchanged for 10 years, the only one in a catalog of 500+.',
     },
   ],
 };
