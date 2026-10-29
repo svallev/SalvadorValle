@@ -2,10 +2,13 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import { getProfile } from '../data/profile';
+import ogImage from '../assets/og.png';
 
 /* «Just for agents»: la versión de la home pensada para que un agente la lea
    de una vez y la entienda a la primera. Aquí sí cambian el orden y la forma:
-   lo primero es quién es y qué cifras lo avalan, después lo demás. HTML
+   lo primero es quién es y qué cifras lo avalan, después lo demás. Cada
+   frase y cada título dicen de quién hablan, porque un agente cita trozos
+   sueltos y fuera de la página «I've managed» no es nadie. HTML
    semántico, sin JS de animación, sin tipografías web y con datos
    estructurados completos. Solo comparte con la home la cabecera, para que una
    persona pueda volver a un tema normal desde el mismo botón. */
@@ -31,9 +34,15 @@ const jsonLd = {
       '@type': 'Person',
       '@id': `${home}#person`,
       name: p.name,
+      alternateName: 'Salva',
       jobTitle: p.role,
-      description: p.summary,
+      description: p.about,
       url: home,
+      image: new URL(ogImage.src, Astro.site).href,
+      address: { '@type': 'PostalAddress', addressCountry: 'ES' },
+      worksFor: { '@type': 'Organization', name: p.current.company },
+      // Escribe y da charlas en los dos idiomas (ver `lang` en las colecciones).
+      knowsLanguage: ['en', 'es'],
       email: `mailto:${p.email}`,
       sameAs: p.links.map((l) => l.href),
       knowsAbout: p.capabilities.map((c) => c.title),
@@ -76,7 +85,8 @@ const jsonLd = {
       <header id="hi">
         <h1>{p.name} — {p.role}</h1>
         <p><strong>{p.summary}</strong></p>
-        <p>{p.intro}</p>
+        <p>{p.about}</p>
+        <p>Last updated: <time datetime={p.updated}>{p.updated}</time></p>
         <p>
           Email: <a href={`mailto:${p.email}`}>{p.email}</a>
           {p.links.map((l) => <> · <a href={l.href}>{l.label}</a></>)}
@@ -88,33 +98,33 @@ const jsonLd = {
       </header>
 
       <section aria-labelledby="facts">
-        <h2 id="facts">Key facts</h2>
-        <dl>
-          {p.facts.map((f) => <><dt>{f.value}</dt><dd>{f.label}</dd></>)}
-        </dl>
+        <h2 id="facts">Key facts about {p.name}</h2>
+        <ul>
+          {p.facts.map((f) => <li>{f.sentence}</li>)}
+        </ul>
       </section>
 
       <section aria-labelledby="capabilities">
-        <h2 id="capabilities">Capabilities</h2>
+        <h2 id="capabilities">Capabilities of {p.name}</h2>
         <dl>
           {p.capabilities.map((c) => <><dt>{c.title}</dt><dd>{c.summary}</dd></>)}
         </dl>
       </section>
 
       <section aria-labelledby="projects">
-        <h2 id="projects">Recent projects</h2>
+        <h2 id="projects">Recent projects by {p.name}</h2>
         <dl>
           {p.projects.map((pr) => <><dt>{pr.title}</dt><dd>{pr.summary}</dd></>)}
         </dl>
       </section>
 
       <section aria-labelledby="clients">
-        <h2 id="clients">Clients</h2>
+        <h2 id="clients">Clients {p.name} has worked for</h2>
         <p>{p.clients.join(', ')}.</p>
       </section>
 
       <section aria-labelledby="talks">
-        <h2 id="talks">Talks</h2>
+        <h2 id="talks">Talks by {p.name}</h2>
         <ul>
           {p.talks.map((t) => (
             <li>
@@ -125,7 +135,7 @@ const jsonLd = {
       </section>
 
       <section aria-labelledby="writing">
-        <h2 id="writing">Writing</h2>
+        <h2 id="writing">Writing by {p.name}</h2>
         <ul>
           {p.writings.map((w) => (
             <li>{w.url ? <a href={w.url} lang={w.lang}>{w.title}</a> : <span lang={w.lang}>{w.title}</span>}</li>
@@ -134,7 +144,7 @@ const jsonLd = {
       </section>
 
       <section aria-labelledby="career">
-        <h2 id="career">Career</h2>
+        <h2 id="career">Career of {p.name}</h2>
         {p.career.map((era) => (
           <section>
             <h3>{era.period}: {era.title}</h3>
@@ -146,11 +156,13 @@ const jsonLd = {
             </dl>
           </section>
         ))}
-        <p>{p.closing}</p>
+        <blockquote>
+          <p>In {p.name}’s own words: “{p.closing}”</p>
+        </blockquote>
       </section>
 
       <section aria-labelledby="contact">
-        <h2 id="contact">Contact</h2>
+        <h2 id="contact">Contact {p.name}</h2>
         <p>
           Email <a href={`mailto:${p.email}`}>{p.email}</a>
           {linkedin && <>, or <a href={linkedin.href}>LinkedIn</a></>}.
@@ -215,6 +227,17 @@ const jsonLd = {
 
   dd {
     margin: 0;
+  }
+
+  ul {
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+
+  blockquote {
+    margin: 16px 0;
+    padding-left: 16px;
+    border-left: 3px solid #d0d0d0;
   }
 
   a {
