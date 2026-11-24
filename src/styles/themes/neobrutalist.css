@@ -160,9 +160,30 @@
 }
 
 :root[data-theme='neobrutalist'] .footer {
-  color: var(--nb-cream);
-  border-top: 2px solid var(--nb-cream);
+  --footer-bg: var(--nb-yellow);
+  --footer-ink: var(--nb-ink);
+  --footer-cta-bg: var(--nb-orange);
+  --footer-cta-ink: var(--nb-ink);
+  border-top: var(--nb-line);
 }
+
+:root[data-theme='neobrutalist'] .footer .footer__cta,
+:root[data-theme='neobrutalist'] .book-cta {
+  border: var(--nb-line);
+  box-shadow: 3px 3px 0 var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .footer .footer__photo {
+  border: 3px solid var(--nb-ink);
+  border-radius: 10%;
+  box-shadow: 3px 3px 0 var(--nb-ink);
+}
+
+:root[data-theme='neobrutalist'] .book-cta {
+  background: var(--nb-orange);
+  color: var(--nb-ink);
+}
+
 
 :root[data-theme='neobrutalist'] main {
   box-shadow: none;
@@ -290,8 +311,11 @@
   stroke: var(--nb-cream);
 }
 
-/* El menú lateral cruza todos los campos: va en su propia pegatina hueso. */
+/* El menú lateral cruza todos los campos: va en su propia pegatina hueso.
+   Baja lo que cuelga la onda de la cabecera, más un respiro, para que la
+   onda no tape el borde de arriba. */
 :root[data-theme='neobrutalist'] .sidenav {
+  top: calc(104px * var(--k) + var(--nb-wave-h) + 16px);
   width: max-content;
   padding: 10px 14px;
   background: var(--nb-cream);

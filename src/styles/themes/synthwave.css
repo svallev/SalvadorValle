@@ -660,15 +660,39 @@
   filter: drop-shadow(0 0 10px rgba(255, 46, 151, 0.55));
 }
 
-:root[data-theme='synthwave'] .footer a:hover {
+/* El botón de reservar conserva su texto oscuro: en cian sobre rosa no se lee. */
+:root[data-theme='synthwave'] .footer a:not(.footer__cta):hover {
   color: var(--sw-cyan);
 }
 
 :root[data-theme='synthwave'] .footer {
-  color: var(--ink);
+  --footer-bg: var(--sw-deep);
+  --footer-ink: var(--sw-star);
+  --footer-cta-bg: var(--sw-pink);
+  --footer-cta-ink: var(--sw-night);
   border-top: 1px solid var(--sw-pink);
   box-shadow: 0 -1px 14px rgba(255, 46, 151, 0.4);
 }
+
+:root[data-theme='synthwave'] .footer .footer__photo {
+  /* Halo de neón en el cian del logotipo de la cabecera (.header__name). */
+  border-color: var(--sw-cyan);
+  box-shadow:
+    0 0 6px 1px rgba(0, 229, 255, 0.9),
+    0 0 22px 6px rgba(0, 229, 255, 0.55),
+    0 0 48px 14px rgba(0, 229, 255, 0.25);
+}
+
+:root[data-theme='synthwave'] .footer .footer__cta,
+:root[data-theme='synthwave'] .book-cta {
+  box-shadow: 0 0 18px rgba(255, 46, 151, 0.55);
+}
+
+:root[data-theme='synthwave'] .book-cta {
+  background: var(--sw-pink);
+  color: var(--sw-night);
+}
+
 
 /* ---------- Invasores (los crea el script del tema) ---------- */
 
