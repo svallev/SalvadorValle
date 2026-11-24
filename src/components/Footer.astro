@@ -365,6 +365,17 @@ const brandIcons: Record<string, string> = {
       font-size: 32px;
     }
 
+    /* La franja de abajo también centrada: nombre y cargo, y debajo las redes. */
+    .footer__bar {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer__sign,
+    .footer__links {
+      justify-content: center;
+    }
+
     .footer__links {
       gap: var(--space-xs) 16px;
     }
