@@ -9,9 +9,9 @@ import Capabilities from '../components/Capabilities.astro';
 import Clients from '../components/Clients.astro';
 import Talks from '../components/Talks.astro';
 import Background from '../components/Background.astro';
-import Signature from '../components/Signature.astro';
 import Footer from '../components/Footer.astro';
 import VideoModal from '../components/VideoModal.astro';
+import BookCta from '../components/BookCta.astro';
 ---
 
 <Base>
@@ -27,17 +27,20 @@ import VideoModal from '../components/VideoModal.astro';
     <Clients />
     <Talks />
     <Background />
+    {/* Marca el final del contenido: al verse, el pie empieza a asomar y el
+        botón flotante se retira (src/scripts/footer.js). */}
+    <div data-footer-sentinel aria-hidden="true"></div>
   </main>
 
-  {/* Firma y pie se revelan juntos por detrás del contenido al llegar al
-      final del scroll, como en paper.design: van fijos bajo `main`, que los
+  {/* El pie se revela por detrás del contenido al llegar al final del
+      scroll, como en paper.design: va fijo bajo `main`, que lo
       tapa con fondo opaco hasta la última franja de la página (ver estilo
       abajo y `initFooterReveal` en motion.js, que mide su altura real). */}
   <div class="reveal">
-    <Signature />
     <Footer />
   </div>
 
+  <BookCta />
   <VideoModal />
 
   <script>
@@ -45,6 +48,7 @@ import VideoModal from '../components/VideoModal.astro';
     import '../scripts/mobile-menu.js';
     import '../scripts/theme.js';
     import '../scripts/motion.js';
+    import '../scripts/footer.js';
   </script>
 </Base>
 

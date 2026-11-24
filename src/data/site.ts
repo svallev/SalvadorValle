@@ -5,9 +5,8 @@
 
 export const site = {
   name: 'Salvador Valle',
-  role: 'Product Design Director',
-  description:
-    'Product and UX Design Director. Designing global-scale products and leading high-performance teams for over 30 years.',
+  role: 'Product Design Manager',
+  description: 'Product and UX Design Manager',
   email: 'salvador.valle@gmail.com',
   // País de residencia, para /agents/ y los datos estructurados.
   location: 'Spain',
@@ -101,9 +100,20 @@ export const sections = {
   },
 };
 
+// Reunión de 15 minutos: va en el pie y en el botón flotante que acompaña
+// todo el scroll. Enlace normal a Calendly (sin su widget) para no cargar
+// scripts de terceros ni abrir la CSP.
+export const booking = {
+  label: 'Book 15 min',
+  // Texto del botón flotante, que va sin contexto alrededor.
+  floatingLabel: 'Book a 15 min talk',
+  href: 'https://calendly.com/salvador-valle/15-min-talk',
+};
+
 export const footer = {
-  // El año sale del build: se actualiza solo al volver a desplegar.
-  copyright: `© ${new Date().getFullYear()} Salvador Valle`,
+  heading: 'Shall we keep talking?',
+  // Cargo completo junto al nombre, en la última línea del pie.
+  role: 'Product and UX Design Manager',
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/salvadorvalle/' },
     { label: 'GitHub', href: 'https://github.com/svallev' },

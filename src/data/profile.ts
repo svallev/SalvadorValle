@@ -8,7 +8,7 @@
  */
 
 import { getCollection } from 'astro:content';
-import { site, hero, sections, footer } from './site';
+import { site, hero, sections, footer, booking } from './site';
 
 const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
 const lowerFirst = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
@@ -48,7 +48,7 @@ export async function getProfile() {
   // agente cita fragmentos sueltos, y «nice to meet you I'm Salva» fuera de la
   // página no dice quién es.
   const about = [
-    `${site.name} is a Product and UX Design Director based in ${site.location}, ${lowerFirst(hero.claim)}`,
+    `${site.name} is a ${footer.role} based in ${site.location}, ${lowerFirst(hero.claim)}`,
     `Current role: ${current.role} at ${current.company}.`,
     `Previously at ${employers.join(', ')}.`,
   ].join(' ');
@@ -63,7 +63,7 @@ export async function getProfile() {
     employers,
     updated: new Date().toISOString().slice(0, 10),
     email: site.email,
-    links: footer.links,
+    links: [...footer.links, { label: 'Book a 15-minute call', href: booking.href }],
     facts: hero.stats.map((stat) => ({
       value: statValue(stat),
       label: stat.label,

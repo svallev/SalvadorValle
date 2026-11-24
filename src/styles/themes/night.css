@@ -31,3 +31,11 @@
 :root[data-theme='night'] .writings__thumb {
   box-shadow: none;
 }
+
+/* El pie negro no se distinguiría del fondo: en Night va en claro. */
+:root[data-theme='night'] .footer {
+  --footer-bg: var(--ink);
+  --footer-ink: #111111;
+  --footer-cta-bg: #111111;
+  --footer-cta-ink: var(--ink);
+}

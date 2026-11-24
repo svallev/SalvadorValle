@@ -1,85 +1,384 @@
 ---
-import { site, footer } from '../data/site';
+import { Image } from 'astro:assets';
+import { site, footer, booking } from '../data/site';
+import photo from '../assets/footer-photo.jpg';
+
+// Linktree no va en el pie (sí en el menú móvil y en los datos estructurados).
+const links = footer.links.filter((link) => link.label !== 'Linktree');
+
+// Iconos de marca de Tabler Icons (licencia MIT), versión rellena. Se pintan
+// con currentColor, así que toman el color del texto en todos los temas.
+const brandIcons: Record<string, string> = {
+  LinkedIn:
+    'M17 2a5 5 0 0 1 5 5v10a5 5 0 0 1 -5 5h-10a5 5 0 0 1 -5 -5v-10a5 5 0 0 1 5 -5zm-9 8a1 1 0 0 0 -1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0 -1 -1m6 0a3 3 0 0 0 -1.168 .236l-.125 .057a1 1 0 0 0 -1.707 .707v5a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a1 1 0 0 0 2 0v-3a3 3 0 0 0 -3 -3m-6 -3a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1',
+  GitHub:
+    'M5.315 2.1c.791 -.113 1.9 .145 3.333 .966l.272 .161l.16 .1l.397 -.083a13.3 13.3 0 0 1 4.59 -.08l.456 .08l.396 .083l.161 -.1c1.385 -.84 2.487 -1.17 3.322 -1.148l.164 .008l.147 .017l.076 .014l.05 .011l.144 .047a1 1 0 0 1 .53 .514a5.2 5.2 0 0 1 .397 2.91l-.047 .267l-.046 .196l.123 .163c.574 .795 .93 1.728 1.03 2.707l.023 .295l.007 .272c0 3.855 -1.659 5.883 -4.644 6.68l-.245 .061l-.132 .029l.014 .161l.008 .157l.004 .365l-.002 .213l-.003 3.834a1 1 0 0 1 -.883 .993l-.117 .007h-6a1 1 0 0 1 -.993 -.883l-.007 -.117v-.734c-1.818 .26 -3.03 -.424 -4.11 -1.878l-.535 -.766c-.28 -.396 -.455 -.579 -.589 -.644l-.048 -.019a1 1 0 0 1 .564 -1.918c.642 .188 1.074 .568 1.57 1.239l.538 .769c.76 1.079 1.36 1.459 2.609 1.191l.001 -.678l-.018 -.168a5.03 5.03 0 0 1 -.021 -.824l.017 -.185l.019 -.12l-.108 -.024c-2.976 -.71 -4.703 -2.573 -4.875 -6.139l-.01 -.31l-.004 -.292a5.6 5.6 0 0 1 .908 -3.051l.152 -.222l.122 -.163l-.045 -.196a5.2 5.2 0 0 1 .145 -2.642l.1 -.282l.106 -.253a1 1 0 0 1 .529 -.514l.144 -.047l.154 -.03z',
+};
 ---
 
+{/* Bloque de contacto con color propio: se descubre por detrás de `main` al
+    final del scroll (ver index.astro), así que el contraste con el papel de
+    la página es lo que hace notar que hay algo debajo. */}
 <footer class="footer">
-  <p class="footer__copy">{footer.copyright}</p>
+  <div class="footer__body">
+    {/* Foto de prueba: si se quita, basta con borrar este bloque. */}
+    <div class="footer__photo">
+      <Image
+        src={photo}
+        alt={`Portrait of ${site.name}`}
+        format="webp"
+        widths={[240, 480, 720]}
+        sizes="(max-width: 719.98px) 96px, 240px"
+        loading="lazy"
+      />
+    </div>
 
-  <ul class="footer__links" role="list">
-    {
-      footer.links.map((link) => (
-        <li>
-          <a class="footer__link" href={link.href} target="_blank" rel="noopener noreferrer">
-            {link.label}
-            <span class="visually-hidden"> (opens in a new tab)</span>
-          </a>
-        </li>
-      ))
-    }
-    <li>
-      <a class="footer__link" href={`mailto:${site.email}`}>{site.email}</a>
-    </li>
-  </ul>
+    <div class="footer__main">
+      <h2 class="footer__heading">{footer.heading}</h2>
+
+      <div class="footer__actions">
+        <a class="footer__cta" href={booking.href} target="_blank" rel="noopener noreferrer">
+          <svg class="footer__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+            <path d="M3.5 10h17M8 3v4M16 3v4" />
+          </svg>
+          {booking.label}
+          <span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+
+        <p class="footer__email">
+          <a class="footer__mail" href={`mailto:${site.email}`}>{site.email}</a>
+          {/* Sin JS o sin portapapeles el botón no sirve: el script lo muestra. */}
+          <button
+            class="footer__copy"
+            type="button"
+            data-copy-email={site.email}
+            aria-label="Copy email address"
+            hidden
+          >
+            <svg class="footer__icon footer__icon--copy" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="8.5" y="8.5" width="12" height="12" rx="2" />
+              <path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" />
+            </svg>
+            <svg class="footer__icon footer__icon--done" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4.5 12.5l5 5 10-11" />
+            </svg>
+          </button>
+          <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {/* Última franja: nombre y cargo a la izquierda; redes a la derecha. */}
+  <div class="footer__bar">
+    <p class="footer__sign">
+      <span class="footer__name">{site.name}</span>
+      <span aria-hidden="true">·</span>
+      {footer.role}
+    </p>
+
+    <ul class="footer__links" role="list">
+      {
+        links.map((link) => (
+          <li>
+            <a class="footer__link" href={link.href} target="_blank" rel="noopener noreferrer">
+              {brandIcons[link.label] && (
+                <svg class="footer__brand" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={brandIcons[link.label]} />
+                </svg>
+              )}
+              {link.label}
+              <span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </footer>
 
 <style>
   .footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-xl);
-    padding: var(--space-md) var(--grid-margin);
-    color: var(--ink-pure);
+    /* Los temas cambian el aspecto del pie tocando estas variables. */
+    /* Colores fijos, no los de tinta y papel: en un tema oscuro --ink es
+       claro y el pie dejaría de contrastar. */
+    --footer-bg: #111111;
+    --footer-ink: #fbfaf9;
+    --footer-cta-bg: #fbfaf9;
+    --footer-cta-ink: #111111;
+    /* Aro de la foto: color papel, claro también en Night. Neobrutalist y
+       Synthwave lo cambian en su tema. */
+    --footer-photo-border: calc(3px * var(--k)) solid #fbfaf9;
+
+    background: var(--footer-bg);
+    color: var(--footer-ink);
   }
 
-  .footer__copy,
-  .footer__link {
+  /* Foto y texto forman un solo bloque, centrado en el pie. */
+  .footer__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-xl);
+    /* El pie va fijo al fondo y se descubre entero: a 1440 × 900 tiene que
+       caber en la ventana, así que el relleno es contenido. */
+    padding: calc(72px * var(--k)) var(--grid-margin) calc(56px * var(--k));
+  }
+
+  /* Cuadrada y del mismo alto que el bloque de texto (titular, botón y
+     correo). Es una medida fija por tramo: si cambia el texto, revisarla. */
+  .footer__photo {
+    flex: none;
+    width: calc(160px * var(--k));
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 50%;
+    border: var(--footer-photo-border);
+    background: color-mix(in srgb, var(--footer-ink) 12%, transparent);
+  }
+
+  .footer__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Titular y fila del botón centrados entre sí. */
+  .footer__main {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--space-xl);
+  }
+
+  .footer__heading {
+    font-family: var(--font-sans);
+    font-size: calc(60px * var(--k));
+    font-weight: var(--fw-medium);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .footer__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: calc(56px * var(--k));
+    padding-inline: calc(28px * var(--k));
+    border-radius: 999px;
+    background: var(--footer-cta-bg);
+    color: var(--footer-cta-ink);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__cta:hover {
+    transform: translateY(-2px);
+  }
+
+  .footer__icon {
+    width: 1.1em;
+    height: 1.1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Botón y, a su derecha, el correo con el icono de copiar. Si no caben
+     en una línea (móvil), el correo baja debajo del botón. */
+  .footer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm) var(--space-lg);
+  }
+
+  .footer__email {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .footer__mail {
     font-size: var(--fs-md);
     font-weight: var(--fw-light);
     line-height: var(--lh-body);
   }
 
+  /* Solo el icono: el nombre accesible va en aria-label. Al copiar, el
+     script añade .is-copied y el icono pasa a ser una marca de hecho. */
+  .footer__copy {
+    display: inline-grid;
+    place-items: center;
+    width: calc(36px * var(--k));
+    height: calc(36px * var(--k));
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: inherit;
+    font-size: var(--fs-md);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__copy:hover {
+    background: color-mix(in srgb, var(--footer-ink) 12%, transparent);
+  }
+
+  .footer__copy[hidden],
+  .footer__copy .footer__icon--done,
+  .footer__copy.is-copied .footer__icon--copy {
+    display: none;
+  }
+
+  .footer__copy.is-copied .footer__icon--done {
+    display: block;
+  }
+
   .footer__links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-xl);
+    align-items: center;
+    gap: var(--space-sm) var(--space-xl);
+  }
+
+  .footer__sign {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-body);
+  }
+
+  /* Redes, un punto por debajo del nombre. */
+  .footer__link {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-body);
   }
 
   .footer__link {
-    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
   }
 
-  /* 720-1024: texto a 16 px con interlineado 2 (la fila sigue midiendo 32 px)
-     y 16 px entre enlaces para que todo quepa en una línea. */
+  .footer__brand {
+    width: 1.25em;
+    height: 1.25em;
+    fill: currentColor;
+  }
+
+  .footer__mail,
+  .footer__link {
+    text-decoration: none;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .footer__mail:hover,
+  .footer__link:hover {
+    opacity: 0.66;
+  }
+
+  .footer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-xl);
+    padding: var(--space-md) var(--grid-margin);
+    border-top: 1px solid color-mix(in srgb, var(--footer-ink) 12%, transparent);
+  }
+
+  .footer__sign {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .footer__name {
+    font-weight: var(--fw-bold);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__cta {
+      transition: none;
+    }
+    .footer__cta:hover {
+      transform: none;
+    }
+  }
+
+  /* 720-1024: foto más estrecha y titular más pequeño. */
   @media (max-width: 1023.98px) {
-    .footer__copy,
-    .footer__link {
+    .footer__body {
+      gap: var(--space-lg);
+      padding-block: 64px 48px;
+    }
+
+    .footer__photo {
+      width: 132px;
+    }
+
+    .footer__main {
+      gap: var(--space-lg);
+    }
+
+    .footer__heading {
+      font-size: 40px;
+    }
+
+    .footer__sign,
+    .footer__cta {
       font-size: var(--fs-base);
-      line-height: 2;
     }
 
-    .footer__links {
-      gap: 16px;
-    }
-  }
-  /* Móvil: todo apilado a 15 px. Los tres enlaces comparten línea y el correo,
-     que no cabe con ellos, baja a la siguiente. */
-  @media (max-width: 719.98px) {
-    .footer {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-xs);
-      padding: 16px var(--grid-margin);
+    .footer__mail {
+      font-size: var(--fs-base);
     }
 
-    .footer__copy,
     .footer__link {
       font-size: 15px;
-      line-height: var(--lh-body);
+    }
+  }
+  /* Móvil: todo apilado, la foto pequeña arriba. */
+  @media (max-width: 719.98px) {
+    .footer__body {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: var(--space-lg);
+      padding-block: 48px 40px;
+    }
+
+    .footer__photo {
+      width: 96px;
+    }
+
+    .footer__heading {
+      font-size: 32px;
     }
 
     .footer__links {
       gap: var(--space-xs) 16px;
+    }
+
+    .footer__sign {
+      font-size: 15px;
+    }
+
+    .footer__mail {
+      font-size: 15px;
+    }
+
+    .footer__link {
+      font-size: 14px;
     }
   }
 </style>

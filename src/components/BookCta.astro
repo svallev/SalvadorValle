@@ -1,0 +1,69 @@
+---
+import { booking } from '../data/site';
+---
+
+{/* Píldora fija, centrada abajo, durante todo el scroll. Se retira al llegar
+    al pie, que ya trae el mismo enlace (src/scripts/footer.js). */}
+<a class="book-cta" href={booking.href} target="_blank" rel="noopener noreferrer" data-book-cta>
+  <svg class="book-cta__icon" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+    <path d="M3.5 10h17M8 3v4M16 3v4" />
+  </svg>
+  {booking.floatingLabel}
+  <span class="visually-hidden"> (opens in a new tab)</span>
+</a>
+
+<style>
+  .book-cta {
+    position: fixed;
+    inset-block-end: calc(24px * var(--k) + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    translate: -50% 0;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: calc(48px * var(--k));
+    padding-inline: calc(22px * var(--k));
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: var(--fs-base);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      translate var(--duration-base) var(--ease-out);
+  }
+
+  /* El mismo calendario que el botón del pie. */
+  .book-cta__icon {
+    width: 1.1em;
+    height: 1.1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .book-cta.is-hidden {
+    opacity: 0;
+    translate: -50% 150%;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .book-cta {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 719.98px) {
+    .book-cta {
+      inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+</style>
