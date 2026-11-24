@@ -6,7 +6,10 @@
 export const site = {
   name: 'Salvador Valle',
   role: 'Product Design Manager',
-  description: 'Product and UX Design Manager',
+  // Al menos 100 caracteres: LinkedIn avisa por debajo, y Google prefiere
+  // entre 120 y 160 para el texto bajo el enlace.
+  description:
+    'Product and UX Design Manager. Designing global-scale products and leading high-performance teams for over 30 years.',
   email: 'salvador.valle@gmail.com',
   // País de residencia, para /agents/ y los datos estructurados.
   location: 'Spain',
