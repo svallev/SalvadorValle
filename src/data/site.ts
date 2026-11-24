@@ -5,6 +5,8 @@
 
 export const site = {
   name: 'Salvador Valle',
+  // Nombre completo, para la meta «author».
+  author: 'Salvador Valle Vargas',
   role: 'Product Design Manager',
   // Al menos 100 caracteres: LinkedIn avisa por debajo, y Google prefiere
   // entre 120 y 160 para el texto bajo el enlace.

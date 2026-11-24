@@ -26,6 +26,10 @@ const {
   preloadFonts = true,
 } = Astro.props;
 
+// Fecha de publicación: la del build. Cada despliegue la actualiza, así que
+// LinkedIn ve la fecha del último cambio publicado.
+const publishDate = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+
 const fixedTheme = themes.find((t) => t.id === theme);
 const themeColors = JSON.stringify(Object.fromEntries(themes.map((t) => [t.id, t.themeColor])));
 
@@ -78,6 +82,9 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    {/* El formato que lee LinkedIn: name y property en la misma etiqueta. */}
+    <meta name="publish_date" property="og:publish_date" content={publishDate} />
     {(noindex || preview) && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
