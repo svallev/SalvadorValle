@@ -4,11 +4,11 @@ title: "Design direction"
 order: 1
 roles:
   - company: "Harbiz"
-    description: "Product Design Director. “Zeus” design system with engineering, 5 hires, LatAm research, full product redesign."
+    description: "Product Design Manager. “Zeus” design system with engineering, 5 hires, LatAm research, full product redesign."
   - company: "Hamon"
-    description: "Experience Design Director. Design, innovation, strategy and creative technology."
+    description: "Product Design Director. Design, innovation, strategy and creative technology."
   - company: "frog"
-    description: "Experience Design Director. Product direction, design strategy, people and new business."
+    description: "Product Design Director. Product direction, design strategy, people and new business."
   - company: "Isobar"
     description: "Director of UX Design. UX strategy, people management, product management, new business."
 ---

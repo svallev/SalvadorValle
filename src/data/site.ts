@@ -50,7 +50,7 @@ export const hero = {
       decimals: 0,
       prefix: '',
       unit: '',
-      label: 'people in 2 countries — the largest design team I’ve managed.',
+      label: 'people in 2 countries — the largest team I’ve managed.',
       fact: 'Has managed design teams of up to 60 people across 2 countries.',
     },
     {

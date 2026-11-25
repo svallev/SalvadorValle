@@ -30,7 +30,7 @@ export async function getProfile() {
   const career = background.sort(byOrder);
 
   // Puesto actual: el primero de la etapa más reciente. Cuando no trae `role`,
-  // el cargo es la primera frase de la descripción («Product Design Director.»).
+  // el cargo es la primera frase de la descripción («Product Design Manager.»).
   const latest = career[0].data.roles[0];
   const current = { company: latest.company, role: latest.role ?? latest.description.split('.')[0] };
 
